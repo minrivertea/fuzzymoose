@@ -3,6 +3,7 @@ PIL
 sorl-thumbnail
 South
 django-paypal
+django-simple-captcha
 pisa
 reportlab
 html5lib
