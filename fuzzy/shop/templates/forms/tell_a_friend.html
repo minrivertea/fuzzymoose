@@ -1,0 +1,143 @@
+{% extends base_template %}
+{% load i18n %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{{ static_url }}css/teas.css"/>
+<style type="text/css">
+
+div.info.small {
+  width: 270px;	
+  height: 220px;
+  margin-right: 15px;
+}
+
+div.info.long {
+  width: 800px;   
+}
+
+div.info h3 {
+  font-size: 32px;
+  float: left;
+  font-family: Helvetica, sans-serif;
+  color: #237A2A;
+  font-weight: bold;	
+}
+
+div.info p.help {
+    float: left;
+    font-size: 0.7em;
+    position: relative;
+    width: 140px;
+}
+
+div.info div.image {
+  width: 100%;	
+  float: left;
+  display: block;
+  margin: 0 0 15px 0;
+}
+
+div.info div.text {
+  width: 100%;
+  margin-top: 15px;
+}
+
+div.text input {
+  width: 280px;	
+}
+
+div.text .button {
+  width: 150px;	
+  margin: 0 0 0 15px;
+  float: right;
+}
+
+
+</style>
+{% endblock %}
+
+{% block metadescription %}{% blocktrans %}Tell your friends about {{ site_name }} on Facebook, Twitter or by email and share the love about great Chinese teas.{% endblocktrans %}{% endblock %}
+
+{% block pagetitle %}{% trans 'Tell a friend' %}{% endblock %}
+
+
+
+{% block content %}
+
+<div id="mtw">
+  <div class="sp">
+
+		{% if message %}
+				<h1 class="message">{{ message }}</h1>
+		{% else %}
+		<h1>{% trans 'Spread the word' %}</h1>
+		<p class="introduction">{% trans "We're a young business, and we need your help! If you like our teas and you think a friend might like them too, then please tell them about it - here's how:" %}</p>
+		{% endif %}
+    			
+	
+		<div class="info small">
+			<div class="image">
+				<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+				<div class="fb-like" data-href="http://www.facebook.com/minrivertea" data-send="false" data-layout="box_count" data-width="45" data-show-faces="false"></div>
+				<h3 style="width:180px;">{% trans 'Like us on Facebook' %}</h3>
+			</div>
+			<div class="text">
+			<p>{% blocktrans %}You've put faith in us by ordering and enjoying our teas, so if you 'Like' us on Facebook, it helps your friends and relatives get introduced to Chinese tea through a company that <strong>you</strong> trust.{% endblocktrans %}</p>
+			</div>
+		</div>
+		
+		<div class="info small">
+			<div class="image">
+				<a href="https://twitter.com/share" class="twitter-share-button" data-url="{{ site_url }}" data-text="better #tea for your mug" data-via="minrivertea" data-size="large" data-related="minrivertea">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+			</div>
+			<div class="text">
+				<h3>{% trans 'Tweet about us' %}</h3>				
+				<p>{% trans "Tweeting about us helps spread the word to a huge variety of people - many people are still unaware that buying good quality Chinese tea is actually quite easy and enjoyable. " %}</p>
+			</div>
+		</div>
+		<div class="info small">
+			<div class="image">
+				<img style="box-shadow: 0 1px 2px #999 inner;" src="{{ static_url }}images/plusone.png">
+			</div>
+			<div class="text">
+				<h3 style="float:none;">{% trans "Give us a +1" %}</h3>
+				<p>{% blocktrans %}Google now customises search results for you and your social group, so if you like one of our teas or our website, <strong>click the +1 button wherever you see it!</strong>{% endblocktrans %}</p>
+			</div>
+		</div>
+		
+		<div class="info long">
+			<form method="post" action="/tell-a-friend/">
+			
+			<div class="image" style="width: 400px; padding-left: 10px;">
+				<h3 style="float:none;">{% trans "Email a friend" %} </h3>
+				<p>{% trans "If you know someone who would be interested in seeing our site our trying our teas, we'll send them an email on your behalf. Fill in the form on the right to start." %}</p>
+			</div>
+			<div class="text" style="width: 315px;">
+			{% if shopper %}
+			<input type="text" name="sender" id="id_sender" value="{{ shopper.email }}" style="display:none;"/>
+			{% else %}
+			<input type="text" name="sender" id="id_sender" title="{% trans 'Your email address' %}" class="clearMeFocus"/> <br/>
+			{% endif %}
+			<input type="text" name="recipient" id="id_recipient" title="{% trans "Your friend's email" %}" class="clearMeFocus" />
+			<p class="help"><img src="{{ static_url }}images/lock.gif">{% trans "We will never share, sell or spam these email addresses" %} (<a target="_blank" title="{% trans 'Read our privacy policy (opens in a new window)' %}" href="/privacy/">{% trans 'Privacy' %}</a>)</p>	
+    		<input type="submit" value="{% trans 'Submit' %}" class="button">
+    		    {{ form.sender.errors }}
+    		    {{ form.recipient.errors }}        
+				{{ form.message.errors }}
+			</form>
+			</div>
+		</div>
+
+  </div>
+</div>
+		
+
+    {% endblock %}

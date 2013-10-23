@@ -1,0 +1,159 @@
+{% extends base_template %}
+{% load thumbnail staticfiles %}
+
+{% block metadescription %}{% if product.meta_description %}{{ product.meta_description|safe }}{% else %}{{ product.name }} - {{ product.description|safe }}{% endif %}{% endblock %}
+
+{% block pagetitle %}{% if not product.meta_title %}{{ product.name }}{% else %}{{ product.meta_title }}{% endif %}{% endblock %}
+
+{% block canonical %}<link rel="canonical" href="{{ site_url }}{{ product.get_absolute_url }}" />{% endblock %}
+
+{% block extra-head %}
+<meta property="og:type" content="product" />
+<meta property="og:title" content="{{ product.name }}" />
+<meta property="og:url" content="{{ site_url }}{{ product.get_absolute_url }}" />
+<meta property="og:description" content="{{ product.description|safe }}" />
+<meta property="og:site_name" content="{{ site_name }}" />
+{% thumbnail product.image "500x500" crop="center" as im %}
+<meta property="og:image" content="{{ im.url }}" />
+<meta name="twitter:image" content="{{ im.url }}" />
+{% endthumbnail %}
+<meta name="twitter:title" content="{{ product.name }}" />
+<meta name="twitter:site" content="" />
+<meta name="twitter:card" content="product" />
+<meta name="twitter:description" content="{{ product.description|safe }}" />
+{% endblock %}
+
+{% block extrajs %}
+<script>
+
+function addToBasket(obj) {
+
+    $(obj).click(function() {   	 
+   	  var thisPrice = $(this).parent('.price-inner');
+   	  
+   	  // clear any existing messages
+   	  $('#prices .message').remove();
+   	  
+   	  thisPrice.css({'opacity': '0.4'});
+   	  $('#prices').prepend('<img src="{% static "images/loading.gif" %}" id="loading"/>');
+   	 
+   	  $.ajax({
+   	      url: $(this).attr('href'),
+   	      type: "GET",
+   	      dataType: 'json',
+   	      success: function(data){
+            
+            /// increment the values in the header basket
+            if ($('#userbasket').hasClass('selected')) {} else {
+                 $('#userbasket').addClass('selected'); 
+                 $('#userbasket #quantity').append('<a href="{% url "basket" %}" title="View your basket" alt="View your basket">Checkout now &raquo;</a>'); 
+            }
+            $('#quantity .p').text(parseFloat(data.basket_quantity).toFixed(2));
+            $('#quantity .q').html(parseInt($('#quantity .q').html(), 10)+1);
+    		
+    		/// remove loading icon and return opacity to normal
+    		$('#prices #loading').remove();
+    		thisPrice.css({'opacity': '1'});
+    		
+    		/// check if there's an existing message and remove it
+    		if ($('#prices .message').length ) {
+    		   $('#prices .message').remove();
+    		} 
+    		
+    		/// add the confirmation
+    		$('#prices').prepend(data.message).delay(8000).queue(function() {
+    			$('#prices .message').fadeOut(300).delay(400).queue(function() {	    
+        			$('#prices .message').remove();
+    			});
+    		});
+    		$('#prices .message').fadeIn(300);
+    		
+    		
+   	  })
+   	  return false;
+  });
+}
+
+$(document).ready( function() {
+    addToBasket('.price a.button');
+});
+
+
+</script>
+
+{% endblock %}
+
+{% block extracss %}
+<style type="text/css">
+
+#photos {
+     
+}
+
+#description p {
+  margin: 0;   
+}
+
+#prices {
+  list-style-type: none;
+  margin: 20px 0 0;
+  padding: 0;   
+}
+
+#prices li {
+  float: left;
+  margin: 0 0 0px 0;
+  padding: 10px 0 10px 0;
+  border-bottom: 1px dashed #fff;
+  font-size: 13px;
+  font-weight: bold;
+  width: 100%; 
+  color: #666;  
+}
+
+#prices li .button {
+  float: right;   
+}
+
+#prices span.amount {
+  font-size: 17px;
+  color: #333;   
+}
+
+</style>
+{% endblock %}
+
+
+{% block currency %}
+	{% include 'snippets/currency.html' %}
+{% endblock %}
+
+
+{% block content %}
+
+<h1>{{ product.name }}</h1>
+
+<div class="pure-g-r">
+
+<div id="photos" class="pure-u-3-5">
+{% for x in product.get_photos %}
+    {% thumbnail x.image product_photo_large crop="center" as im_large %}
+        <img src="{{ im_large.url }}" />
+    {% endthumbnail %}
+{% endfor %}
+</div>
+
+<div id="description" class="pure-u-2-5">
+    <p>{{ product.long_description }}</p>
+
+    <ul id="prices">
+        {% for x in product.prices %}
+            <li><span class="amount">{{ currency.symbol }}{{ x.price }}</span> / {{ x.description }} <a href="{% url 'add_to_basket' x.id %}" class="button">Add to basket</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+</div>
+
+{% endblock %}

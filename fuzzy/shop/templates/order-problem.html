@@ -1,0 +1,17 @@
+{% extends base_template %}
+{% load i18n %}
+
+{% block pagetitle %}{% trans "Whoops, there's been a problem!" %}{% endblock %}
+
+{% block content %}
+
+<div id="mtw">
+  <div class="sp">
+		<h1>{% trans "There's been a problem!" %}</h1>
+
+
+	<p class="introduction">{{ problem }}</p>
+	<p>{% blocktrans %}You can head back to the <a href="/teas/">Teas page to search through our Chinese teas</a> or if you think there's been a problem, <a href="/contact-us/">just get in touch.{% endblocktrans %}</a></p>
+  </div>
+</div>
+{% endblock %}

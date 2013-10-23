@@ -1,0 +1,12 @@
+{% load nav_selected i18n %}
+
+<div id="navigation">
+  
+  <ul id="nav">
+    {% for x in main_nav %}
+    <li>
+        <a class="{% nav_selected request x.slug %}" href="{% url finder x.slug %}" title="{{ x.short_description|striptags }}" alt="{{ x.short_description|striptags }}">{{ x.name }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

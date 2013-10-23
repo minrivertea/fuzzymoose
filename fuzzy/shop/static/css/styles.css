@@ -1,0 +1,342 @@
+
+/* GLOBAL STYLES */
+
+body {
+  color: #333;
+  text-shadow: 0 1px 1px #fff;
+  background: url('../images/cardboard_flat.png') repeat top left;   
+}
+
+.hr {
+  width: 100%;
+  border-bottom: 2px dashed #fff;
+  margin: 20px 0;
+  height: 1px;
+  float: left;   
+}
+
+#main {
+  float: left; 
+  width: 100%;  
+}
+
+/* END GLOBAL STYLES */
+
+/* BUTTONS AND LINKS */
+
+a:link, a:visited {
+  color: #f88400;
+  text-decoration: none;   
+}
+
+a:hover {
+ color: #d75b00;
+}
+
+.button, a.button, input.button {
+ background: #f88400;
+ color: #fff;
+ padding: 5px 10px;
+ text-decoration: none;
+ text-shadow: none;
+ float: left; 
+ border: none;  
+}
+
+.button:hover {
+ background: #ffb25a;
+ color: #7c470a;   
+}
+
+.button.large {
+  font-size: 22px;
+  padding: 8px 15px;   
+}
+
+.button.small {
+  font-size: 13px;
+  padding: 3px 8px;   
+}
+
+span.link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 10;   
+}
+
+/* END BUTTONS AND LINKS */
+
+/* TYPOGRAPHY */
+body, .pure-g-r, .pure-g-r [class*="pure-u"] {
+  font-family: "Myriad Pro",Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+h1 {
+  font-size: 48px; 
+  font-weight: 100; 
+  letter-spacing: -1px; 
+  margin: 0 0 20px 0;
+}
+
+/* END TYPOGRAPHY */
+
+.centered {
+  width: 900px;
+  margin-left: -450px;
+  left: 50%;
+  position: relative;
+}
+
+/* HEADER SPECIFIC */
+
+#header {
+  margin-top: 30px;  
+  margin-bottom: 30px; 
+  padding-bottom: 20px;
+  float: left;
+  width: 100%;
+  border-bottom: 2px dashed #fff;
+}
+
+#basket {
+  height: 5px;
+  position: absolute;
+  width: 100%;
+  background: none repeat scroll 0 0 #F6F3EB;
+}
+
+#basket .tab {
+  float: right;
+  position: absolute;
+  right: 20px;
+  bottom: -30px;
+  background: none repeat scroll 0 0 #F6F3EB;
+  padding: 7px 20px 5px;
+  border-radius: 0 0 15px 15px;
+  font-size: 0.8em;
+  font-weight: bold;
+  border-width: 0 1px 1px 1px;  
+}
+
+#basket .tab#currency {
+  right: 300px;
+  padding: 7px 10px 5px;   
+}
+
+#currency a {
+  font-weight: normal; 
+  padding: 0 5px;  
+}
+
+#currency a.strong {
+  color: #333;   
+  font-weight: bold;
+}
+
+#header #logo {
+  position: relative;
+  left: 0%;
+  float: left;
+  margin-left: px;
+}
+
+#header ul {
+  text-align: right;
+  float: right;
+  list-style-type: none;
+  padding: 0;
+  margin: 65px 0 0px;
+}
+
+#header ul li {
+ float: left;
+}
+
+#header ul li a {
+ padding: 5px 25px;
+ letter-spacing: 0;
+ text-decoration: none;  
+ color: #605934;
+ font-size: 1.1em;
+}
+
+#header ul li a:hover {
+  color: #d75b00; 
+}
+
+#header ul li a.selected {
+  font-weight: bold;
+  color: #333;   
+}
+
+#header ul li:last-child a {
+  border-right: none;
+  padding-right: 0;   
+}
+
+#header ul li:first-child a {
+  padding-left: 0;  
+}
+
+/* END HEADER SPECIFIC */
+
+/* HOMEPAGE SPECIFIC */
+
+#intro {
+  padding: 0 20px;   
+}
+
+#intro #mugshot {
+  float: left;
+  margin: 0 20px 0px 0;   
+}
+
+#intro p.intro {
+  font-size: 1.2em;
+  margin: 0 0 0px 0;  
+}
+
+#products {
+  float: left;
+  margin: 0 0 20px 0;   
+}
+
+.product {
+}
+
+.product .inner {
+  background: #f6f3eb;
+  margin-right: 10px;
+  padding: 10px;
+  float: left;
+  width: 90%;
+}
+
+.product .inner:hover {
+  box-shadow: 0 1px 5px #c7ba98; 
+  background: #fff;
+  cursor: pointer; 
+}
+
+.product h3 {
+  margin: 10px 0 0;  
+  color: #e26800; 
+}
+
+.product p {
+  margin: 0;
+  font-size: 0.8em;   
+}
+
+.product .pricebar {
+  float: left;
+  width: 100%; 
+  margin: 5px 0 0 0;
+  border-top: 1px dashed #e1e1e1;
+  padding: 10px 0 0 0;  
+}
+
+.product .pricebar .price {
+  float: left; 
+  position: relative;
+  top: 5px;   
+}
+
+.product .pricebar .price .number {
+  font-weight: bold; 
+ 
+}
+
+.product .pricebar .price .quantity {
+ color: #777;
+}
+
+.product .pricebar .button {
+  float: right;   
+}
+
+#banner {
+  float: left;
+  width: 100%;   
+}
+
+#banner .inner {
+  padding: 10px;
+}
+
+#banner .inner p {
+  padding: 0;
+  margin: 0; 
+  font-size: 2em;  
+}
+
+#photo-banner {
+  position: relative; 
+  float: left;  
+}
+
+#photo-banner img {
+  max-width: 900px;
+}
+
+#photo-banner .text {
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
+  width: 35%; 
+  font-size: 1.2em;  
+}
+
+#photo-banner .text p {
+  padding: 0;
+  margin: 0;   
+}
+
+/* END HOMEPAGE SPECIFC */
+
+/* ORDER PROCESS STYLES */
+
+#steps {
+  list-style-type: none;
+  float: right;
+  margin: 20px 0 0;
+  width: auto;   
+}
+
+#steps li {
+  float: left;
+  padding: 0 10px;   
+}
+
+/* END ORDER PROCESS STYLES */
+
+/* FOOTER STYLES */
+#footer {
+  background: url('../images/footer_back.png') repeat top left; 
+  float: left;
+  height: 200px;
+  padding: 30px 0 100px 0;
+  margin: 50px 0 0 0;
+  width: 100%;  
+  box-shadow: 0 1px 5px #ccc inset;
+  border-top: 2px solid #bbb;
+}
+
+#footer h4 {
+  margin: 5px 0 10px;   
+}
+
+#footer ul {
+  list-style-type: none;
+  padding: 0 30px 0 0;
+  margin: 0; 
+  font-size: 0.8em;
+  line-height: 1.6em;  
+}
+
+/* END FOOTER STYLES
+

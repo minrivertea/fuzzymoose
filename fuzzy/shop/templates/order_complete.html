@@ -1,0 +1,48 @@
+{% extends base_template %}
+{% load i18n %}
+
+{% block pagetitle %}{% trans 'Order Complete' %}{% endblock %}
+
+{% block extrajs %} 
+{% endblock %}
+
+{% block extracss %}
+<style type="text/css">
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="pure-g-r">
+  	
+  	<h1 class="pure-u-1-2">Order complete</h1>
+  	<ul id="steps" class="pure-u-1-2">
+		<li>
+			<a class="completed" href="{% url 'basket' %}">1. Your basket</a>
+		</li>
+		<li>
+			<a class="completed" href="{% url 'order_step_one' %}">2. Your details</a>
+		</li>
+		<li>
+			<a href="" class="completed">3. Confirm and pay</a>
+		</li>
+	</ul>
+
+</div>
+   
+<div class="pure-g-r">
+
+    <div class="pure-u-1">
+    <p class="introduction">{% trans "We've received your order and we'll send your tea immediately. We've also sent you an email confirming the details. Thank you and we really hope you enjoy your tea!" %}</p>
+
+
+    <p>{% trans "Please note, we must confirm payment is received before we can ship any orders. If there is a problem with your order, we will contact you immediately to resolve this. Many thanks for your patience." %}</p>
+    
+    
+    <p>{% blocktrans %}If for any reason you need to contact us about your order, email us at <a href="mailto:chris@minrivertea.com">chris@minrivertea.com</a>. We try to respond to emails as soon as possible, but sometimes because of time zone differences, we might take slightly longer. Thanks for your patience!{% endblocktrans %}</p>
+
+    </div>
+    
+</div>
+
+{% endblock %}

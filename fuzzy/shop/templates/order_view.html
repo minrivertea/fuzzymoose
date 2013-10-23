@@ -1,0 +1,24 @@
+{% extends base_template %}
+{% load i18n %}
+
+{% block content %}
+
+<div id="mtw">
+  <div class="sp">
+
+	<h1>Your order</h1>
+	<p class="introduction">{% trans 'This is the order you made on' %} {{ order.date_confirmed }}</p>
+
+
+	<div class="left">
+
+	<p>{% trans 'Confirmed' %}: {{ order.date_confirmed }}</p>
+	<p>{% trans 'Payment received' %}: {{ order.date_paid }}</p>
+	<p>{{ order.status }}</p>
+
+	</div>
+
+
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+Django==1.5.4
+python-mysql
+PIL
+sorl-thumbnail
+South
+django-paypal
+pisa
+reportlab
+html5lib
+stripe

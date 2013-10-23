@@ -1,0 +1,72 @@
+{% extends base_template %}
+{% load thumbnail staticfiles %}
+
+{% block pagetitle %}{% endblock %}
+
+{% block metadescription %}{% endblock %}
+
+
+{% block extrajs %}
+<script type="text/javascript">
+
+$('.info.tea a.button').click( function() {
+  var thisButton = $(this);
+  thisButton.parent('.info.tea').css({'opacity':'0.5'});
+  thisButton.parent('.info.tea').append('<img src="{% static "images/loading.gif" %}" id="loading" />');
+
+  $.ajax({
+  	url: thisButton.attr('href'),
+	type: "GET",
+   	dataType: 'json',
+   	success: function(data) {
+   		
+   		/// increment the values in the header basket
+        if ($('#userbasket').hasClass('selected')) {} else {
+             $('#userbasket').addClass('selected'); 
+             $('#userbasket #quantity').append('<a href="{% url "basket" %}" title="View your basket" alt="View your basket">Checkout now &raquo;</a>'); 
+        }
+        $('#quantity .p').text(parseFloat(data.basket_quantity).toFixed(2));
+        $('#quantity .q').html(parseInt($('#quantity .q').html(), 10)+1);
+   		
+   		
+   		/// increment the values in the already in basket next to product
+   		
+   		if (thisButton.parent('.info.tea').find('.in-basket').length) {
+	   		var curr = thisButton.parent('.info.tea').find('.in-basket .num');
+   			curr.html(parseInt(curr.html(), 10)+1);
+   		} else {
+   		  	thisButton.parent('.info.tea').find('.pricebar').append('<div class="in-basket"><span class="num">1</span> in basket</div>');
+   		}   
+   		
+   		thisButton.parent('.info.tea').find('#loading').remove();
+   		thisButton.parent('.info.tea').css({'opacity':'1'});		
+   	},
+  });
+  return false;
+});
+
+</script>
+{% endblock %}
+
+{% block extracss %}
+<style type="text/css">
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+
+	
+	    {% if ga_is_on %}
+		<ul class="rss {% if page.feature_image %}opaque{% endif %}">
+	    	<li id="facebook">
+			    <!-- FACEBOOK LIKE -->
+	   	<div class="fb-like" data-href="http://www.facebook.com/minrivertea" data-width="120" data-layout="button_count" data-show-faces="false" data-send="false"></div>
+	   	       <!-- END FACEBOOK LIKE -->
+			</li>
+		</ul>
+        {% endif %}
+
+{% endblock %}

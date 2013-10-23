@@ -1,0 +1,46 @@
+{% extends base_template %}
+
+{% load i18n %}
+
+{% block pagetitle %}404 - {% trans 'Page Not Found' %}{% endblock %}
+
+{% block extracss %}
+<style type="text/css">
+body {
+ background: none #fff;	
+}
+
+#header {
+  border-bottom: none;	
+}
+
+#footer {
+  display: none;	
+}
+
+.image {
+  position: relative;
+  left: -450px;
+  margin: 20px 0 0 50%;
+  width: 900px;
+  float: left;	
+}
+
+p a:link {
+  text-decoration: underline;	
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div id="mtw">
+	<div class="sp">
+		<img class="image" src="{{ static_url }}images/404.jpg"/>
+		<p class="introduction">{% blocktrans %}We can't find the page you're looking for! Perhaps it was mistyped, has moved, or doesn't exist anymore. <a href="{{ site_url }}">Go back to the homepage</a> or perhaps <a href="/contact-us/">contact us</a> if you need some information.{% endblocktrans %}</p>
+	</div>
+</div>
+
+
+
+{% endblock %}

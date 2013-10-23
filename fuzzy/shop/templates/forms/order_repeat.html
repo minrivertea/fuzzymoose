@@ -1,0 +1,278 @@
+{% extends base_template %}
+{% load thumbnail i18n convert_weights %}
+
+{% block pagetitle %}Order (Step 2 of 3) - Confirm Order{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+
+$("#wishlist-link").click(function() {	
+	$.getJSON("/order/make_wishlist/", {xhr: "true", order: {{ order.id }}},
+  		function(data) {
+  		$('#loading').toggle();
+  		$(data).appendTo('#wishlist-full');
+  		$('#wishlist-link').unbind('click');
+  		$('a#wishlist-link').fancybox();
+  	});    	
+});
+
+
+$(document).ready( function() {
+	$('a#wishlist-link').fancybox();
+});
+
+</script>
+
+<script type="application/javascript" src="{{ static_url }}js/lightbox/jquery.fancybox-1.3.4.pack.js"></script>
+{% endblock %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{{ static_url }}css/fancybox/jquery.fancybox-1.3.4.css" />
+<style type="text/css">
+
+
+div.row {
+  background-image: none;	
+  -moz-box-shadow: none;
+}
+
+.paypal {
+  margin-bottom: 20px;	
+}
+
+#wishlist {
+    float: right;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 5px 30px;
+    text-align: right;
+    width: 300px;
+}
+
+#wishlist img {
+  position: relative;
+  top: 9px;	
+  right: -4px;
+}
+
+#mtw #wishlist-full {
+  display: none;
+  float: left;
+  width: 500px;
+  height: auto;
+  position: relative;	
+}
+
+#wishlist-full img#loading {
+  position: relative;
+  left: 230px;	
+  top: 135px;
+}
+
+#wishlist-full p.url {
+  background-color: #f1f1f1;
+  padding: 10px 15px;	
+}
+
+#wishlist-full strong {
+  color: #333;	
+}
+
+#items {
+  float: left;
+  width: auto;
+  border-right: 1px solid #e1e1e1;
+  padding-right: 50px;
+  margin-right: 40px;	
+}
+
+#items h2, #address h2 {
+  margin-bottom: 20px;	
+}
+
+table {
+  font-size: 15px;
+}
+
+table td {
+  padding: 0 0 0 15px;	
+}
+
+#address {
+  float: left;	
+  line-height: 1.6em;
+}
+
+#address p.address {
+  padding-left: 15px;	
+}
+
+#checkout-button {
+  margin: 30px 0 0;	
+}
+
+p.checkout {
+    float: right;
+    font-size: 14px;
+    margin: 0 0 10px 0;
+    text-align: right;
+    width: 100%;
+}
+
+#ppicon {
+  float:right;   
+}
+
+#wishlist {
+    float: right;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 5px 30px;
+    text-align: right;
+    width: 300px;
+}
+
+#wishlist img {
+  position: relative;
+  top: 9px;	
+  right: -4px;
+}
+
+#mtw #wishlist-full {
+  display: none;
+  float: left;
+  width: 500px;
+  height: auto;
+  position: relative;	
+}
+
+#loading-wishlist {
+  position: absolute;
+  left: 300px;	
+  top: 200px;
+}
+
+#wishlist-full p.url {
+  background-color: #f1f1f1;
+  padding: 10px 15px;	
+}
+
+#wishlist-full strong {
+  color: #333;	
+}
+
+table {
+  background: none;   
+}
+
+table tr td:first-child {
+  background: none;
+  width: 300px;   
+}
+
+table td {
+  border: none;   
+}
+
+p.skip {
+  float: right;
+  width: 100%;
+  text-align: right;   
+}
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+
+<div id="mtw">
+  <div class="sp">
+
+    <h1>{% blocktrans with order.owner.first_name as fn %}Hey {{ fn }} - are you ready to repeat this order?{% endblocktrans %}</h1>
+    
+    <p class="introduction">If you want to add or remove items, go ahead - visit our <a href="{% url finder _('teas') %}">teas listing</a> or <a href="{% url basket %}">edit your basket</a>.</p>
+    
+    	
+	<div id="basket">
+		
+	<div id="items">
+		<h2>{% trans "You're ordering" %}...</h2>		
+		<table>
+			{% for thing in order.items.all %}
+				  <tr>				
+			    	<td valign="top">
+			    		{{ thing.item.parent_product.name }} 
+			    		{% if thing.item.weight %}({% convert_weights request thing.item.weight %}{{ weight_unit }}){% endif %}
+			    		x {{ thing.quantity }}
+			    	</td>
+			    	<td valign="top">{{ currency.symbol }}{{ thing.get_price|floatformat:"2" }}</td>		    				
+				  </tr>
+	        {% endfor %}
+	        
+	        {% if monthly_items %}
+	        <tr>
+	           <td valign="top">
+	               <strong>{% trans 'Monthly Box' %}</strong><br/>
+	                    {% for thing in monthly_items %}
+			    		&nbsp;&nbsp;{{ thing.item.parent_product.name }} 
+			    		{% if thing.item.weight %}({% convert_weights request thing.item.weight %}{{ weight_unit }}){% endif %}
+			    		x {{ thing.quantity }}<br/>
+			    		{% endfor %}
+			    	</td>
+			    	<td valign="top">
+			    	     &nbsp;<br/>
+			    	     {% for thing in monthly_items %}
+			    	     {{ currency.symbol }}{{ thing.get_price|floatformat:"2" }}	<br/>
+			    	     {% endfor %}	    				
+			    	 </td>
+				  </tr>
+	        {% endif %}
+	        
+	        
+	    	{% if postage_discount %}
+	    	  <tr>
+	    	    <td colspan="2"><span class="small"><em>{% blocktrans with currency.symbol as symbol and currency.postage_discount_threshold as ptd %}There is no postage charge, because your order is over {{ symbol }}{{ ptd }}{% endblocktrans %}</em></span></td>
+	    	  </tr>
+	    	  {% else %}
+	    	  <tr>
+	    	  	<td>{% trans 'Postage' %}</td>
+	    	  	<td>{{ currency.symbol }}{{ currency.postage_cost|floatformat:"2" }}</td>		  
+	    	  </tr>
+	        {% endif %}
+	        {% if order.discount %}
+	      	  <tr>
+	      	  	<td>{% trans 'Discount' %}</td>
+	      	  	<td>-{{ currency.symbol }}{{ discount|floatformat:"2" }}</td>
+	      	  </tr>
+	      	{% endif %}
+			  <tr>
+			  	<td><strong>{% trans 'TOTAL' %}</strong></td>
+			  	<td><strong>{{ currency.symbol }}{{ total_price|floatformat:"2" }}</strong></td>		  
+			  </tr>
+		   </table>
+	</div>
+
+	<div id="address">
+
+	   <h2>...{% trans "we'll send your order to:" %}</h2>
+		<p class="address">
+  	   {% with order.address as address %}
+  	      {% include "shop/snippets/address.html" %}
+  	   {% endwith %}
+  	   </p>
+  	</div>
+
+    {% include "shop/snippets/paypal_form.html" %}
+</div>
+
+
+
+</div>
+
+	
+	
+	
+  </div>
+</div>
+{% endblock %}

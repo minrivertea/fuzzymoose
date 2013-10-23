@@ -1,0 +1,295 @@
+{% extends base_template %}
+{% load thumbnail i18n convert_links %}
+
+{% block metadescription %}{{ entry.summary|safe }}{% endblock %}
+{% block pagetitle %}{{ entry.title }}{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ site_url }}{{ entry.get_absolute_url }}" />{% endblock %}
+
+
+{% block extra-head %}
+<meta property="og:type" content="article" />
+<meta property="og:title" content="{{ entry.title }}" />
+<meta property="og:url" content="{{ site_url }}{{ entry.get_absolute_url }}" />
+<meta property="og:description" content="{{ entry.summary|safe }}" />
+<meta property="og:site_name" content="Min River Tea" />
+{% thumbnail entry.promo_image "500x500" crop="center" as im %}
+<meta property="og:image" content="{{ im.url }}" />
+<meta name="twitter:image" content="{{ im.url }}" />
+{% endthumbnail %}
+<meta name="twitter:title" content="{{ entry.title }}" />
+<meta name="twitter:site" content="@minrivertea" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:description" content="{{ entry.summary|safe }}" />
+{% endblock %}
+
+{% block extrajs %}
+<script>
+$(function() {
+
+// enable circular scrollables with a click handler
+$(".scroll").scrollable({ circular: true }).click(function() {
+	$(this).data("scrollable").next();		
+});
+});
+</script>
+
+<script type="text/javascript">
+/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+var disqus_shortname = 'example'; // required: replace example with your forum shortname
+
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function () {
+var s = document.createElement('script'); s.async = true;
+s.type = 'text/javascript';
+s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script> 
+{% endblock %}
+
+{% block extracss %}
+<style type="text/css">
+
+ul.rss {
+  left: -150px;
+  width: 75px;
+}
+
+ul.rss li#facebook, ul.rss li#google {
+  width: 75px;
+  float: right;
+  margin: 0;
+}
+
+ul.rss li#google {
+  width: 65px;   
+}
+
+#left p {
+  font-size: 13px;
+  letter-spacing: 0;
+  line-height: 1.8em;
+}
+
+#left p.introduction {
+  font-weight: normal;   
+}
+
+#left p.meta, #left p.meta a {
+  color: #777;
+  font-size: 11px;
+}
+
+#left p.meta {
+   border-top: 1px dashed #e1e1e1;
+  border-bottom: 1px dashed #e1e1e1;
+  padding: 5px 0;
+  margin: 20px 0 20px 0;   
+}
+
+p.meta a:hover {
+  color: #FF6569;   
+}
+
+div#entry-content h3 {
+  font-size: 2em;	
+}
+
+div#entry-content h4 {
+  border-bottom: none;
+  font-weight: bold;
+  margin-bottom: 5px;	
+}
+
+div#entry-content p.date {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  padding-left: 5px;	
+}
+
+div#entry-content img {
+  float: right;
+  margin: 10px 0 30px 30px;	
+  border-radius: 10px;
+}
+
+div#right p.mail {
+	float: left;
+	height: auto;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-bottom: 2px dotted #e1e1e1;
+    padding-bottom: 10px;
+}
+
+div#right p.mail.last {
+  border-bottom: none;	
+}
+
+div.next-previous {
+    float: left;
+    margin-bottom: 30px;
+    padding: 0 0;
+    width: 100%;
+}
+
+div.other-entry {
+  float: left;
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  position: relative;
+}
+
+div.other-entry a {
+
+  font-weight: bold;	
+}
+
+div#mtw div#left div.other-entry p {
+  margin-bottom: 0;	
+}
+
+div.other-entry span.link {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+
+
+div.other-entry:hover {
+  background-color: #f1f1f1;	
+}
+
+div.other-entry:hover a {
+  text-decoration: underline;
+}
+
+div.other-entry:hover p {
+  color: #333;	
+}
+
+div#entry-content img.tweet {
+    border-radius: 0 0 0 0;
+    float: left;
+    margin-left: 10px;
+    position: relative;
+    top: 8px;
+}
+
+img.tweets {
+  margin: -70px 0 10px 0;	
+}
+
+div#right h3.touch {
+  margin: 5px 0 10px;
+  border-bottom: 2px dotted #e1e1e1;
+  padding-bottom: 5px;	
+}
+
+div#right ul.follow  {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  display: inline;	
+}
+
+div#right ul.follow li {
+  float: left;	
+  margin-right: 10px;
+}
+
+div#right li.twitter {
+  float: left;
+  width: 130px;	
+  margin-right: 0;
+}
+
+div.info.wide input {
+  float: left;
+  width: 350px;	
+}
+
+div.info.wide input.button {
+    font-size: 16px;
+    left: 10px;
+    padding: 7px 15px 5px;
+    position: relative;
+    top: -2px;
+    width: 140px;
+}
+
+p.quote {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-left: 10px solid #5F829A;
+    margin: 0 0 20px;
+    padding: 20px 20px 20px 30px;
+}
+
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div id="mtw">
+  <div class="sp">		
+		
+	<div id="right">
+		{% include "blog/snippets/blog-right.html" %}
+	</div>
+
+	<div id="left">
+    	<h1>{{ entry.title }}</h1>
+    	<p class="meta">&laquo; <a href="{% url blog_home %}">back to blog home</a> | {{ entry.date_added|date:"d M Y" }} | <a href="{{ site_url }}{{ entry.get_absolute_url }}#disqus_thread">Comments</a> | {% if entry.blogger %}{% trans 'By' %} <a href="{% url page entry.blogger.slug %}">{{ entry.blogger.name }}</a>{% endif %}</p>	
+    
+    	{{ entry.content|convert_links|safe }}
+    			
+    			
+    	<div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'minrivertea'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+			
+	   {% if ga_is_on %}			
+		<ul class="rss {% if page.feature_image %}opaque{% endif %}">
+			<li id="google">
+				<g:plusone></g:plusone>
+				<script type="text/javascript">
+				  (function() {
+				    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+				    po.src = 'https://apis.google.com/js/plusone.js';
+				    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+				  })();
+				</script>
+			</li>
+	    	<li id="facebook">
+			    <div id="fb-root"></div>
+			    <script src="http://connect.facebook.net/en_US/all.js#appId=234100573279411&amp;xfbml=1"></script>
+			    <fb:like href="{{ site_url }}{{ entry.get_absolute_url }}" send="false" layout="button_count" width="80" show_faces="true" font="">
+			    </fb:like>
+			</li>
+		</ul>
+		{% endif %}
+  </div>
+</div>
+
+{% endblock %}
+
+

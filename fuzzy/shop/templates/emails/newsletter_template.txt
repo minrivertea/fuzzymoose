@@ -1,0 +1,4 @@
+{{ content|safe }}
+
+
+* If you want to unsubscribe, click this link - {{ site_url }}{{ link }}

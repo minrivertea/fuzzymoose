@@ -1,0 +1,52 @@
+{% extends base_template %}
+
+{% load i18n %}
+
+{% block pagetitle %}{% trans 'Login to continue' %}{% endblock %}
+
+{% block extracss %}
+<style type="text/css">
+label {
+ display: none;   
+}
+
+form p {
+  float: left;
+  width: 100%;
+  margin: 0 0 10px 0;   
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+
+<div id="mtw">
+	<div class="sp">
+	
+        <h1>{% trans 'Please login' %}</h1>
+		<p class="introduction">{% trans 'Please login to continue' %}:</p>
+
+		{% if form.errors %}
+			<p>{% trans "Your username and password didn't match. Please try again." %}</p>
+		{% endif %}
+
+		<form method="post" action="{% url django.contrib.auth.views.login %}">
+			{% csrf_token %}
+			<p>
+			    <label for="id_username">{% trans 'Username' %}:</label> 
+			    <input id="id_username" class="clearMeFocus" type="text" title="{% trans 'Your username' %}" name="username" maxlength="30" />
+			</p>
+            <p>
+                <label for="id_password">{% trans 'Password' %}:</label>
+                <input type="password" class="clearMeFocus" title="{% trans 'Password' %}" name="password" id="id_password" />
+            </p>
+			<input type="submit" value="{% trans 'Login' %}" class="button green" />
+			<input type="hidden" name="next" value="{{ next }}" />
+		</form>
+
+
+  </div>
+</div>
+{% endblock %}

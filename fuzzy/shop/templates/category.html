@@ -1,0 +1,46 @@
+{% extends base_template %}
+{% load thumbnail nav_selected %}
+
+{% block metadescription %}{{ category.meta_description }}{% endblock %}
+
+{% block pagetitle %}{{ category.name }}{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+</script>
+{% endblock %}
+
+{% block extracss %}
+<style type="text/css">
+
+#products {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;   
+}
+
+#products li {
+  float: left;
+  position: relative;   
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>{{ category.name }}</h1>
+<p>{{ category.description }}</p>
+
+<ul id="products">
+{% for x in category.get_products %}
+    <li>
+        <a href="{{ x.get_absolute_url }}"><span class="link"></span></a>
+        {% thumbnail x.get_main_photo.image product_photo_medium as im %}
+        <img src="{{ im.url }}" />
+        {% endthumbnail %}
+        <a href="{{ x.get_absolute_url }}">{{ x.name }}</a>    
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends base_template %}
+{% load thumbnail i18n  %}
+
+{% block pagetitle %}{% trans 'Our Chinese tea blog' %}{% endblock %}
+{% block metadescription %}{% trans 'A blog about Chinese tea - news, tea photos, tea reviews, articles and updates from tea farms in China, from the best tea retailer in the UK.' %}{% endblock %}
+
+
+{% block extracss %}
+<style type="text/css">
+
+.entry-list {
+    float: left;
+}
+
+#mtw #left .entry h3 {
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: -0.2px;
+    margin: 0 0 5px 0;
+    text-decoration: none;
+}
+
+.entry {
+    border-bottom: 1px dashed #E1E1E1;
+    float: left;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    position: relative;
+    width: 600px;
+}
+
+.entry:hover h2 a {
+  text-decoration: underline;
+  color: #FF6569;   
+}
+
+
+.entry span.read-more a {
+	
+}
+
+.entry.last {
+  border-bottom: none;	
+}
+
+.entry .image {
+  float: right;
+  margin: 0 0px 0 15px;
+}
+
+.entry .text {
+  float: left;
+  width: 405px;	
+}
+
+.entry .text.long {
+  width: 600px;	
+}
+
+
+div#mtw div#left .entry div.text p {
+  margin: 0px;
+  font-size: 13px;
+}
+
+.entry div.text span.entry-meta {
+    color: #666666;
+    float: left;
+    font-size: 11px;
+}
+
+a.see-more {
+  float: right;
+  font-size: 13px;	
+}
+
+h3.title {
+  font-size: 2em;
+  margin-bottom: 20px;	
+}
+
+div.like {
+  float: left;	
+  margin-top: 10px;
+}
+
+div.like div.image {
+  float: left;
+  margin-right: 10px;	
+}
+
+div#blog-right div.box.clear div.like p.description {
+  color: #666;	
+  line-height: 14px;
+  font-size: 12px;
+}
+
+div.like a {
+  font-size: 13px;	
+}
+
+div.like div.text {
+  float: left;
+  width: 140px;
+}
+
+img.tweets {
+  margin: -70px 0 10px 0;	
+}
+
+#next-previous {
+  width: 100%;
+  float: left;
+  margin: 20px 0;	
+  font-size: 20px;
+  text-align: center;
+}
+
+.next {
+  float: right;
+  border-radius: 5px;	
+}
+
+.previous {
+  float: left;
+  border-radius: 5px;		
+}
+
+</style>
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+<div id="mtw">
+  <div class="sp">
+	
+	
+		
+	<div id="right">
+		
+		{% include "blog/snippets/blog-right.html" %}
+	</div>
+
+	<div id="left">
+	
+        <h1>{% trans 'The Min River Tea blog' %}</h1>
+        <p class="introduction">{% trans 'News, events and information from the world of Chinese tea' %}</p>
+	
+		{% if entries.has_previous %}
+			<div id="next-previous">
+			<div class="next">
+			{% if entries.has_previous %}
+	            <a href="?page={{ entries.previous_page_number }}">{% trans 'Get newer entries' %} &raquo;</a>
+	        {% endif %}
+	        </div>
+	{% trans 'Showing entries' %} {{ entries.start_index }} - {{ entries.end_index }}
+			<div class="previous">
+	        {% if entries.has_next %}
+	            <a href="?page={{ entries.next_page_number }}">&laquo; {% trans 'Get older entries' %}</a>
+	        {% endif %}
+	        </div>
+		</div>
+		{% endif %}
+			
+ 		<div class="entry-list">
+			{% include "blog/snippets/entry-list.html" %}
+		</div>
+		
+		<div id="next-previous">
+			<div class="next">
+			{% if entries.has_previous %}
+	            <a href="?page={{ entries.previous_page_number }}">{% trans 'Get newer entries' %} &raquo;</a>
+	        {% endif %}
+	        </div>
+	
+			<div class="previous">
+	        {% if entries.has_next %}
+	            <a href="?page={{ entries.next_page_number }}">&laquo; {% trans 'Get older entries' %}</a>
+	        {% endif %}
+	        </div>
+		</div>
+	</div>
+  </div>
+</div>
+
+
+{% endblock %}

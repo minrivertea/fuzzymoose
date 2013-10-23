@@ -1,0 +1,17 @@
+{% extends base_template %}
+{% load i18n %}
+
+
+{% block pagetitle %}{% trans "Unsubscribed from TEAMails" %}{% endblock %}
+
+{% block content %}
+
+<div id="mtw">
+  <div class="sp">
+  	<h1>{% trans 'Unsubscribed from TEAMails' %}</h1>
+  		<p class="introduction">{% trans "We're sad to see you go - you are now unsubscribed from any future TEAMails." %}</p>
+  		<p>{% trans "If you continue to receive TEAMails from us (it shouldn't happen, but sometimes there are technical errors) please get in touch again and we'll sort it out." %}</p>
+  </div>
+</div>
+
+{% endblock %}
