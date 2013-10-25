@@ -24,7 +24,32 @@
 {% endblock %}
 
 {% block extrajs %}
-<script>
+<script type="text/javascript">
+
+$(function() {
+
+    $(".scrollable").scrollable();
+    $(".items img").click(function() {
+    
+    	if ($(this).hasClass("active")) { return; }
+    	var url = $(this).attr("alt");
+    	var wrap = $("#image_wrap").fadeTo("medium", 0.2);
+    
+    	var img = new Image();
+        
+    	img.onload = function() {
+    		wrap.fadeTo("fast", 1);
+    		wrap.find("img").attr("src", url);	
+    	};
+    
+    	img.src = url;
+    
+    	$(".items img").removeClass("active");
+    	$(this).addClass("active");
+    
+    }).filter(":first").click();
+});
+
 
 function addToBasket(obj) {
 
@@ -67,9 +92,9 @@ function addToBasket(obj) {
     			});
     		});
     		$('#prices .message').fadeIn(300);
+   	      }		
     		
-    		
-   	  })
+   	  });
    	  return false;
   });
 }
@@ -135,6 +160,16 @@ $(document).ready( function() {
   margin: 0 5px 0 0;   
 }
 
+#image_wrap {
+  width: 500px;
+  height: 331px;   
+}
+
+.pure-g-r #image_wrap img {
+  height: 331px;
+  width: 500px;   
+}
+
 </style>
 {% endblock %}
 
@@ -151,21 +186,33 @@ $(document).ready( function() {
 <div class="pure-g-r">
 
 <div id="photos" class="pure-u-3-5">
-    {% thumbnail product.get_main_photo.image product_photo_large crop="center" as im_large %}
-        <img src="{{ im_large.url }}" />
-    {% endthumbnail %}
 
-<div id="thumbnails" class="pure-u-1">
-    {% for x in product.get_photos %}
-        {% thumbnail x.image product_photo_small crop="center" as im %}
-            <a href="">
-                <img src="{{ im.url }}" />
-            </a>
-        {% endthumbnail %}
-    {% endfor %}
-</div>
+	<div class="main-image">
+        <div id="image_wrap">	
+            <img src="{{ static_url }}images/blank.gif" width="500px" height="331px" /> 
+	   </div>
+	
+        <div id="thumbnails" class="pure-u-1">
+            <div class="scrollable">   
+                <div class="items">
+                    <div>
+        
+                    {% for x in product.get_photos %}
+                        {% thumbnail x.image product_photo_small crop="center" as im %}
+                        {% thumbnail x.image product_photo_large crop="center" as im_large %}
+                                <img alt="{{ im_large.url }}" src="{{ im.url }}" />
+                        {% endthumbnail %}
+                        {% endthumbnail %}
+                    {% endfor %}
+                    
+                    </div>
+                </div>
+            </div>
+    
+        </div><!-- END THUMBNAILS -->
+    </div><!-- END MAIN IMAGE -->
 
-</div>
+</div><!-- END PHOTOS -->
 
 <div id="description" class="pure-u-2-5">
     {{ product.long_description|convert_links|safe }}
