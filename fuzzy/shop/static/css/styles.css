@@ -50,7 +50,7 @@ a:hover {
 
 .button.large {
   font-size: 22px;
-  padding: 8px 15px;   
+  padding: 10px 15px 8px;   
 }
 
 .button.small {
@@ -102,6 +102,44 @@ p {
 }
 
 /* END TYPOGRAPHY */
+
+/* FORMS */
+fieldset {
+  border: none; 
+}
+
+legend {
+  margin: 0 0 20px 0;  
+  font-style: italic; 
+}
+
+fieldset p {
+  float: left;
+  width: 100%;   
+}
+
+fieldset span.mandatory {
+  position: absolute;
+  left: 0;   
+}
+
+label {
+  font-weight: bold;
+  float: left;
+  width: 200px;   
+}
+
+input[type="text"], input[type="email"], textarea {
+    border: medium none;
+    box-shadow: none;
+    font-family: "Myriad Pro";
+    font-size: 15px;
+    line-height: 1em;
+    padding: 10px 15px;
+    width: 350px;
+}
+
+/* END FORMS */
 
 .centered {
   width: 900px;

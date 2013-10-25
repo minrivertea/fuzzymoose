@@ -105,6 +105,7 @@ def basket(request, order=None, discount=None):
         if form.is_valid():
             
             discount = get_object_or_404(Discount, code=form.cleaned_data['discount_code'])
+            request.session['DISCOUNT_ID'] = discount.pk
         
         else:
             pass
@@ -369,13 +370,13 @@ def order_confirm(request):
         if total_price > RequestContext(request)['shopsettings'].postage_discount_threshold:
             postage_discount = True
         else:
-            total_price += RequestContext(request)['shopsettings'].postage_price
+            total_price += float(RequestContext(request)['shopsettings'].postage_price)
         
     # DISCOUNT
     if order.discount:
-        discount = float(total_price) * float(order.discount.discount_value)
-        percent = order.discount.discount_value * 100
-        total_price -= discount
+        discount_amount = float(total_price) * float(order.discount.value)
+        percent = order.discount.value * 100
+        total_price -= discount_amount
     
     
     if request.method == 'POST':
