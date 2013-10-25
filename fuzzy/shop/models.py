@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 from ckeditor.fields import RichTextField
+from sorl.thumbnail import get_thumbnail
+
 
 # APP
 from countries import *
@@ -77,8 +79,8 @@ class Product(models.Model):
         return Price.objects.filter(product=self, is_active=True)
     
     def get_photos(self):
-        return Photo.objects.filter(related_product=self, is_published=True).order_by('list_order')
-    
+        return Photo.objects.filter(related_product=self, is_published=True)
+            
     def get_main_photo(self):
         return self.get_photos()[0]
     
@@ -96,12 +98,54 @@ class Review(models.Model):
         return "%s - %s" % (self.shopper, self.product)
 
 class Photo(models.Model):
+    class Meta:
+        ordering = ('list_order',)
+    
     image = models.ImageField(upload_to='photos')
     related_product = models.ForeignKey(Product, blank=True, null=True)
     is_published = models.BooleanField(default=False)
     date_uploaded = models.DateTimeField(default=datetime.now())
     description = models.TextField(blank=True, null=True)
     list_order = models.IntegerField(default=1)
+    
+    def move_up(self):
+        """ change the order of this Photo to be one notch higher """
+        photos = Photo.objects.filter(related_product=self.related_product).order_by('list_order')
+        new_order = []
+        position = 0
+        for photo in photos:
+            if photo.id == self.id:
+                new_order.insert(position - 1, photo)
+            else:
+                new_order.insert(position, photo)
+            position += 1
+        for i, photo in enumerate(new_order):
+            if photo.order != i:
+                photo.order = i
+                photo.save()
+
+    def move_down(self):
+        """ change the order of this Photo to be one notch higher """
+        new_order = list(Photo.objects.filter(related_product=self.related_product).order_by('list_order'))
+        new_index = new_order.index(self) + 1
+        new_order.remove(self)
+        new_order.insert(new_index, self)
+
+        for i, photo in enumerate(new_order):
+            if photo.order != i:
+                photo.order = i
+                photo.save()
+    
+    def list_thumbnail(self):
+        try:
+            im = get_thumbnail(self.image, '60x60', crop='center', quality=99)
+            html = '<img src="%s" alt="False" />' % im.url
+        except:
+            html = ''
+        
+        return html
+    list_thumbnail.allow_tags = True
+    
 
 
 

@@ -1,7 +1,7 @@
 # DJANGO CORE
 from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.template import RequestContext
@@ -16,11 +16,30 @@ from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
 from django.core.exceptions import MultipleObjectsReturned
 from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
 
 # APP
 from utils import _render, _get_basket, _get_currency
 from models import *
 from forms import *
+
+
+
+def staff_required(function=None, redirect_field_name=auth.REDIRECT_FIELD_NAME):
+    """ a wrapper on login_required that not only checks if you're logged in
+    but also that you are logged in as staff. """
+    def _checker(user):
+        return user.is_authenticated() and user.is_staff
+    actual_decorator = user_passes_test(
+      _checker,
+      redirect_field_name=redirect_field_name
+   )
+    if function:
+        return actual_decorator(function)
+    return actual_decorator
+
+
+
 
 def home(request):    
     return _render(request, 'home.html', locals())
@@ -353,4 +372,46 @@ def order_complete(request):
     
     
     return _render(request, 'order_complete.html', locals())  
+
+
+@csrf_exempt
+@staff_required
+def reorder_product_photos(request):
+
+    if request.method == "POST":
+        new_id_order = request.POST.getlist('ids')
+        print new_id_order
+    else:
+        new_id_order = request.GET.getlist('ids')
+        
+    new_id_order = [int(x) for x in new_id_order]
+
+    print new_id_order
+
+    assert isinstance(new_id_order, list)
+    assert new_id_order
+
+    photos = []
+    product = None
+    for id_ in new_id_order:
+        photo = get_object_or_404(Photo, id=id_)
+        photos.append(photo)
+        if product is None:
+            product = photo.related_product
+        else:
+            assert product.id == photo.related_product.id, "different corefrocks"
+
+    # MAKE SURE THE PHOTOS WE ARE REORDERING ARE THE SAME NUMBER AS IN THE DATABASE
+    assert len(photos) == Photo.objects.filter(related_product=product).count()
+
+
+    # SAVE THE NEW ORDER
+    order = 1
+    for p in photos:
+        p.list_order = order
+        p.save()
+        order += 1
+
+    # for the moment, let's assume that all frockphotos of this corefrock was used
+    return HttpResponse("done")
 

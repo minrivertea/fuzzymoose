@@ -118,7 +118,7 @@ PAYPAL_SUBMIT_URL =                 ''
 # -------------------------------------------------------
 THUMBNAIL_PRODUCT_PHOTO_LARGE =     '500x331'
 THUMBNAIL_PRODUCT_PHOTO_MEDIUM =    '240x190'
-THUMBNAIL_PRODUCT_PHOTO_SMALL =     '90x90'
+THUMBNAIL_PRODUCT_PHOTO_SMALL =     '60x60'
 
 
 

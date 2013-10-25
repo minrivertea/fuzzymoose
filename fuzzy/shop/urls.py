@@ -15,6 +15,9 @@ urlpatterns = patterns('',
     url(r'^basket/increase/(\w+)$', views.increase_quantity, name="increase_quantity"),
     url(r'^basket/remove/(\w+)$', views.remove_from_basket, name="remove_from_basket"),
     
+    # RELATES TO REORDERING THE PHOTOS
+    url(r'^reorder-product-photos/$', views.reorder_product_photos, name="reorder_product_photos"),
+    
     
     # GENERAL
     #url(r'^contact-form-submit/$', views.contact_form_submit, name="contact_form_submit"),

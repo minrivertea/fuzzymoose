@@ -127,6 +127,14 @@ $(document).ready( function() {
   color: #333;   
 }
 
+#thumbnails {
+  margin: 10px 0 0;   
+}
+
+#thumbnails img {
+  margin: 0 5px 0 0;   
+}
+
 </style>
 {% endblock %}
 
@@ -143,11 +151,20 @@ $(document).ready( function() {
 <div class="pure-g-r">
 
 <div id="photos" class="pure-u-3-5">
-{% for x in product.get_photos %}
-    {% thumbnail x.image product_photo_large crop="center" as im_large %}
+    {% thumbnail product.get_main_photo.image product_photo_large crop="center" as im_large %}
         <img src="{{ im_large.url }}" />
     {% endthumbnail %}
-{% endfor %}
+
+<div id="thumbnails" class="pure-u-1">
+    {% for x in product.get_photos %}
+        {% thumbnail x.image product_photo_small crop="center" as im %}
+            <a href="">
+                <img src="{{ im.url }}" />
+            </a>
+        {% endthumbnail %}
+    {% endfor %}
+</div>
+
 </div>
 
 <div id="description" class="pure-u-2-5">
