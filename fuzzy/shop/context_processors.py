@@ -28,6 +28,10 @@ def common(request):
     context['product_photo_medium'] = settings.THUMBNAIL_PRODUCT_PHOTO_MEDIUM
     context['product_photo_small'] = settings.THUMBNAIL_PRODUCT_PHOTO_SMALL
 
+    try:
+        context['shopsettings'] = ShopSettings.objects.all()[0]
+    except:
+        pass
 
     # NAVIGATION
     nav_cats = Category.objects.filter(is_navigation_item=True).order_by('list_order')

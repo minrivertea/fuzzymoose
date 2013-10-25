@@ -31,8 +31,17 @@ class OrderStepOneForm(forms.Form):
     country = forms.ChoiceField(required=True, choices=COUNTRY_CHOICES)
     
 
-class UpdateDiscountForm(forms.Form):
+class DiscountForm(forms.Form):
     discount_code = forms.CharField(required=True)
+    
+    def clean_discount_code(self):
+        data = self.cleaned_data['discount_code']
+        try:
+            discount_object = Discount.objects.get(code=data)
+            return data
+        except:
+            raise forms.ValidationError("Sorry, that's not a valid discount code!")
+        return data
 
 
 class MonthlyBoxForm(forms.Form):

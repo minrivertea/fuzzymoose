@@ -54,8 +54,19 @@ a:hover {
 }
 
 .button.small {
-  font-size: 13px;
-  padding: 3px 8px;   
+    padding: 4px 8px 2px;
+}
+
+.button.red {
+  background: red;   
+}
+
+.red {
+  color: #bf2a38;   
+}
+
+.small {
+  font-size: 12px;   
 }
 
 span.link {
@@ -332,6 +343,31 @@ p {
 }
 
 /* END ORDER PROCESS STYLES */
+
+/* PAGE STYLES */
+
+#right {
+  float: right;  
+} 
+
+#right div {
+       
+}
+
+#right div.white {
+  background: #fff;
+}
+
+#right div .inner {
+  padding: 15px;   
+}
+
+#right div h3 {
+  margin: 0;   
+}
+
+
+/* END PAGE STYLES */
 
 /* FOOTER STYLES */
 #footer {

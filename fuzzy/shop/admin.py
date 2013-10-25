@@ -54,7 +54,8 @@ class PhotoAdmin(admin.ModelAdmin):
     list_display = ('id', 'list_thumbnail', 'list_order')
     
 
-admin.site.register(Currency)  
+admin.site.register(Currency)
+admin.site.register(ShopSettings)  
 admin.site.register(Photo, PhotoAdmin)  
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Address)

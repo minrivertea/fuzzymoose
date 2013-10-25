@@ -11,10 +11,16 @@ from sorl.thumbnail import get_thumbnail
 # APP
 from countries import *
 
-#class ShopSettings(models.Model):
-#    postage_price = models.DecimalField()
-#    postage_discount_threshold = models.DecimalField()
-#    homepage_browser_title = models.CharField()
+class ShopSettings(models.Model):
+    postage_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    postage_discount_threshold = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    homepage_browser_title = models.CharField(max_length=255, blank=True, null=True)
+    google_analytics_script = models.TextField(blank=True, null=True)
+    
+    
+    
+    def __unicode__(self):
+        return "Shop Settings: %s" % self.id
     
     
     

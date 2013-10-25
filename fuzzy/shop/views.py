@@ -74,14 +74,57 @@ def page_by_id(request, id):
     page = get_object_or_404(Page, pk=id)
     return HttpResponseRedirect(reverse('page', args=[page.slug]))
 
-def basket(request):
-    basket_items = BasketItem.objects.filter(basket=_get_basket(request))
+def basket(request, order=None, discount=None):
     
-    total_price = 0
+    try:
+        order = get_object_or_404(Order, id=request.session['ORDER_ID'])
+    except:
+        pass
+    
+    if order:
+        basket_items = order.items.all()
+    else:
+        basket_items = BasketItem.objects.filter(basket=_get_basket(request))
+        
+        
+    # PRODUCTS
+    total_price = float(0)
     for item in basket_items:
-        price = float(item.get_price())
-        total_price += float(price)
-
+        total_price += float(item.get_price())
+            
+    # POSTAGE
+    if RequestContext(request)['shopsettings'] != None:
+        if total_price > RequestContext(request)['shopsettings'].postage_discount_threshold:
+            postage_discount = True
+        else:
+            total_price += float(RequestContext(request)['shopsettings'].postage_price)
+        
+    # DISCOUNT
+    if request.method == 'POST':
+        form = DiscountForm(request.POST)
+        if form.is_valid():
+            
+            discount = get_object_or_404(Discount, code=form.cleaned_data['discount_code'])
+        
+        else:
+            pass
+    
+    else:
+        if order:
+            if order.discount:
+                discount = order.discount
+    
+    if request.GET.get('clear_discount'):
+        discount = None
+        if order:
+            order.discount = None
+            order.save()
+            
+    if discount:
+        discount_amount = float(total_price) * float(discount.value)
+        percent = discount.value * 100
+        total_price -= discount_amount
+    
     return _render(request, 'basket.html', locals())
     
     
@@ -314,19 +357,21 @@ def order_confirm(request):
         problem = _("You don't have any items in your basket, so you can't process an order!")
         return _render(request, 'shop/order-problem.html', locals())
                     
-    # work out the price
+    # PRODUCTS
     total_price = 0
     for item in order.items.all():
         total_price += float(item.get_price())
         
     currency = _get_currency(request)
     
-    #if total_price > currency.postage_discount_threshold:
-    #    postage_discount = True
-    #else:
-    #    total_price += currency.postage_cost
+    # POSTAGE
+    if RequestContext(request)['shopsettings'] != None:
+        if total_price > RequestContext(request)['shopsettings'].postage_discount_threshold:
+            postage_discount = True
+        else:
+            total_price += RequestContext(request)['shopsettings'].postage_price
         
-    # is there a discount?
+    # DISCOUNT
     if order.discount:
         discount = float(total_price) * float(order.discount.discount_value)
         percent = order.discount.discount_value * 100
