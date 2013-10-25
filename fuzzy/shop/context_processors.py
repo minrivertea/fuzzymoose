@@ -2,6 +2,8 @@ from django.conf import settings
 from models import *
 from utils import _get_country, _get_currency, _set_currency, _get_region
 
+from itertools import chain
+
 from django.contrib.sites.models import get_current_site
 
 
@@ -19,13 +21,19 @@ def common(request):
     context['analytics_id'] = settings.ANALYTICS_ID        
     context['site_name'] = settings.SITE_NAME # just the loose non-techy name of the site
     context['site_domain'] = settings.SITE_DOMAIN # the url without http://
-    context['main_nav'] = Category.objects.filter(is_navigation_item=True).order_by('list_order')
     context['currency'] = _get_currency(request, currency_code='GBP')
     context['base_template'] = settings.BASE_TEMPLATE
     
     context['product_photo_large'] = settings.THUMBNAIL_PRODUCT_PHOTO_LARGE
     context['product_photo_medium'] = settings.THUMBNAIL_PRODUCT_PHOTO_MEDIUM
     context['product_photo_small'] = settings.THUMBNAIL_PRODUCT_PHOTO_SMALL
+
+
+    # NAVIGATION
+    nav_cats = Category.objects.filter(is_navigation_item=True).order_by('list_order')
+    nav_pages = Page.objects.filter(is_top_navigation=True, is_published=True).order_by('list_order')
+    nav_items = chain(nav_cats, nav_pages)
+    context['main_nav'] = sorted(nav_items, key=lambda x: x.list_order)
 
 
     # BASKET STUFF

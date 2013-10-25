@@ -92,7 +92,7 @@
     <div class="pure-u-1 centered">
 
         {% include 'snippets/currency.html' %}
-        <div id="userbasket" class="tab" {% if basket_quantity > 0 %}class="selected"{% endif %}>
+        <div id="userbasket" class="tab {% if basket_quantity > 0 %}selected{% endif %}">
             <div id="item"></div>
     		<span class="basket"></span>
             <div id="quantity">

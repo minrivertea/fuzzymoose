@@ -233,12 +233,8 @@ def _internal_pages_list(request):
     pages = Page.objects.all()
     products = Product.objects.all()
     categories = Category.objects.all()
-    
-    from blog.models import BlogEntry
-    blogs = BlogEntry.objects.all()
-    
-    
-    return _render(request, 'my_admin/internal_pages_list.html', locals())
+        
+    return _render(request, 'internal_pages_list.html', locals())
 
 
 

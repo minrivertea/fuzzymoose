@@ -36,9 +36,9 @@ urlpatterns = patterns('',
 
     
     # get objects by ID urls
-    url(r'^page/(?P<id>[\w-]+)/$', views.page_by_id, name="page_by_id"),
-    url(r'^product/(?P<id>[\w-]+)/$', views.product_by_id, name="product_by_id"),
-    url(r'^category/(?P<id>[\w-]+)/$', views.category_by_id, name="category_by_id"),
+    url(r'^page/(\w+)/$', views.page_by_id, name="page_by_id"),
+    url(r'^product/(\w+)/$', views.product_by_id, name="product_by_id"),
+    url(r'^category/(\w+)/$', views.category_by_id, name="category_by_id"),
     
     
     

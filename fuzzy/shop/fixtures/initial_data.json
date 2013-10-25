@@ -603,7 +603,7 @@
         "is_active": true, 
         "is_superuser": true, 
         "is_staff": true, 
-        "last_login": "2013-10-21T02:15:11Z", 
+        "last_login": "2013-10-25T01:36:34Z", 
         "groups": [], 
         "user_permissions": [], 
         "password": "pbkdf2_sha256$10000$KuCSUHdVDWwE$+m2MOlyK7y+5Lh3l0GYfgJlEJSLZ0M/j0f1Szmkqx84=", 
@@ -612,110 +612,11 @@
     }
 },
 {
-    "pk": "mssq6df7jcqqr6g2w12efeqv5ckv4vsf", 
-    "model": "sessions.session", 
-    "fields": {
-        "expire_date": "2013-11-04T02:15:11Z", 
-        "session_data": "YzQyNjNkNWY0MTAwMzY5YTQ4YjM5MDZjNmRkMjA2MmI1OTIzNjY5MDqAAn1xAShVEl9hdXRoX3VzZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHEDVQ1fYXV0aF91c2VyX2lkcQSKAQF1Lg=="
-    }
-},
-{
     "pk": 1, 
     "model": "sites.site", 
     "fields": {
         "domain": "example.com", 
         "name": "example.com"
-    }
-},
-{
-    "pk": 1, 
-    "model": "admin.logentry", 
-    "fields": {
-        "action_flag": 1, 
-        "action_time": "2013-10-21T02:15:17Z", 
-        "object_repr": "GBP", 
-        "object_id": "1", 
-        "change_message": "", 
-        "user": 1, 
-        "content_type": 11
-    }
-},
-{
-    "pk": 2, 
-    "model": "admin.logentry", 
-    "fields": {
-        "action_flag": 1, 
-        "action_time": "2013-10-21T02:15:25Z", 
-        "object_repr": "EUR", 
-        "object_id": "2", 
-        "change_message": "", 
-        "user": 1, 
-        "content_type": 11
-    }
-},
-{
-    "pk": 3, 
-    "model": "admin.logentry", 
-    "fields": {
-        "action_flag": 1, 
-        "action_time": "2013-10-21T02:16:41Z", 
-        "object_repr": "About Us", 
-        "object_id": "1", 
-        "change_message": "", 
-        "user": 1, 
-        "content_type": 16
-    }
-},
-{
-    "pk": 4, 
-    "model": "admin.logentry", 
-    "fields": {
-        "action_flag": 1, 
-        "action_time": "2013-10-21T02:17:38Z", 
-        "object_repr": "Truffles", 
-        "object_id": "1", 
-        "change_message": "", 
-        "user": 1, 
-        "content_type": 8
-    }
-},
-{
-    "pk": 5, 
-    "model": "admin.logentry", 
-    "fields": {
-        "action_flag": 1, 
-        "action_time": "2013-10-21T02:17:51Z", 
-        "object_repr": "Chocolate Truffles", 
-        "object_id": "1", 
-        "change_message": "", 
-        "user": 1, 
-        "content_type": 9
-    }
-},
-{
-    "pk": 6, 
-    "model": "admin.logentry", 
-    "fields": {
-        "action_flag": 1, 
-        "action_time": "2013-10-21T02:18:07Z", 
-        "object_repr": "Chocolate Truffles (\u00a312)", 
-        "object_id": "1", 
-        "change_message": "", 
-        "user": 1, 
-        "content_type": 12
-    }
-},
-{
-    "pk": 7, 
-    "model": "admin.logentry", 
-    "fields": {
-        "action_flag": 1, 
-        "action_time": "2013-10-21T02:18:17Z", 
-        "object_repr": "Chocolate Truffles (\u00a320)", 
-        "object_id": "2", 
-        "change_message": "", 
-        "user": 1, 
-        "content_type": 12
     }
 },
 {
@@ -745,10 +646,22 @@
         "name": "Chocolate Truffles", 
         "is_active": true, 
         "slug": "chocolate-truffles", 
-        "content": "<p>Cras id lorem a tortor laoreet tristique non sit amet ipsum. Curabitur ac velit non nisi dignissim interdum. Donec non mauris ac erat euismod porta in sit amet nulla. Donec ac diam sodales; lobortis turpis a, euismod eros. Sed dignissim; erat non porttitor rutrum, nunc arcu vestibulum odio, et tempor augue ante non augue. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per sed.</p>", 
+        "content": "<p>\r\n\tCras id lorem a tortor laoreet tristique non sit amet ipsum. Curabitur ac velit non nisi dignissim interdum. Donec non mauris ac erat euismod porta in sit amet nulla. Donec ac diam sodales; lobortis turpis a, euismod eros. Sed dignissim; erat non porttitor rutrum, nunc arcu vestibulum odio, et tempor augue ante non augue. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per sed.</p>\r\n", 
         "long_name": "", 
         "short_description": "Cras id lorem a tortor laoreet tristique non sit amet ipsum. Curabitur ac velit non nisi dignissim interdum. Donec non mauris ac erat euismod porta in sit amet nulla. ", 
-        "long_description": "Cras id lorem a tortor laoreet tristique non sit amet ipsum. Curabitur ac velit non nisi dignissim interdum. Donec non mauris ac erat euismod porta in sit amet nulla. Donec ac diam sodales; lobortis turpis a, euismod eros. Sed dignissim; erat non porttitor rutrum, nunc arcu vestibulum odio, et tempor augue ante non augue. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per sed.\r\n"
+        "long_description": "<p>\r\n\tCras id lorem a tortor laoreet tristique non sit amet ipsum. Curabitur ac velit non nisi dignissim interdum. Donec non mauris ac erat euismod porta in sit amet nulla. Donec ac diam sodales; lobortis turpis a, euismod eros. Sed dignissim; erat non porttitor rutrum, nunc arcu vestibulum odio, et tempor augue ante non augue. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per sed.</p>\r\n"
+    }
+},
+{
+    "pk": 1, 
+    "model": "shop.photo", 
+    "fields": {
+        "description": "Nunc elementum tellus eget imperdiet tincidunt! Integer vestibulum, ante posuere ornare pulvinar, risus sapien dapibus turpis, ut auctor tellus purus et lectus. Aenean viverra convallis dui, pulvinar gravida diam mattis sit amet! Vestibulum pretium placerat magna vitae ultrices. Ut vehicula, nunc id suscipit hendrerit, orci sem facilisis libero, nec lacinia orci massa at leo. Morbi nisi cras amet.\r\n", 
+        "list_order": 1, 
+        "image": "photos/placeholder.jpg", 
+        "related_product": 1, 
+        "date_uploaded": "2013-10-21T03:26:50Z", 
+        "is_published": true
     }
 },
 {
@@ -791,6 +704,55 @@
 },
 {
     "pk": 1, 
+    "model": "shop.shopper", 
+    "fields": {
+        "user": 1
+    }
+},
+{
+    "pk": 1, 
+    "model": "shop.address", 
+    "fields": {
+        "shopper": 1, 
+        "country": "UK", 
+        "county": "", 
+        "town_city": "hlkj", 
+        "postcode": "hkljhklhl", 
+        "line_1": "asdfjkh", 
+        "line_3": "hkj", 
+        "line_2": "kjhklj"
+    }
+},
+{
+    "pk": 2, 
+    "model": "shop.address", 
+    "fields": {
+        "shopper": 1, 
+        "country": "UK", 
+        "county": "", 
+        "town_city": "hlkj", 
+        "postcode": "hkljhklhl", 
+        "line_1": "asdfjkh", 
+        "line_3": "hkj", 
+        "line_2": "kjhklj"
+    }
+},
+{
+    "pk": 3, 
+    "model": "shop.address", 
+    "fields": {
+        "shopper": 1, 
+        "country": "UK", 
+        "county": "", 
+        "town_city": "hlkj", 
+        "postcode": "hkljhklhl", 
+        "line_1": "asdfjkh", 
+        "line_3": "hkj", 
+        "line_2": "kjhklj"
+    }
+},
+{
+    "pk": 1, 
     "model": "shop.page", 
     "fields": {
         "meta_description": "Maecenas sagittis mattis quam, et rhoncus nulla posuere ac. Curabitur a malesuada magna, vel mollis tellus. Praesent porttitor luctus purus eget bibendum. Morbi mattis nunc urna, et mattis felis accumsan eget. Praesent consequat, velit eu egestas vehicula, massa eros dignissim arcu, sed adipiscing augue arcu non erat? Duis a metus arcu. Vestibulum ante ipsum primis in faucibus orci luctus et amet.\r\n", 
@@ -802,6 +764,122 @@
         "content": "<p class=\"intro\">Suspendisse ut risus mollis eros ullamcorper viverra? Vestibulum dapibus quam enim, consectetur tincidunt erat rutrum vel. Aliquam erat volutpat.</p>\r\n<p>Proin velit sem, dignissim non venenatis a, lacinia nec mauris! Cras in varius ligula! Aliquam bibendum posuere nulla at porta! Maecenas nisl lacus, blandit eu consequat ac, lobortis quis urna. Praesent lobortis varius nisi nec semper. Proin nibh nullam.</p>\r\n", 
         "slug": "about-us", 
         "is_published": true
+    }
+},
+{
+    "pk": 2, 
+    "model": "shop.page", 
+    "fields": {
+        "meta_description": "", 
+        "meta_title": "", 
+        "meta_keywords": "", 
+        "name": "Contact Us", 
+        "parent": null, 
+        "summary": "Ut lobortis fringilla nibh eget fringilla. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer gravida accumsan ipsum, in laoreet massa malesuada in. Nulla at ante arcu. Proin gravida risus at massa aliquet aliquam. Aenean pulvinar, ipsum sit amet luctus eleifend, felis ante sodales diam, pharetra malesuada neque ante ut purus. Proin tempus nullam.\r\n", 
+        "content": "<p>\r\n\tUt lobortis fringilla nibh eget fringilla. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer gravida accumsan ipsum, in laoreet massa malesuada in. Nulla at ante arcu. <a href=\"/page/1/\">Proin gravida risus</a> at massa aliquet aliquam. Aenean pulvinar, ipsum sit amet luctus eleifend, felis ante sodales diam, pharetra malesuada neque ante ut purus. Proin tempus nullam.</p>\r\n", 
+        "slug": "contact-us", 
+        "is_published": true
+    }
+},
+{
+    "pk": 1, 
+    "model": "shop.basket", 
+    "fields": {
+        "date_created": "2013-10-21T03:18:44Z"
+    }
+},
+{
+    "pk": 2, 
+    "model": "shop.basket", 
+    "fields": {
+        "date_created": "2013-10-25T02:07:41Z"
+    }
+},
+{
+    "pk": 1, 
+    "model": "shop.basketitem", 
+    "fields": {
+        "basket": 1, 
+        "price": 1, 
+        "quantity": 2
+    }
+},
+{
+    "pk": 2, 
+    "model": "shop.basketitem", 
+    "fields": {
+        "basket": 1, 
+        "price": 2, 
+        "quantity": 2
+    }
+},
+{
+    "pk": 1, 
+    "model": "shop.order", 
+    "fields": {
+        "date_confirmed": "2013-10-22T00:37:43Z", 
+        "shopper": 1, 
+        "order_id": "TEA-001", 
+        "items": [
+            1, 
+            2
+        ], 
+        "date_paid": null, 
+        "discount": null, 
+        "address": 2, 
+        "date_created": "2013-10-22T00:37:30Z"
+    }
+},
+{
+    "pk": 2, 
+    "model": "shop.order", 
+    "fields": {
+        "date_confirmed": "2013-10-22T00:40:02Z", 
+        "shopper": 1, 
+        "order_id": "TEA-002", 
+        "items": [
+            1, 
+            2
+        ], 
+        "date_paid": null, 
+        "discount": null, 
+        "address": 3, 
+        "date_created": "2013-10-22T00:38:38Z"
+    }
+},
+{
+    "pk": "sorl-thumbnail||image||530aa0dea67eee654b8455c67352c1c7", 
+    "model": "thumbnail.kvstore", 
+    "fields": {
+        "value": "{\"storage\": \"django.core.files.storage.FileSystemStorage\", \"name\": \"cache/2b/3b/2b3b04c9a568353bba720d9dba575d27.jpg\", \"size\": [500, 331]}"
+    }
+},
+{
+    "pk": "sorl-thumbnail||image||8041f48f29c0eb262e972e2e8fffacc6", 
+    "model": "thumbnail.kvstore", 
+    "fields": {
+        "value": "{\"storage\": \"django.core.files.storage.FileSystemStorage\", \"name\": \"photos/placeholder.jpg\", \"size\": [500, 331]}"
+    }
+},
+{
+    "pk": "sorl-thumbnail||image||988708bc013a7a6d80b80a12fce8d259", 
+    "model": "thumbnail.kvstore", 
+    "fields": {
+        "value": "{\"storage\": \"django.core.files.storage.FileSystemStorage\", \"name\": \"cache/78/04/780429d14a654b5cc1ee6b23e7dfea9b.jpg\", \"size\": [240, 159]}"
+    }
+},
+{
+    "pk": "sorl-thumbnail||image||bca367b42002f341aadf7dc051d8ee76", 
+    "model": "thumbnail.kvstore", 
+    "fields": {
+        "value": "{\"storage\": \"django.core.files.storage.FileSystemStorage\", \"name\": \"cache/34/64/3464215ad644a141c14d39e93f7348b0.jpg\", \"size\": [90, 90]}"
+    }
+},
+{
+    "pk": "sorl-thumbnail||thumbnails||8041f48f29c0eb262e972e2e8fffacc6", 
+    "model": "thumbnail.kvstore", 
+    "fields": {
+        "value": "[\"988708bc013a7a6d80b80a12fce8d259\", \"530aa0dea67eee654b8455c67352c1c7\", \"bca367b42002f341aadf7dc051d8ee76\"]"
     }
 }
 ]

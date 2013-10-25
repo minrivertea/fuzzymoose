@@ -4,6 +4,8 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
+from ckeditor.fields import RichTextField
+
 # APP
 from countries import *
 
@@ -18,7 +20,7 @@ from countries import *
 class Category(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=100)
-    description = models.TextField(blank=True, null=True)
+    description = RichTextField(blank=True, null=True)
     parent = models.ForeignKey('Category', blank=True, null=True)
     is_active = models.BooleanField(default=False)
     is_navigation_item = models.BooleanField(default=False)
@@ -37,6 +39,11 @@ class Category(models.Model):
     
     def get_products(self):
         return Product.objects.filter(category=self, is_active=True)
+    
+    # IMPORTANT FOR INTERNAL LINKING VIA CKEDITOR
+    def get_url_by_id(self):
+        url = reverse('category_by_id', args=[self.id])
+        return url
 
 
 
@@ -45,8 +52,8 @@ class Product(models.Model):
     long_name = models.CharField(max_length=255, blank=True, null=True)
     slug = models.SlugField(max_length=100)
     short_description = models.TextField(blank=True, null=True)
-    long_description = models.TextField(blank=True, null=True)
-    content = models.TextField(blank=True, null=True)
+    long_description = RichTextField(blank=True, null=True)
+    content = RichTextField(blank=True, null=True)
     is_active = models.BooleanField(default=False)
     category = models.ForeignKey(Category)
 
@@ -60,6 +67,11 @@ class Product(models.Model):
     
     def get_absolute_url(self):
         return reverse('product', args=[self.category.slug, self.slug])
+    
+    # IMPORTANT FOR INTERNAL LINKING VIA CKEDITOR
+    def get_url_by_id(self):
+        url = reverse('product_by_id', args=[self.id])
+        return url
     
     def get_prices(self, request):
         return Price.objects.filter(product=self, is_active=True)
@@ -150,9 +162,13 @@ class Page(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=100)
     summary = models.TextField(blank=True, null=True)
-    content = models.TextField(blank=True, null=True)
+    content = RichTextField(blank=True, null=True)
     is_published = models.BooleanField(default=False)
     parent = models.ForeignKey('Page', blank=True, null=True)
+    
+    # NAVIGATION
+    is_top_navigation = models.BooleanField()
+    list_order = models.IntegerField(default=0)
     
     # SEO STUFF
     meta_description = models.TextField(blank=True, null=True)
@@ -160,7 +176,15 @@ class Page(models.Model):
     meta_keywords = models.CharField(max_length=255, blank=True, null=True)
     
     def __unicode__(self):
-        return self.name    
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse('page', args=[self.slug])
+    
+    # IMPORTANT FOR INTERNAL LINKING VIA CKEDITOR
+    def get_url_by_id(self):
+        return reverse('page_by_id', args=[self.id])
+        
 
 class Basket(models.Model):
     date_created = models.DateTimeField(default=datetime.now())

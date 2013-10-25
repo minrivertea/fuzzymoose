@@ -101,6 +101,7 @@ INSTALLED_APPS = (
     'fuzzy.shop',
     'captcha',
     'sorl.thumbnail',
+    'ckeditor',
     
 )
 
@@ -120,8 +121,31 @@ THUMBNAIL_PRODUCT_PHOTO_MEDIUM =    '240x190'
 THUMBNAIL_PRODUCT_PHOTO_SMALL =     '90x90'
 
 
-# INTERNATIONAL SETTINGS
 
+# CKEDITOR SETTINGS
+# -------------------------------------------------------
+CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'ckuploads')
+CKEDITOR_UPLOAD_PREFIX = "/media/ckuploads/"
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': [
+            [      'Undo', 'Redo',
+              '-', 'Bold', 'Italic', 'Underline', 'BulletedList', 'NumberedList', 'Image',
+              '-', 'Link', 'Unlink', 'Anchor',
+              '-', 'Format',
+              '-', 'PasteFromWord',
+              '-', 'Maximize', 'Source', 
+            ],
+        ],
+        'width': 840,
+        'height': 300,
+        'toolbarCanCollapse': False,
+    }
+}
+
+
+# INTERNATIONAL SETTINGS
+# -------------------------------------------------------
 LANGUAGE_COOKIE_NAME = ''
 IPINFO_APIKEY = ''
 
