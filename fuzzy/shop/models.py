@@ -107,11 +107,11 @@ class Photo(models.Model):
     class Meta:
         ordering = ('list_order',)
     
-    image = models.ImageField(upload_to='photos')
+    image = models.ImageField(upload_to='photos', required=False)
     related_product = models.ForeignKey(Product, blank=True, null=True)
     is_published = models.BooleanField(default=False)
     date_uploaded = models.DateTimeField(default=datetime.now())
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True, required=False)
     list_order = models.IntegerField(default=1)
     
     def move_up(self):
