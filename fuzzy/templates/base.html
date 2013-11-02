@@ -1,4 +1,4 @@
-{% load nav_selected i18n staticfiles %}
+{% load nav_selected i18n staticfiles thumbnail  %}
 
 <html>
 <head>
@@ -42,6 +42,31 @@
 	{% endif %}
 	   
 	{% block extracss %}{% endblock %}
+	
+	{# THIS IS THE SHOPSETTINGS CSS WHICH SHOULD OVERRIDE EVERYHING #}
+	<style type="text/css">
+	
+	   {% if shopsettings.link_color %}
+	   a:link, a:visited {
+	     color: {{ shopsettings.link_color }};   
+	   }
+	   {% endif %}
+	   
+	   {% if shopsettings.main_background_image or shopsettings.main_background_color %}
+	   body {
+	     background: url('{% thumbnail shopsettings.main_background_image "" crop="" as im %}{{ im.url }}{% endthumbnail %}') repeat top left {{ shopsettings.main_background_color }};   
+	   }
+	   {% endif %}
+	   
+	   
+	   {% if shopsettings.footer_background_image or shopsettings.footer_background_color %}
+	   #footer {
+	     background: url('{% thumbnail shopsettings.footer_background_image "" crop="" as im %}{{ im.url }}{% endthumbnail %}') repeat top left {{ shopsettings.footer_background_color }}; 
+	   }
+	   {% endif %}
+	   
+	</style>
+	
 
 	<!--[if lte IE 8]>
 		<link rel="stylesheet" media="screen" type="text/css" href="{% static 'css/ie.css' %}" />
@@ -100,8 +125,14 @@
     <div class="pure-u-1">
         
         <div id="logo">
-            <a title="" href="{% url 'home' %}"><img id="logo" src="{% static 'images/logo.png' %}" /></a>
+            <a title="" href="{% url 'home' %}">
+                {% thumbnail shopsettings.logo "200x200" crop="" as im %}
+                    <img id="logo" src="{{ im.url }}" />	   	
+        	   	{% endthumbnail %}
+            </a>
 	   	</div>
+	   	
+	   	
 	   		   	
     	<ul id="navigation">
             {% for x in main_nav %}

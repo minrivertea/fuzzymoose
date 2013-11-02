@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from ckeditor.fields import RichTextField
 from sorl.thumbnail import get_thumbnail
 
+from paintstore.fields import ColorPickerField
 
 # APP
 from countries import *
@@ -15,9 +16,23 @@ class ShopSettings(models.Model):
     postage_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     postage_discount_threshold = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     homepage_browser_title = models.CharField(max_length=255, blank=True, null=True)
-    google_analytics_script = models.TextField(blank=True, null=True)
+    google_analytics_script = models.TextField(blank=True, null=True,
+        help_text="Google gives you a script to place on the page that tracks visits - paste the whole thing here in its entirety (including the &lt;script&gt; tags!)")
     
+    # FILES
+    logo = models.ImageField(upload_to='global_files', blank=True, null=True,
+        help_text="Upload a PNG file with transparency for best results. Less than 200px tall and 400px wide is probably best.")
+    main_background_image = models.ImageField(upload_to='global_files', blank=True, null=True)
+    main_background_color = ColorPickerField(blank=True, null=True)
+    footer_background_image = models.ImageField(upload_to='global_files', blank=True, null=True)
+    footer_background_color = ColorPickerField(blank=True, null=True)
+    footer_logo = models.ImageField(upload_to='global_files', blank=True, null=True)
     
+    # ALLOWS CHANGING OF VARIOUS COLOURS
+    extra_css = models.TextField(blank=True, null=True, 
+        help_text="Add in any extra css rules here and they will override the standard CSS on every page.")
+    
+    link_color = ColorPickerField(blank=True, null=True)
     
     def __unicode__(self):
         return "Shop Settings: %s" % self.id

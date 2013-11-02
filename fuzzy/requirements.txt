@@ -8,3 +8,4 @@ pisa
 reportlab
 html5lib
 stripe
+django-paintstore

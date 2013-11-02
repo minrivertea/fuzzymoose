@@ -102,6 +102,8 @@ INSTALLED_APPS = (
     'captcha',
     'sorl.thumbnail',
     'ckeditor',
+    'south',
+    'paintstore',
     
 )
 
