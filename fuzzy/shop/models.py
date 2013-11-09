@@ -90,7 +90,12 @@ class Product(models.Model):
         return self.name
     
     def get_absolute_url(self):
-        return reverse('product', args=[self.category.slug, self.slug])
+        
+        if self.category:
+            main_cat = self.category.all()[0]          
+            return reverse('product', args=[main_cat.slug, self.slug])
+        else:
+            return None
     
     # IMPORTANT FOR INTERNAL LINKING VIA CKEDITOR
     def get_url_by_id(self):
@@ -187,6 +192,7 @@ class Price(models.Model):
     currency = models.ForeignKey(Currency)
     description = models.CharField(max_length=255, blank=True, null=True)
     is_active = models.BooleanField(default=False)
+#    special_postage_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     
     def __unicode__(self):
         return "%s (%s%s)" % (self.product, self.currency.symbol, self.price)
@@ -280,6 +286,8 @@ class Order(models.Model):
     date_created = models.DateTimeField(default=datetime.now())
     date_confirmed = models.DateTimeField(blank=True, null=True)
     date_paid = models.DateTimeField(blank=True, null=True)
+    
+    preferred_delivery_date = models.DateTimeField(blank=True, null=True)
     
     def __unicode__(self):
         return self.order_id

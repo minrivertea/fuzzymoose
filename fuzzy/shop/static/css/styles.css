@@ -24,12 +24,13 @@ body {
 
 /* BUTTONS AND LINKS */
 
-a:link, a:visited {
+a:link, a:visited, span.toggle {
   color: #f88400;
-  text-decoration: none;   
+  text-decoration: none; 
+  cursor: pointer;  
 }
 
-a:hover {
+a:hover, span.toggle:hover {
  color: #d75b00;
 }
 
@@ -58,7 +59,12 @@ a:hover {
 }
 
 .button.red {
-  background: red;   
+  background: #bf2a38;   
+}
+
+.button.red:hover {
+  color: #fff;
+  background: #ee2121;   
 }
 
 .red {

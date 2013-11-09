@@ -36,7 +36,7 @@ urlpatterns = patterns('',
     #url(r'^order/(?P<hash>[\w-]+)/friend/$', views.order_url_friend, name="order_url_friend"),
     #url(r'^order/(?P<hash>[\w-]+)/$', views.order_url, name="order_url"),
 
-
+    url(r'^order/update-delivery-date/$', views.update_delivery_date, name="update_delivery_date"),
     
     # get objects by ID urls
     url(r'^page/(?P<slug>[\w-]+)/$', views.page, name="page"),

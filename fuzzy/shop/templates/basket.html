@@ -1,23 +1,44 @@
 {% extends base_template %}
-{% load thumbnail %}
+{% load thumbnail staticfiles %}
 
 {% block pagetitle %}Your basket ({{ basket_quantity }}){% endblock %}
 
 {% block extrajs %}
+<script type="text/javascript" src="{% static 'js/jquery-ui-1.10.3.custom.js' %}" ></script>
 <script type="text/javascript">
 $(document).ready( function() {
 
-    $(".discount #toggle").click( function() {
-    	$(".discount form").toggle();
+    
+    $("#delivery_date .toggle").click( function() {
+    	$("#delivery_date form").toggle();
     	$(this).toggle();
     	return false;
     });
     
-    $('#cancel').click( function() {
-       $('.discount form').toggle();
-       $('.discount #toggle').toggle(); 
-       return false;
+    $("#delivery_date .cancel").click( function() {
+    	$("#delivery_date form").toggle();
+    	$("#delivery_date .toggle").toggle();
+    	return false;
     });
+    
+    $("#discount .toggle").click( function() {
+    	$("#discount form").toggle();
+    	$(this).toggle();
+    	return false;
+    });
+    
+    $("#discount .cancel").click( function() {
+    	$("#discount form").toggle();
+    	$("#discount .toggle").toggle();
+    	return false;
+    });
+    
+    
+    
+    
+    $('#id_preferred_delivery_date').datepicker();
+    
+    
 
 });
 
@@ -25,6 +46,7 @@ $(document).ready( function() {
 {% endblock %}
 
 {% block extracss %}
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <style type="text/css">
 
 .basket-row {
@@ -33,32 +55,58 @@ $(document).ready( function() {
   padding: 10px 0;   
 }
 
-.basket-row div:last-child {
-  text-align: right;   
+.basket-row div:last-child, .basket-row div.right {
+  text-align: right; 
+  float: right;  
 }
 
 .basket-row.totals {
   font-weight: bold;   
 }
 
-.discount form {
+#discount form {
    display: none; 
-}
-
-.discount form input[type="text"] {
-    float: left;
-    margin: 0 10px 0 0;
-    padding: 3px 10px;
-    width: 250px;
 }
 
 #checkout-button {
   float: right;
   margin: 20px 0 0 0;   
 }
+#delivery_date form, #discount form {
+  display: none;   
+}
 
-.discount input[type="submit"] {
-  margin: 0 5px 0 0;   
+#delivery_date form input[type="text"], #discount form input[type="text"] {
+    font-size: 13px;
+    padding: 6px 5px 3px;
+    width: 349px;
+    float: left;
+}
+
+#delivery_date form input[type='submit'], #delivery_date form a.small.cancel, #discount form input[type="submit"], #discount form a.small.cancel {
+  padding: 6px 8px 4px; 
+  font-family: "Myriad Pro", Helvetica, sans-serif;  
+  margin-left: 5px;
+}
+
+.ui-widget {
+    border: medium none;
+    border-radius: 0;
+    font-family: "Myriad Pro",Helvetica,sans-serif;
+    padding: 10px 25px;
+}
+
+.ui-widget-header {
+  border: none;
+  background: #e3e3e3;
+  border-radius: 0;   
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    background: none repeat scroll 0 0 #E3E3E3;
+    border: medium none;
+    padding: 5px 0 2px;
+    text-align: center;
 }
 
 </style>
@@ -134,24 +182,49 @@ $(document).ready( function() {
 			<span class="name">Postage</span>
 			<span class="small">Delivered in 1-3 days | Shipped from the UK</span>
 		</div>
+		
+		<div class="pure-u-1-8"></div>
+		<div class="pure-u-1-12"></div>
+		<div class="pure-u-1-8 right">{{ currency.symbol }}{{ shopsettings.postage_price|floatformat:"2" }}</div>
+		
+		
 		<div class="pure-u-1-8">&nbsp;</div>
-		<div class="pure-u-1-12">&nbsp;</div>
-		<div class="pure-u-1-8">{{ currency.symbol }}{{ shopsettings.postage_price|floatformat:"2" }}</div>
+		<div class="pure-u-1-2" id="delivery_date">
+		  
+		  {% if delivery_date %}
+		      <span class="">Will be delivered on {{ delivery_date|date:"M. d Y" }} - <span class="toggle">change the date</span>
+		      </span>
+		  {% else %}
+		  
+		  <span class="toggle">Click to choose a delivery date</span>
+		  
+		  {% endif %}
+		  
+		  <form action="{% url 'update_delivery_date' %}" method="post">
+		      {% csrf_token %}
+		      <input type="text" id="id_preferred_delivery_date" value="{% if delivery_date %}{{ delivery_date }}{% endif %}" name="preferred_delivery_date"/>
+		      <input type="submit" value="Save" class="button small"/>
+		      <a href="#" class="cancel button red small">Cancel</a>
+		  </form>
+		  
+		</div>
+		<div class="pure-u-1-8">&nbsp;</div>
+		
 		{% endif %}
 	</div>
 	{% endif %}
 	
 
-	<div class="basket-row discount pure-u-1">
+	<div class="basket-row pure-u-1" id="discount">
 		{% if not discount %}
 		<div class="pure-u-1-8">&nbsp;</div>
 		<div class="pure-u-2-3">
-		  <a href="" id="toggle">Got a discount code?</a>
+		  <a href="" class="toggle">Got a discount code?</a>
 		  <form action="." method="post">
 		      {% csrf_token %}
             <input type="text" name="discount_code" id="id_discount_code" class="clearMeFocus pure-u-1-3" title="Enter discount code here"/>
-            <input type="submit" class="button green" value="Apply discount" id="submit"/>
-            <a href="" id="cancel" class="button small red">Cancel</a>
+            <input type="submit" class="button small" value="Apply" id="submit"/>
+            <a href="" class="button small red cancel">Cancel</a>
 		</form>
 		</div>
 		<div class="pure-u-1-8">&nbsp;</div>

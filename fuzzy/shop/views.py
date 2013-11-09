@@ -81,12 +81,25 @@ def basket(request, order=None, discount=None):
     try:
         order = get_object_or_404(Order, id=request.session['ORDER_ID'])
     except:
+        delivery_date_form = DeliveryDateForm()
         pass
     
     if order:
         basket_items = order.items.all()
     else:
         basket_items = BasketItem.objects.filter(basket=_get_basket(request))
+    
+    
+    # IS THERE A DELIVERY DATE
+    delivery_date = None
+    if order:
+        delivery_date = order.preferred_delivery_date
+
+    if delivery_date == None:
+        try:
+            delivery_date = request.session['DELIVERY_DATE']
+        except:
+            pass    
         
         
     # PRODUCTS
@@ -117,6 +130,8 @@ def basket(request, order=None, discount=None):
             if order.discount:
                 discount = order.discount
     
+    
+    
     if request.GET.get('clear_discount'):
         discount = None
         if order:
@@ -129,7 +144,23 @@ def basket(request, order=None, discount=None):
         total_price -= discount_amount
     
     return _render(request, 'basket.html', locals())
+
+
+def update_delivery_date(request):
     
+    if request.method == 'POST':
+        form = DeliveryDateForm(request.POST)
+        if form.is_valid():
+            
+            # CHECK IF USER HAS AN ORDER ALREADY
+            try:
+                order = get_object_or_404(Order, id=request.session['ORDER_ID'])
+                order.preferred_delivery_date = form.cleaned_data['preferred_delivery_date']
+                order.save()
+            except:
+                request.session['DELIVERY_DATE'] = form.cleaned_data['preferred_delivery_date']
+    
+    return HttpResponseRedirect(reverse('basket'))    
     
     
 # function for adding stuff to your basket
@@ -290,7 +321,7 @@ def order_step_one(request, basket=None):
                     order.hashkey = uuid.uuid1().hex
                     order.save()
                 
-            except:
+            except:                
                 creation_args = {
                     'date_confirmed': datetime.now(),
                     'address': address,
@@ -307,6 +338,13 @@ def order_step_one(request, basket=None):
                 order.discount = discount
             except:
                 pass
+            
+            # DID THEY SPECIFY A DELIVERY DATE EARLIER?
+            if not order.preferred_delivery_date:
+                try:
+                    order.preferred_delivery_date = request.session['DELIVERY_DATE']
+                except:
+                    pass    
             
             # UPDATE ORDER WITH THE BASKET ITEMS
             basket_items = BasketItem.objects.filter(basket=basket)

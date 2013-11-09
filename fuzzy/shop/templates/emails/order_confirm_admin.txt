@@ -3,6 +3,10 @@
 	{{ item }}
 {% endfor %}
 
+{% if order.preferred_delivery_date %}
+NOTE: The customer has requested delivery on {{ order.preferred_delivery_date|date:"M. d Y" }}
+{% endif %}
+
 INVOICE ID: {{ order.invoice_id }}
 ORDER STATUS: {{ order.status }}
 ORDER VALUE: {{ order.get_amount|floatformat:"-2" }} {{ order.get_currency.code }}

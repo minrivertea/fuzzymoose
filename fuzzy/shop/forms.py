@@ -93,7 +93,12 @@ class NotifyForm(forms.Form):
 class SelectWishlistItemsForm(forms.Form):
     hashkey = forms.CharField()
     items = forms.CharField(required=False)
-    
+
+
+class DeliveryDateForm(ModelForm):
+    class Meta:
+        model = Order
+        fields = ('preferred_delivery_date',)        
 
 class WishlistSubmitEmailForm(forms.Form):
     email = forms.CharField()
