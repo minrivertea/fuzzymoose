@@ -92,7 +92,6 @@
 	</div>
 
 	<div id="address" class="pure-u-1-3">
-
         <p class="address">
             {% with order.address as address %}
               <strong>{{ order.shopper.user.first_name }} {{ order.shopper.user.last_name }}</strong>
@@ -106,19 +105,20 @@
 
 <form action="" method="POST" class="pure-u-1" id="payment">
   {% csrf_token %}
+  
   <script
-    src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
-    data-key="pk_test_ZNbRkC9EwailVxQXDgJqwg1i"
-    data-amount="2000"
-    data-name="Demo Site"
-    data-description="2 widgets ($20.00)"
-    data-image="/128x128.png">
+    src="https://checkout.stripe.com/v2/checkout.js" 
+    class="stripe-button"
+    data-key="{{ stripe_api_key }}"
+    data-amount="{{ stripe_total_price|floatformat:'0' }}"
+    data-name="{{ site_name }}"
+    data-description="{{ currency.symbol }}{{ total_price|floatformat:'-2' }}"
+    {% thumbnail shopsettings.logo "128x128" crop="" as im %}
+    data-image="{{ im.url }}"
+    {% endthumbnail %}>
   </script>
 </form>
 
-
-
-    {# {% include "snippets/paypal_form.html" %} #}
     
 </div>
 

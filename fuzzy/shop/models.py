@@ -78,7 +78,8 @@ class Product(models.Model):
     long_description = RichTextField(blank=True, null=True)
     content = RichTextField(blank=True, null=True)
     is_active = models.BooleanField(default=False)
-    category = models.ForeignKey(Category)
+    category = models.ManyToManyField(Category, blank=True, null=True)
+    
 
     # SEO STUFF
     meta_description = models.TextField(blank=True, null=True)

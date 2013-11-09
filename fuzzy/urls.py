@@ -20,7 +20,7 @@ urlpatterns = patterns('',
     # important for the CKEDITOR page linking
     url(r'^view_internal_pages/$', _internal_pages_list, name="internal_pages_list"),
 
-    url(r'^page/(?P<slug>[\w-]+)/$', shop_views.page, name="page"),
+    
     url(r'^(?P<slug>[\w-]+)/(?P<product_slug>[\w-]+)/$', shop_views.product, name="product"),
     url(r'^(?P<slug>[\w-]+)/$', shop_views.category, name="category"),
     

@@ -21,10 +21,17 @@
 
 #products li {
   position: relative;
+  float: left;
 }
 
 #products li .image {
   margin: 0px 0 10px;
+  width: 95%;
+}
+
+#products li .text {
+  width: 95%;
+  text-align: center;   
 }
 
 </style>
@@ -41,7 +48,7 @@
         
         <div class="image">
             {% thumbnail x.get_main_photo.image product_photo_medium as im %}
-            <img src="{{ im.url }}" />
+                <img src="{{ im.url }}" />
             {% endthumbnail %}
         </div>
         <div class="text">

@@ -67,10 +67,12 @@ def product_by_id(request, id):
     return HttpResponseRedirect(reverse('product', args=[product.slug]))
 
 def page(request, slug):    
+    
     page = get_object_or_404(Page, slug=slug)
     return _render(request, 'page.html', locals())
 
 def page_by_id(request, id):
+    print "page by ID here"
     page = get_object_or_404(Page, pk=id)
     return HttpResponseRedirect(reverse('page', args=[page.slug]))
 
@@ -379,12 +381,16 @@ def order_confirm(request):
         total_price -= discount_amount
     
     
+    # FOR STRIPE, WE'LL CREATE A TOTAL VALUE IN PENNIES NOT POUNDS
+    stripe_total_price = float(total_price) * 100
+    
+    
     if request.method == 'POST':
         
         print "we're striping!"
         import stripe
         # Set your secret key: remember to change this to your live secret key in production # See your keys here https://manage.stripe.com/account 
-        stripe.api_key = "sk_test_0rTa737wQgFgYRU7jB7FJfC6" 
+        stripe.api_key = settings.STRIPE_API_KEY 
         
         # Get the credit card details submitted by the form 
         token = request.POST['stripeToken'] 
@@ -392,12 +398,11 @@ def order_confirm(request):
         # Create the charge on Stripe's servers - this will charge the user's card 
         try: 
             charge = stripe.Charge.create( 
-                amount=1000, # amount in cents, again 
+                amount=stripe_total_price, # amount in cents, again 
                 currency="gbp", 
                 card=token, 
                 description="payinguser@example.com" 
             ) 
-            
             
             return HttpResponseRedirect(reverse('order_complete'))
              
@@ -405,9 +410,7 @@ def order_confirm(request):
            # The card has been declined 
            print "there was a big error"
            pass
-           
-
-    
+               
         
     form = PayPalPaymentsForm()
 

@@ -23,6 +23,7 @@ def common(request):
     context['site_domain'] = settings.SITE_DOMAIN # the url without http://
     context['currency'] = _get_currency(request, currency_code='GBP')
     context['base_template'] = settings.BASE_TEMPLATE
+    context['stripe_api_key'] = settings.STRIPE_API_KEY
     
     context['product_photo_large'] = settings.THUMBNAIL_PRODUCT_PHOTO_LARGE
     context['product_photo_medium'] = settings.THUMBNAIL_PRODUCT_PHOTO_MEDIUM
