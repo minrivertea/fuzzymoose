@@ -66,7 +66,7 @@ class ShopSettingsAdmin(admin.ModelAdmin):
         )    
 
 admin.site.register(Currency)
-admin.site.register(ShopSettings)  
+admin.site.register(ShopSettings, ShopSettingsAdmin)  
 admin.site.register(Photo, PhotoAdmin)  
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Address)
