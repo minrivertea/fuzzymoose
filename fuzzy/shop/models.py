@@ -54,9 +54,9 @@ class ShopSettings(models.Model):
     logo = models.ImageField(upload_to='global_files', blank=True, null=True,
         help_text="Upload a PNG file with transparency for best results. Less than 200px tall and 400px wide is probably best.")
     main_background_image = models.ImageField(upload_to='global_files', blank=True, null=True)
-    main_background_color = ColorPickerField(blank=True, null=True)
+    main_background_color = MyColorPickerField(blank=True, null=True)
     footer_background_image = models.ImageField(upload_to='global_files', blank=True, null=True)
-    footer_background_color = ColorPickerField(blank=True, null=True)
+    footer_background_color = MyColorPickerField(blank=True, null=True)
     footer_logo = models.ImageField(upload_to='global_files', blank=True, null=True)
     
     # ALLOWS CHANGING OF VARIOUS COLOURS
