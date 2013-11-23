@@ -52,7 +52,18 @@ class PriceAdmin(admin.ModelAdmin):
 
 class PhotoAdmin(admin.ModelAdmin):
     list_display = ('id', 'list_thumbnail', 'list_order')
-    
+
+
+class ShopSettingsAdmin(admin.ModelAdmin):
+     class Media:
+        css = {
+            "all": ("%s%s" % (settings.STATIC_URL, "paintstore/css/colorpicker.css"),)
+        }
+
+        js  = (
+            ("%s%s" % (settings.STATIC_URL, "paintstore/jquery_1.7.2.js")),
+            ("%s%s" % (settings.STATIC_URL, "paintstore/colorpicker.js"))
+        )    
 
 admin.site.register(Currency)
 admin.site.register(ShopSettings)  

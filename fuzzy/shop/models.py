@@ -9,34 +9,11 @@ from ckeditor.fields import RichTextField
 from sorl.thumbnail import get_thumbnail
 
 from paintstore.fields import ColorPickerField
-from paintstore.widgets import ColorPickerWidget
 
 
 # APP
 from countries import *
 
-
-
-
-
-
-class MyColorPickerField(ColorPickerField):
-
-    def formfield(self, **kwargs):
-        kwargs.update({"widget": MyColorPickerWidget})
-        return super(MyColorPickerField, self).formfield(**kwargs)
-
-
-class MyColorPickerWidget(ColorPickerWidget):
-    class Media:
-        css = {
-            "all": ("%s%s" % (settings.STATIC_URL, "paintstore/css/colorpicker.css"),)
-        }
-
-        js  = (
-            ("%s%s" % (settings.STATIC_URL, "paintstore/jquery_1.7.2.js")),
-            ("%s%s" % (settings.STATIC_URL, "paintstore/colorpicker.js"))
-        )
 
 
 
@@ -56,7 +33,7 @@ class ShopSettings(models.Model):
     main_background_image = models.ImageField(upload_to='global_files', blank=True, null=True)
     main_background_color = MyColorPickerField(blank=True, null=True)
     footer_background_image = models.ImageField(upload_to='global_files', blank=True, null=True)
-    footer_background_color = MyColorPickerField(blank=True, null=True)
+    footer_background_color = ColorPickerField(blank=True, null=True)
     footer_logo = models.ImageField(upload_to='global_files', blank=True, null=True)
     
     # ALLOWS CHANGING OF VARIOUS COLOURS
