@@ -19,7 +19,7 @@ from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 
 # APP
-from utils import _render, _get_basket, _get_currency
+from utils import _render, _get_basket, _get_currency, _get_postage_cost
 from models import *
 from forms import *
 
@@ -67,12 +67,11 @@ def product_by_id(request, id):
     return HttpResponseRedirect(reverse('product', args=[product.slug]))
 
 def page(request, slug):    
-    
+    promo_products = Product.objects.filter(is_active=True, category__isnull=False).order_by('?')[:2]
     page = get_object_or_404(Page, slug=slug)
     return _render(request, 'page.html', locals())
 
 def page_by_id(request, id):
-    print "page by ID here"
     page = get_object_or_404(Page, pk=id)
     return HttpResponseRedirect(reverse('page', args=[page.slug]))
 
@@ -84,10 +83,7 @@ def basket(request, order=None, discount=None):
         delivery_date_form = DeliveryDateForm()
         pass
     
-    if order:
-        basket_items = order.items.all()
-    else:
-        basket_items = BasketItem.objects.filter(basket=_get_basket(request))
+    basket_items = BasketItem.objects.filter(basket=_get_basket(request))
     
     
     # IS THERE A DELIVERY DATE
@@ -102,17 +98,32 @@ def basket(request, order=None, discount=None):
             pass    
         
         
-    # PRODUCTS
+    # PRICES AND POSTAGE
+    shopsettings = RequestContext(request)['shopsettings']
     total_price = float(0)
-    for item in basket_items:
-        total_price += float(item.get_price())
-            
-    # POSTAGE
-    if RequestContext(request)['shopsettings'] != None:
-        if total_price > RequestContext(request)['shopsettings'].postage_discount_threshold:
+    for item in basket_items:                    
+        item.total_price = item.get_price()
+        total_price += float(item.total_price)
+
+    postage_discount = False
+    if shopsettings.flat_fee_postage_price:
+        if total_price > shopsettings.postage_discount_threshold:
             postage_discount = True
         else:
-            total_price += float(RequestContext(request)['shopsettings'].postage_price)
+            total_price += float(shopsettings.flat_fee_postage_price)
+    
+    else:
+        for item in basket_items:
+        
+            if item.price.special_postage_price:
+                total_price += float(item.quantity * item.price.special_postage_price)
+                item.total_price = item.get_price() + (item.quantity * item.price.special_postage_price)
+            
+            else:
+                total_price += float(item.quantity * shopsettings.standard_postage_price)
+                item.total_price = item.get_price() + (item.quantity * shopsettings.standard_postage_price)
+                
+
         
     # DISCOUNT
     if request.method == 'POST':
@@ -218,6 +229,7 @@ def increase_quantity(request, basket_item):
 
 
 
+
 def order_step_one(request, basket=None):
     
     basket = _get_basket(request)
@@ -319,14 +331,16 @@ def order_step_one(request, basket=None):
             except:
                 pass
             
-            # CREATE OR FIND THE ORDER
             try:
+                # TRY TO FIND AN EXISTING ORDER
                 order = get_object_or_404(Order, id=request.session['ORDER_ID'])
                 if not order.hashkey:
                     order.hashkey = uuid.uuid1().hex
                     order.save()
+                                
                 
             except:                
+                # IF THERE'S NO ORDER, CREATE ONE NOW
                 creation_args = {
                     'date_confirmed': datetime.now(),
                     'address': address,
@@ -335,7 +349,8 @@ def order_step_one(request, basket=None):
                 }
                 order = Order.objects.create(**creation_args)
                 order.save() # need to save it first, then give it an ID
-                order.order_id = "TEA-00%s" % (order.id)
+                order.order_id = "ORDER-00%s" % (order.id)
+                request.session['ORDER_ID'] = order.id
             
             # DO THEY HAVE A VALID DISCOUNT CODE?
             try: 
@@ -355,9 +370,10 @@ def order_step_one(request, basket=None):
             basket_items = BasketItem.objects.filter(basket=basket)
             for item in basket_items:
                 order.items.add(item)
-                
+            
+            # SAVE THE ORDER, NOW ALL THE DATA IS THERE AND CORRECT    
             order.save()
-            request.session['ORDER_ID'] = order.id  
+              
  
             # FINALLY! WE'RE DONE
             return HttpResponseRedirect(reverse('order_confirm')) 
@@ -403,19 +419,36 @@ def order_confirm(request):
         problem = _("You don't have any items in your basket, so you can't process an order!")
         return _render(request, 'shop/order-problem.html', locals())
                     
-    # PRODUCTS
-    total_price = 0
-    for item in order.items.all():
-        total_price += float(item.get_price())
-        
+                    
     currency = _get_currency(request)
     
-    # POSTAGE
-    if RequestContext(request)['shopsettings'] != None:
-        if total_price > RequestContext(request)['shopsettings'].postage_discount_threshold:
+    # PRICES AND POSTAGE
+    shopsettings = RequestContext(request)['shopsettings']
+    items = order.items.all()
+    total_price = float(0)
+    for item in items:                    
+        item.total_price = item.get_price()
+        total_price += float(item.total_price)
+
+    postage_discount = False
+    if shopsettings.flat_fee_postage_price:
+        if total_price > shopsettings.postage_discount_threshold:
             postage_discount = True
         else:
-            total_price += float(RequestContext(request)['shopsettings'].postage_price)
+            total_price += float(shopsettings.flat_fee_postage_price)
+    
+    else:
+        for item in items:
+        
+            if item.price.special_postage_price:
+                total_price += float(item.quantity * item.price.special_postage_price)
+                item.total_price = item.get_price() + (item.quantity * item.price.special_postage_price)
+            
+            else:
+                total_price += float(item.quantity * shopsettings.standard_postage_price)
+                item.total_price = item.get_price() + (item.quantity * shopsettings.standard_postage_price)
+                
+            
         
     # DISCOUNT
     if order.discount:
@@ -427,10 +460,8 @@ def order_confirm(request):
     # FOR STRIPE, WE'LL CREATE A TOTAL VALUE IN PENNIES NOT POUNDS
     stripe_total_price = float(total_price) * 100
     
-    
     if request.method == 'POST':
         
-        print "we're striping!"
         import stripe
         # Set your secret key: remember to change this to your live secret key in production # See your keys here https://manage.stripe.com/account 
         stripe.api_key = settings.STRIPE_API_KEY 

@@ -1,12 +1,20 @@
-
+{% load staticfiles %}
 <div id="footer">
  <div class="pure-g-r centered">
-    <div class="pure-u-1">
+    <div class="pure-u-1-2">
         <ul>
         {% for x in footer_links %}
             <li><a href="{{ x.get_absolute_url }}">{{ x.name }}</a></li>
         {% endfor %}
-        </ul>
+        </ul>        
     </div>
+    
+    
+    <ul id="social" class="pure-u-1-2 right">
+        <li class="first">Find us on:</li>
+        <li><a id="pinterest" href=""></a></li>
+        <li><a id="facebook" href=""></a></li>
+    </ul>
+    
   </div>	
 </div>

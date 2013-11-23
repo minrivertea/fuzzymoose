@@ -4,6 +4,8 @@ from django.conf import settings
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.template import RequestContext
+
 
 from ckeditor.fields import RichTextField
 from sorl.thumbnail import get_thumbnail
@@ -15,14 +17,17 @@ from paintstore.fields import ColorPickerField
 from countries import *
 
 
-
-
-
-
-
 class ShopSettings(models.Model):
-    postage_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
-    postage_discount_threshold = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    
+    flat_fee_postage_price = models.DecimalField(max_digits=8, decimal_places=2, 
+        null=True, blank=True, 
+        help_text="If there's a single postage fee, regardless of how many items, fill it in here. eg. 2.99")
+    standard_postage_price = models.DecimalField(
+        max_digits=8, decimal_places=2, null=True, blank=True,
+        help_text="If there's a standard per-item postage fee, fill it in here.eg. 1.99")
+    postage_discount_threshold = models.DecimalField(
+        max_digits=8, decimal_places=2, null=True, blank=True, 
+        help_text="Is postage free if the customer orders more than &pound;XX? Put in that value here.")
     homepage_browser_title = models.CharField(max_length=255, blank=True, null=True)
     google_analytics_script = models.TextField(blank=True, null=True,
         help_text="Google gives you a script to place on the page that tracks visits - paste the whole thing here in its entirety (including the &lt;script&gt; tags!)")
@@ -108,7 +113,7 @@ class Product(models.Model):
     
     def get_absolute_url(self):
         
-        if self.category:
+        if self.category.all():
             main_cat = self.category.all()[0]          
             return reverse('product', args=[main_cat.slug, self.slug])
         else:
@@ -216,7 +221,7 @@ class Price(models.Model):
         help_text="If this item has special pricing (above the normal rate) then add the full postage cost here (eg. if this will cost &pound;4 to post, type in 4.00 here)")
     
     def __unicode__(self):
-        return "%s (%s%s)" % (self.product, self.currency.symbol, self.price)
+        return "%s (%s%s)" % (self.product, self.price, self.currency.code)
     
     
 
@@ -297,7 +302,7 @@ class BasketItem(models.Model):
     def __unicode__(self):
         return "%s x %s" % (self.price, self.quantity)
     
-    def get_price(self):
+    def get_price(self):                
         return (self.quantity * self.price.price)
 
 class Order(models.Model):

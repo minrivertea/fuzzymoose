@@ -177,6 +177,31 @@ def _set_currency(request, code=None):
     url = request.META.get('HTTP_REFERER','/')
     return HttpResponseRedirect(url)
     
+
+
+def _get_postage_cost(request, items):
+    """
+    Receives a list of items, and returns a total postage cost
+    """
+    
+    postage_cost = 0
+    shopsettings = ShopSettings.objects.all()[0]
+    if shopsettings.flat_fee_postage_price:
+        # IF THERE'S A FLAT FEE POSTAGE SET, USE THAT
+        postage_cost += float(shopsettings.flat_fee_postage_price)
+    
+    else:
+        # OTHERWISE, ADD THE STANDARD POSTAGE PRICE FOR EACH ITEM
+        for item in items:
+            if item.price.special_postage_price:
+                pp = float(item.price.special_postage_price)
+            else:
+                pp = float(shopsettings.standard_postage_price)
+            postage_cost += item.quantity * pp
+    
+    return postage_cost
+
+
     
 
 def _get_price(request, items):

@@ -91,6 +91,33 @@ span.link:hover {
   cursor: pointer;   
 }
 
+.tooltip {
+    display:none;
+    background:#333;
+    font-size:11px;
+    height:auto;
+    width:140px;
+    padding:10px 15px;
+    color:#eee;
+    text-shadow: none;
+}
+
+.tooltip:before {
+    border-color: #333 rgba(0, 0, 0, 0) -moz-use-text-color;
+    border-left: 10px solid rgba(0, 0, 0, 0);
+    border-style: solid solid none;
+    border-width: 10px 10px 0;
+    bottom: -10px;
+    content: " ";
+    display: block;
+    height: 0;
+    left: 80px;
+    position: absolute;
+    width: 0;
+    z-index: 2;
+}
+  
+  
 /* END BUTTONS AND LINKS */
 
 /* TYPOGRAPHY */
@@ -399,12 +426,23 @@ input[type="text"], input[type="email"], textarea {
 
 /* PAGE STYLES */
 
-#right {
-  float: right;  
-} 
+p.intro {
+  font-size: 1.3em;   
+}
 
-#right div {
-       
+
+#right .box {
+  float: right; 
+  margin: 0 0 20px 0;
+  position: relative;    
+}
+
+#right .box img {
+  width: 100%;   
+}
+
+#right .box .price {
+  margin: 10px 0 0;   
 }
 
 #right div.white {
@@ -444,6 +482,41 @@ input[type="text"], input[type="email"], textarea {
   margin: 0; 
   font-size: 0.8em;
   line-height: 1.6em;  
+}
+
+#footer ul#social {
+  margin: 0;
+  padding: 0; 
+  list-style-type: none; 
+  float: right;
+  width: 200px; 
+}
+
+#footer ul#social li.first {
+  float: left;
+  text-transform: uppercase;
+  padding: 17px 0 0;   
+  margin: 0 5px 0 0;
+}
+
+#footer ul#social li a {
+  height: 52px;
+  width: 52px;
+  background: url('/static/images/social-icons.png') no-repeat top left;
+  float: left;
+  margin: 0 0 0 5px;
+}
+
+#footer ul#social li a:hover {
+  background-position: 0 -52px;   
+}
+
+#footer ul#social li a#facebook {
+  background-position: -104px 0px;   
+}
+
+#footer ul#social li a#facebook:hover {
+  background-position: -104px -52px;   
 }
 
 /* END FOOTER STYLES

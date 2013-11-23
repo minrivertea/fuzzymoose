@@ -18,7 +18,8 @@
 }
 
 #items tr td:first-child {
-  width: 350px;   
+  width: 450px;  
+  padding-right: 30px; 
 }
 
 #items tr td:last-child {
@@ -57,31 +58,46 @@
 				
 	<div id="items" class="pure-u-2-3">
 		<table>
-			{% for thing in order.items.all %}
+			{% for thing in items %}
 				  <tr>				
 			    	<td class="pure-1-2" valign="top">
 			    		<strong>{{ thing.price.product.name }} x {{ thing.quantity }}</strong> 
 			    		<span class="small">{{ thing.price.description }}</span>
+			    		{% if not shopsettings.flat_fee_postage_price %}
+			    		   <span class="small">
+			    		   {% if thing.price.special_postage_price %}
+			    		       + {{ currency.symbol }}{{ thing.price.special_postage_price|floatformat:"2" }} postage each
+			    		   {% else %}
+			    		       + {{ currency.symbol }}{{ shopsettings.standard_postage_price|floatformat:"2" }} postage each
+			    		   {% endif %}
+			    		   </span>
+			    		{% endif %}
 			    		{% if thing.price.out_of_stock %}
 			    		<br/>
 			    		<span class="red small">This item is out of stock! Please don't continue with the order unless you've contacted us first to confirm.</span>
 			    		{% endif %}
 			    	</td>
-			    	<td valign="top">{{ currency.symbol }}{{ thing.get_price|floatformat:"2" }}</td>		    				
+			    	<td valign="top">{{ currency.symbol }}{{ thing.total_price|floatformat:"2" }}</td>		    				
 				  </tr>
 	        {% endfor %}
 	        
 	        
-	    	{% if postage_discount %}
-	    	  <tr>
-	    	    <td colspan="2"><span class="small"><em>{% blocktrans with currency.symbol as symbol and shopsettings.postage_discount_threshold as ptd %}There is no postage charge, because your order is over {{ symbol }}{{ ptd }}{% endblocktrans %}</em></span></td>
-	    	  </tr>
+	    	{% if shopsettings.flat_fee_postage_price %}
+	    	
+	    	  {% if postage_discount %}
+	    	      <tr>
+    	    	    <td colspan="2"><span class="small"><em>{% blocktrans with currency.symbol as symbol and shopsettings.postage_discount_threshold as ptd %}There is no postage charge, because your order is over {{ symbol }}{{ ptd }}{% endblocktrans %}</em></span></td>
+	    	      </tr>
 	    	  {% else %}
-	    	  <tr>
-	    	  	<td>{% trans 'Postage' %}</td>
-	    	  	<td>{{ currency.symbol }}{{ shopsettings.postage_price|floatformat:"2" }}</td>		  
-	    	  </tr>
-	        {% endif %}
+	    	      <tr>
+	    	          <td>{% trans 'Postage' %}</td>
+	    	          <td>{{ currency.symbol }}{{ shopsettings.flat_fee_postage_price|floatformat:"2" }}</td>
+	    	      </tr>
+	    	  {% endif %}
+	    	
+	    	{% endif %}
+	    		        
+	        
 	        {% if order.discount %}
 	      	  <tr>
 	      	  	<td>{% trans 'Discount' %}</td>

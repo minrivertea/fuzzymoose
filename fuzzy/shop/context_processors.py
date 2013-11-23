@@ -1,6 +1,6 @@
 from django.conf import settings
 from models import *
-from utils import _get_country, _get_currency, _set_currency, _get_region
+from utils import _get_country, _get_currency, _set_currency, _get_region, _get_postage_cost
 
 from itertools import chain
 
@@ -32,7 +32,7 @@ def common(request):
     try:
         context['shopsettings'] = ShopSettings.objects.all()[0]
     except:
-        pass
+        context['shopsettings'] = None
 
     # NAVIGATION
     nav_cats = Category.objects.filter(is_navigation_item=True).order_by('list_order')
@@ -49,7 +49,6 @@ def common(request):
                 ).order_by('list_order')
     
 
-
     # BASKET STUFF
     try:
         basket = Basket.objects.get(id=request.session['BASKET_ID'])
@@ -58,12 +57,24 @@ def common(request):
     
     basket_quantity = 0
     basket_amount = 0
+    
     if basket:
         basket_items = BasketItem.objects.filter(basket=basket)
+        
         for item in basket_items:
             basket_quantity += item.quantity
             basket_amount += float(item.get_price())
-    
+        
+        # POSTAGE    
+        if basket_amount > context['shopsettings'].postage_discount_threshold:
+            postage_cost = 0
+        else:
+            postage_cost = _get_postage_cost(request, basket_items)
+        
+        basket_amount += float(postage_cost)
+        
+        
+   
     context['basket_quantity'] = basket_quantity
     context['basket_amount'] = basket_amount       
     return context
