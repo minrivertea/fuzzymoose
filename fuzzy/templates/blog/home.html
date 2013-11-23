@@ -1,8 +1,8 @@
 {% extends base_template %}
 {% load thumbnail i18n  %}
 
-{% block pagetitle %}{% trans 'Our Chinese tea blog' %}{% endblock %}
-{% block metadescription %}{% trans 'A blog about Chinese tea - news, tea photos, tea reviews, articles and updates from tea farms in China, from the best tea retailer in the UK.' %}{% endblock %}
+{% block pagetitle %}Blog{% endblock %}
+{% block metadescription %}{% endblock %}
 
 
 {% block extracss %}
@@ -12,13 +12,6 @@
     float: left;
 }
 
-#mtw #left .entry h3 {
-    font-size: 18px;
-    font-weight: 400;
-    letter-spacing: -0.2px;
-    margin: 0 0 5px 0;
-    text-decoration: none;
-}
 
 .entry {
     border-bottom: 1px dashed #E1E1E1;
@@ -29,7 +22,15 @@
     width: 600px;
 }
 
-.entry:hover h2 a {
+.entry h3 {
+  margin: 0 0 5px;   
+}
+
+.entry p {
+  margin: 0 0 5px 0;   
+}
+
+.entry:hover h3 a {
   text-decoration: underline;
   color: #FF6569;   
 }
@@ -133,22 +134,10 @@ img.tweets {
 
 
 {% block content %}
-
-
-<div id="mtw">
-  <div class="sp">
+<div class="pure-g-r">
+	<div id="left" class="pure-u-2-3">
 	
-	
-		
-	<div id="right">
-		
-		{% include "blog/snippets/blog-right.html" %}
-	</div>
-
-	<div id="left">
-	
-        <h1>{% trans 'The Min River Tea blog' %}</h1>
-        <p class="introduction">{% trans 'News, events and information from the world of Chinese tea' %}</p>
+        <h1>Our blog</h1>
 	
 		{% if entries.has_previous %}
 			<div id="next-previous">
@@ -166,7 +155,7 @@ img.tweets {
 		</div>
 		{% endif %}
 			
- 		<div class="entry-list">
+ 		<div class="entry-list pure-u-1">
 			{% include "blog/snippets/entry-list.html" %}
 		</div>
 		
@@ -184,8 +173,9 @@ img.tweets {
 	        </div>
 		</div>
 	</div>
-  </div>
+
+
+    {% include 'blog/snippets/right.html' %}
+
 </div>
-
-
 {% endblock %}

@@ -14,6 +14,7 @@ from shop import views as shop_views
 urlpatterns = patterns('',
     (r'^', include('fuzzy.shop.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^blog/', include('fuzzy.blog.urls')),
     url(r'^captcha/', include('captcha.urls')),
     url(r'^ckeditor/', include('ckeditor.urls')),
 

@@ -309,7 +309,21 @@ $(document).ready( function() {
                 <p>Cras id lorem a tortor laoreet tristique non sit amet ipsum. Curabitur ac velit non nisi dignissim interdum. Donec non mauris ac erat euismod porta in sit amet nulla.</p>
             </div>
         </div>
+        
+        {% for x in product.get_reviews %}
+        <div id="reviews" class="box pure-u-11-12 white">
+            <div class="inner">
+                {{ x.edited_text|safe }}
+                <br/>
+                <strong>{{ x.shopper.first_name }} {{ x.shopper.last_name }} / {{ x.date_added|date:"d M Y" }}</strong>
+            </div>
+        </div>
+        {% endfor %}
+        
     </div>
+    
+    
+    
 </div>
 
 </div>

@@ -124,6 +124,9 @@ class Product(models.Model):
         url = reverse('product_by_id', args=[self.id])
         return url
     
+    def get_reviews(self):
+        return Review.objects.filter(is_published=True, product=self)[:2]
+    
     def get_prices(self, request):
         return Price.objects.filter(product=self, is_active=True)
     
@@ -144,7 +147,7 @@ class Review(models.Model):
     is_published = models.BooleanField(default=False)
     
     def __unicode__(self):
-        return "%s - %s" % (self.shopper, self.product)
+        return "%s - %s" % (self.shopper.user.email, self.product)
 
 class Photo(models.Model):
     class Meta:

@@ -1,16 +1,24 @@
 {% load staticfiles %}
 <div id="footer">
  <div class="pure-g-r centered">
-    <div class="pure-u-1-2">
+    <div class="pure-u-1-3">
         <ul>
+            <li><strong>Useful information</strong></li>
         {% for x in footer_links %}
             <li><a href="{{ x.get_absolute_url }}">{{ x.name }}</a></li>
         {% endfor %}
         </ul>        
     </div>
     
+    <ul class="pure-u-1-3">
+        <li><strong>From our blog</strong></li>
+        {% for x in latest_blogs %}
+        <li><a href="{{ x.get_absolute_url }}">{{ x.title }}</a></li>
+        {% endfor %}
+    </ul>
     
-    <ul id="social" class="pure-u-1-2 right">
+    
+    <ul id="social" class="pure-u-1-3 right">
         <li class="first">Find us on:</li>
         <li><a id="pinterest" href=""></a></li>
         <li><a id="facebook" href=""></a></li>

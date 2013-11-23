@@ -426,7 +426,12 @@ input[type="text"], input[type="email"], textarea {
 
 /* PAGE STYLES */
 
-p.intro {
+#left p {
+  font-size: 13px;
+  line-height: 1.8em;   
+}
+
+p.intro, #left p.intro {
   font-size: 1.3em;   
 }
 
@@ -443,6 +448,10 @@ p.intro {
 
 #right .box .price {
   margin: 10px 0 0;   
+}
+
+#right .box p:last-child {
+  margin: 0;   
 }
 
 #right div.white {

@@ -1,5 +1,6 @@
 from django.conf import settings
 from models import *
+from fuzzy.blog.models import BlogEntry
 from utils import _get_country, _get_currency, _set_currency, _get_region, _get_postage_cost
 
 from itertools import chain
@@ -48,6 +49,9 @@ def common(request):
                 is_published=True
                 ).order_by('list_order')
     
+    
+    # BLOGS
+    context['latest_blogs'] = BlogEntry.objects.filter(is_draft=False).order_by('-date_added')[:3]
 
     # BASKET STUFF
     try:

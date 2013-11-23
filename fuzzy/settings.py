@@ -99,6 +99,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'fuzzy.shop',
+    'fuzzy.blog',
     'captcha',
     'sorl.thumbnail',
     'ckeditor',
