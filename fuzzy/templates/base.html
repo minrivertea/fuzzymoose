@@ -166,7 +166,7 @@
 		$(document).ready( function() {
 
 			// clear input on focus
-			var clearMePrevious = '';
+			
 			$('.clearMeFocus').each( function() {
 				if ($(this).val() == '') {
 				    var title = $(this).attr('title');
@@ -178,7 +178,6 @@
 			{
 				if($(this).val()==$(this).attr('title'))
 				{
-					clearMePrevious = $(this).val();
 					$(this).val('');
 					$(this).css('color', '#333');
 				}
@@ -189,22 +188,12 @@
 			{
 				if($(this).val()=='')
 				{
-					$(this).val(clearMePrevious);
+					$(this).val($(this).attr('title'));
 					$(this).css('color', '#999');
 				}
 			});
 		
-            /// HANDLES THE CURRENCY ROLLDOWN
-    		 $('#currency').hover(function() {
-    		    $(this).animate({height: '50px',}, 150);
-    		 }, function() {
-    		    $(this).animate({height: '15px',}, 100);
-    		 });
-    		 
-    		    /// TOOLTIP THING
-    		    $('span.tooltip').tooltip({
-                  offset: [-8, 2],   
-                });
+		
 		 
 					
 		});

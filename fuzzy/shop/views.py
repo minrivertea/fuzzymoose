@@ -247,12 +247,17 @@ def order_step_one(request, basket=None):
         initial_values = (
             _('First name'), _('Last name'), _('Email address'),
             _('Your address...'), _(' ...address continued (optional)'),
-            _('Town or city'), _('State'), _('Post / ZIP code'), _('invalid'),
+            _('Town or city'), _('State'), _('Post / ZIP code'), _('--'),
             )
-            
-        for k, v in post_values.iteritems():
+                        
+        to_delete = []
+        for k,v in post_values.iteritems():
+            if k == 'csrfmiddlewaretoken': continue
             if v in initial_values:
-                del post_values[k]
+                to_delete.append(k)
+        
+        for x in to_delete:
+            del post_values[x]
                 
         form = OrderStepOneForm(post_values)
         if form.is_valid(): 

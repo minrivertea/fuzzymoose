@@ -62,6 +62,10 @@
 			    	<td class="pure-1-2" valign="top">
 			    		<strong>{{ thing.price.product.name }} x {{ thing.quantity }}</strong> 
 			    		<span class="small">{{ thing.price.description }}</span>
+			    		{% if thing.price.out_of_stock %}
+			    		<br/>
+			    		<span class="red small">This item is out of stock! Please don't continue with the order unless you've contacted us first to confirm.</span>
+			    		{% endif %}
 			    	</td>
 			    	<td valign="top">{{ currency.symbol }}{{ thing.get_price|floatformat:"2" }}</td>		    				
 				  </tr>

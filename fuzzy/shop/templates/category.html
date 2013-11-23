@@ -39,7 +39,7 @@
 
 {% block content %}
 <h1>{{ category.name }}</h1>
-<p>{{ category.description }}</p>
+<p>{{ category.description|safe }}</p>
 
 <ul id="products" class="pure-u-1">
 {% for x in category.get_products %}

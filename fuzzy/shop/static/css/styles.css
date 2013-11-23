@@ -4,7 +4,9 @@
 body {
   color: #333;
   text-shadow: 0 1px 1px #fff;
-  background: url('../images/cardboard_flat.png') repeat top left;   
+  background: url('../images/cardboard_flat.png') repeat top left;  
+  margin: 0;
+  padding: 0; 
 }
 
 .hr {
@@ -59,12 +61,12 @@ a:hover, span.toggle:hover {
 }
 
 .button.red {
-  background: #bf2a38;   
+  background: #D30000;   
 }
 
 .button.red:hover {
   color: #fff;
-  background: #ee2121;   
+  background: #c90000;   
 }
 
 .red {
@@ -143,6 +145,7 @@ input[type="text"], input[type="email"], textarea {
     line-height: 1em;
     padding: 10px 15px;
     width: 350px;
+    color: #999;
 }
 
 /* END FORMS */

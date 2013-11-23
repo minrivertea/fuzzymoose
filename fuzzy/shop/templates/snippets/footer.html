@@ -2,7 +2,11 @@
 <div id="footer">
  <div class="pure-g-r centered">
     <div class="pure-u-1">
-    
+        <ul>
+        {% for x in footer_links %}
+            <li><a href="{{ x.get_absolute_url }}">{{ x.name }}</a></li>
+        {% endfor %}
+        </ul>
     </div>
   </div>	
 </div>

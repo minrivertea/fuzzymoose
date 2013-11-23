@@ -68,18 +68,15 @@
         <fieldset>
             <legend>{% trans 'This just takes 1 minute - your name and email please!' %}</legend>
     		<p>
-    			<span class="mandatory">*</span>
-    			<label for="id_first_name"><span class="red">*</span> {% trans 'First name' %}</label>
+    			<label for="id_first_name">{% trans 'First name' %}</label>
     			<input  class="clearMeFocus {% if form.first_name.errors %}error{% endif %}" type="text" title="{% trans 'First name' %}" name="first_name" id="id_first_name" value="{{ first_name }}"/>
     		</p>
     		<p>
-    			<span class="mandatory">*</span>
-    			<label for="id_last_name"><span class="red">*</span> {% trans 'Surname' %}</label>
+    			<label for="id_last_name">{% trans 'Surname' %}</label>
     			<input class="clearMeFocus {% if form.last_name.errors %}error{% endif %}" title="{% trans 'Last name' %}" type="text" name="last_name" id="id_last_name" value="{{ last_name }}"/>
     		</p>
     		<p>
-    			<span class="mandatory">*</span>
-    			<label for="id_email"><span class="red">*</span> {% trans 'Email address' %}</label>
+    			<label for="id_email">{% trans 'Email address' %}</label>
     			<input class="clearMeFocus {% if form.email.errors %}error{% endif %}" title="{% trans 'Email address' %}" type="email" name="email" id="id_email" value="{{ email }}"/>
     		</p>	
         </fieldset>
@@ -89,8 +86,7 @@
     	   <legend>{% trans 'Where should we send your tea? Please provide the address we should send your tea to' %}</legend>	
 
           <p>
-          	<span class="mandatory">*</span>
-          	<label for="id_house_name_number"><span class="red">*</span> {% trans 'House name number' %}:</label>
+          	<label for="id_house_name_number">{% trans 'House name number' %}:</label>
           	<input class="clearMeFocus {% if form.line_1.errors %}error{% endif %}" title="{% trans 'Your address...' %}" id="id_line_1" type="text" name="line_1" value="{{ line_1 }}"/>
           </p>
 	  
@@ -105,7 +101,6 @@
           	</p>
       
           <p>
-          	<span class="mandatory">*</span>
           	<label for="id_town_city">{% trans 'Town / City' %}:</label>
           	<input class="clearMeFocus {% if form.town_city.errors %}error{% endif %}" title="{% trans 'Town or city' %}" id="id_town_city" type="text" name="town_city" value="{{ town_city }}"/> 
           </p>
@@ -117,13 +112,12 @@
             </p>
           {% endif %}
           <p>
-          	<span class="mandatory">*</span>
-          	<label for="id_postcode"><span class="red">*</span> {% trans 'Post / ZIP code' %}:</label>
+          	<label for="id_postcode">{% trans 'Post / ZIP code' %}:</label>
           	<input class="clearMeFocus {% if form.postcode.errors %}error{% endif %}" title="{% trans 'Post / ZIP code' %}" id="id_postcode" type="text" name="postcode" value="{{ postcode }}" /> 
           	</p>
       	
     	  <p class="styled-select">
-    	    <label for="id_country"><span class="red">*</span> {% trans 'Country' %}:</label>
+    	    <label for="id_country">{% trans 'Country' %}:</label>
     	    <span class="country">
     	    {{ form.country }}
     	    </span>

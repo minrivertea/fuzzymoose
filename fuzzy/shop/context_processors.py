@@ -36,9 +36,18 @@ def common(request):
 
     # NAVIGATION
     nav_cats = Category.objects.filter(is_navigation_item=True).order_by('list_order')
-    nav_pages = Page.objects.filter(is_top_navigation=True, is_published=True).order_by('list_order')
+    nav_pages = Page.objects.filter(
+            is_top_navigation=True, 
+            is_published=True
+            ).order_by('list_order')
     nav_items = chain(nav_cats, nav_pages)
     context['main_nav'] = sorted(nav_items, key=lambda x: x.list_order)
+    
+    context['footer_links'] = Page.objects.filter(
+                is_footer_link=True, 
+                is_published=True
+                ).order_by('list_order')
+    
 
 
     # BASKET STUFF

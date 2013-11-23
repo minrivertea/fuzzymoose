@@ -132,15 +132,44 @@ $(document).ready( function() {
   font-size: 13px;
   font-weight: bold;
   color: #666;  
+  position: relative;
+  z-index: 100;
 }
 
 #prices li:last-child {
   border-bottom: none;   
 }
 
+#prices li.inactive {
+  opacity: 0.4;   
+}
+
+#prices li.inactive .cover {
+  display: block;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000; 
+  text-align: center; 
+}
+
+#prices li.inactive .cover .text {
+  height: 10px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  font-size: 15px;
+  font-weight: normal;  
+  color: #000;  
+}
+
 #prices li .price {
   position: relative;
-  top: 6px;   
+  top: 4px;   
 }
 
 #prices li .button {
@@ -219,11 +248,19 @@ $(document).ready( function() {
 
     <ul id="prices">
         {% for x in product.prices %}
-            <li class="pure-u-1">
+            <li class="pure-u-1{% if x.out_of_stock %} inactive{% endif %}">
+                
+                {% if x.out_of_stock %}
+                <span class="cover"><span class="text">Out of stock</span></span>
+                {% endif %}
+                
                 <span class="price">
                     <span class="amount">{{ currency.symbol }}{{ x.price }}</span> / {{ x.description }}
                 </span>
+                
+                {% if not x.out_of_stock %}
                 <a href="{% url 'add_to_basket' x.id %}" class="button">Add to basket</a>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>

@@ -8,9 +8,39 @@ from ckeditor.fields import RichTextField
 from sorl.thumbnail import get_thumbnail
 
 from paintstore.fields import ColorPickerField
+from paintstore.widgets import ColorPickerWidget
+
 
 # APP
 from countries import *
+
+
+
+
+
+
+class MyColorPickerField(ColorPickerField):
+
+    def formfield(self, **kwargs):
+        kwargs.update({"widget": MyColorPickerWidget})
+        return super(MyColorPickerField, self).formfield(**kwargs)
+
+
+class MyColorPickerWidget(ColorPickerWidget):
+    class Media:
+        css = {
+            "all": ("%s%s" % (settings.STATIC_URL, "paintstore/css/colorpicker.css"),)
+        }
+
+        js  = (
+            ("%s%s" % (settings.STATIC_URL, "paintstore/jquery_1.7.2.js")),
+            ("%s%s" % (settings.STATIC_URL, "paintstore/colorpicker.js"))
+        )
+
+
+
+
+
 
 class ShopSettings(models.Model):
     postage_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
@@ -41,18 +71,27 @@ class ShopSettings(models.Model):
     
 
 class Category(models.Model):
-    name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=100)
-    description = RichTextField(blank=True, null=True)
-    parent = models.ForeignKey('Category', blank=True, null=True)
-    is_active = models.BooleanField(default=False)
-    is_navigation_item = models.BooleanField(default=False)
-    list_order = models.IntegerField(default=1)
+    name = models.CharField(max_length=255, help_text="The name a customer will see on the website")
+    slug = models.SlugField(max_length=100,
+        help_text="This forms part of the URL. Use lowercase letters, no special characters and no spaces!")
+    description = RichTextField(blank=True, null=True,
+        help_text="A short description that appears at the top of the Category listing page. HTML is OK")
+    parent = models.ForeignKey('Category', blank=True, null=True,
+        help_text="Is this a subcategory of something else? If not, leave blank.")
+    is_active = models.BooleanField(default=False,
+        help_text="If ticked, it will appear on the public site")
+    is_navigation_item = models.BooleanField(default=False,
+        help_text="If ticked, it will appear as a navigation item in the main nav.")
+    list_order = models.IntegerField(default=1,
+        help_text="This defines the order it appears in the navigation. Lower numbers means further left.")
     
     # SEO STUFF
-    meta_description = models.TextField(blank=True, null=True)
-    meta_title = models.CharField(max_length=255, blank=True, null=True)
-    meta_keywords = models.CharField(max_length=255, blank=True, null=True)
+    meta_description = models.TextField(blank=True, null=True,
+        help_text="A description used in the code of the page that helps Google results.")
+    meta_title = models.CharField(max_length=255, blank=True, null=True,
+        help_text="A custom page title that you can provide for search engines")
+    meta_keywords = models.CharField(max_length=255, blank=True, null=True, 
+        help_text="A list of keywords for the page. Not super-important.")
 
     def __unicode__(self):
         return self.name
@@ -192,7 +231,11 @@ class Price(models.Model):
     currency = models.ForeignKey(Currency)
     description = models.CharField(max_length=255, blank=True, null=True)
     is_active = models.BooleanField(default=False)
-#    special_postage_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    out_of_stock = models.BooleanField(default=False, 
+        help_text="Tick this to mark an item as 'Out of Stock' on the website")
+    special_postage_price = models.DecimalField(
+        max_digits=8, decimal_places=2, null=True, blank=True,
+        help_text="If this item has special pricing (above the normal rate) then add the full postage cost here (eg. if this will cost &pound;4 to post, type in 4.00 here)")
     
     def __unicode__(self):
         return "%s (%s%s)" % (self.product, self.currency.symbol, self.price)
@@ -241,6 +284,9 @@ class Page(models.Model):
     # NAVIGATION
     is_top_navigation = models.BooleanField()
     list_order = models.IntegerField(default=0)
+    
+    # FOOTER
+    is_footer_link = models.BooleanField()
     
     # SEO STUFF
     meta_description = models.TextField(blank=True, null=True)

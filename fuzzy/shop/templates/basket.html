@@ -149,6 +149,10 @@ $(document).ready( function() {
 		  </a><br/>
 		   {{ currency.symbol }}{{ thing.price.price|floatformat:"2" }} 
 		      each
+		   {% if thing.price.out_of_stock %}
+		      <br/>
+		      <span class="red">This item is out of stock! Please contact us before ordering.</span>
+		   {% endif %}
 	    </div>
         
         <div class="pure-u-1-8">
