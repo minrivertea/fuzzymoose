@@ -24,6 +24,7 @@ ANALYTICS_ID =                      ''
 SITE_NAME =                         'FuzzyMoose'
 SITE_URL =                          'http://www.fuzzymoose.co.uk'
 SITE_DOMAIN =                       'www.fuzzymoose.co.uk'
+SITE_EMAIL =                        'Angelique <info@fuzzymoose.co.uk>'
 
 DATABASES = {
     'default': {
@@ -85,6 +86,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.request',
     'fuzzy.shop.context_processors.common',
+    'django.contrib.messages.context_processors.messages',
 )
 
 BASE_TEMPLATE =                     'base.html'
@@ -147,6 +149,13 @@ CKEDITOR_CONFIGS = {
 }
 
 
+# MAIL SETTINGS
+# -------------------------------------------------------
+EMAIL_HOST = ''
+EMAIL_HOST_USER = ''
+EMAIL_PORT = ''
+
+
 # INTERNATIONAL SETTINGS
 # -------------------------------------------------------
 LANGUAGE_COOKIE_NAME = ''
@@ -156,6 +165,9 @@ try:
     from local_settings import *
 except:
     pass
+
+
+
 
 
 LOGGING = {

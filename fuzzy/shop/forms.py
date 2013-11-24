@@ -59,6 +59,9 @@ class ContactForm(forms.Form):
     your_message = forms.CharField(widget=forms.Textarea, required=False)
     captcha = CaptchaField()
 
+
+
+
 class UpdateProfileForm(forms.Form):
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)

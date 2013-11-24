@@ -1,0 +1,70 @@
+{% extends base_template %}
+{% load i18n %}
+
+{% block extracss %}
+<style type="text/css">
+
+form input[type="text"], form textarea {
+  width: 500px;
+  margin: 0 0 10px 0;   
+}
+
+p.help-text {
+  font-size: 13px;
+  margin: 0;   
+}
+
+img.captcha {
+  float: left;
+  margin: 0 10px 0 0;   
+}
+
+form input#id_captcha_1 {
+  width: 200px;   
+}
+
+</style>
+{% endblock %}
+
+{% block metadescription %}{% endblock %}
+
+{% block pagetitle%}{% trans 'Contact us' %}{% endblock %}
+
+{% block content %}
+
+<div class="pure-g-r">
+    <div class="pure-u-2-3">
+
+        <h1>Contact us</h1>
+        
+        {% if messages %}
+            {% for m in messages %}
+                <div class="message">
+                    <p>{{ m }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+		<form action="." method="post" id="contact">
+			{% csrf_token %}
+			<p>{% trans "Use our online contact form to send us a message. We respond to all messages within 12 hours." %}</p>	
+					
+			<textarea id="id_your_message" name="your_message" title="{% trans 'Write your message here...' %}" class="clearMeFocus{% if form.your_message.errors %} error{% endif %}" cols="40" rows="10">{{ form.cleaned_data.your_message }}</textarea>
+			
+			<input type="text" name="your_name" id="id_your_name" class="clearMeFocus{% if form.your_name.errors %} error{% endif %}" title="{% trans 'Your name' %}" value="{{ form.cleaned_data.your_name }}"/>
+			
+			<input type="text" name="your_email" id="id_your_email" class="clearMeFocus{% if form.your_email.errors %} error{% endif %}" title="{% trans 'Your email address' %}" value="{{ form.cleaned_data.your_email }}"/>
+			
+			<br clear="all"/>
+			<p class="help-text {% if form.captcha.errors %} red{% endif %}">{% trans "Sorry, please fill in the captcha - it stops spam." %}</p>
+			{{ form.captcha }}
+			<p class="help-text">
+				{% trans "We will never share, sell or spam your email address" %} (<a target="_blank" title="{% trans 'Read our privacy policy (opens in a new window)' %}" href="/privacy/">{% trans 'Privacy' %}</a>)
+			</p>	
+			<input class="button large" value="{% trans 'Submit' %}" type="submit"/>		
+		</form>
+    </div>
+</div>
+		
+
+{% endblock %}

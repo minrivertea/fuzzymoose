@@ -1,0 +1,9 @@
+Hi {{ form.cleaned_data.your_name }},
+
+Thanks for sending us a message on {{ site_name }} - we'll try to get back to you as soon as possible.
+
+All the best
+
+
+Angelique,
+{{ site_url }}

@@ -20,7 +20,7 @@ urlpatterns = patterns('',
     
     
     # GENERAL
-    #url(r'^contact-form-submit/$', views.contact_form_submit, name="contact_form_submit"),
+    url(r'^contact/$', views.contact, name="contact"),
     #url(r'^reviews/$', views.reviews, name="reviews"),
     #url(r'^not-me/$', views.not_you, name="not_you"),
     url(r'^currency/$', utils._set_currency, name="set_currency"),    

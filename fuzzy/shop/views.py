@@ -17,6 +17,9 @@ from django.utils.translation import get_language
 from django.core.exceptions import MultipleObjectsReturned
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
+
+
 
 # APP
 from utils import _render, _get_basket, _get_currency, _get_postage_cost
@@ -74,6 +77,38 @@ def page(request, slug):
 def page_by_id(request, id):
     page = get_object_or_404(Page, pk=id)
     return HttpResponseRedirect(reverse('page', args=[page.slug]))
+
+
+def contact(request):
+    
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            
+            # send an email to the customer
+            sender = settings.SITE_EMAIL
+            recipient = [form.cleaned_data['your_email']]
+            subject_line = 'Your message has been sent to %s' % settings.SITE_NAME
+            content = render_to_string('emails/contact_customer.txt', locals(), RequestContext(request))
+            msg = EmailMultiAlternatives(subject_line, content, sender, recipient)
+            msg.send()
+            
+            # send an email to the admin
+            sender = settings.SITE_EMAIL
+            recipient = [settings.SITE_EMAIL]
+            subject_line = '%s - a message just arrived from %s' % (settings.SITE_NAME, form.cleaned_data['your_email'])
+            content = render_to_string('emails/contact_admin.txt', locals(), RequestContext(request))
+            msg = EmailMultiAlternatives(subject_line, content, sender, recipient)
+            msg.send()
+            
+            messages.add_message(request, messages.INFO, 'Your message has been sent!')
+        
+            return HttpResponseRedirect(reverse('contact'))
+        else:
+            form = ContactForm(request.POST)
+    else:
+        form = ContactForm()
+    return _render(request, 'forms/contact.html', locals())
 
 def basket(request, order=None, discount=None):
     

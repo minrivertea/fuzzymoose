@@ -1,0 +1,6 @@
+You just got a message submitted via {{ site_url }}:
+
+{{ form.cleaned_data.your_name }} - {{ form.cleaned_data.your_email }}
+
+{{ form.cleaned_data.your_message }}
+
