@@ -320,6 +320,7 @@ class Order(models.Model):
     date_paid = models.DateTimeField(blank=True, null=True)
     
     preferred_delivery_date = models.DateTimeField(blank=True, null=True)
+    will_collect = models.BooleanField(default=False)
     
     def __unicode__(self):
         return self.order_id

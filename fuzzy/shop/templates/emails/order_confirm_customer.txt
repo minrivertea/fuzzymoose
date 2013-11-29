@@ -1,16 +1,11 @@
-{% load i18n %}{% blocktrans with order.owner.first_name|capfirst as fn and order.invoice_id as order_id %}
-Hi {{ fn }},
+Hi {{ order.shopper.user.first_name }},
 
-This is your order confirmation. Keep it for your records and just in case you need to contact us later about your order. Your order ID is {{ order_id }}{% endblocktrans %}
+We've received your order at {{ site_name }} and as soon as we've confirmed payment and delivery options, we'll get your order {% if order.will_collect %}ready for you to collect.{% else %}in the post.{% endif %} Your order ID is {{ order.invoice_id }}.
 
-----------------------------------------------------------------------------------
-{% for item in items %}
-    {{ item.quantity }} x {{ item.item.parent_product }} {% if item.weight %}({{ item.weight }}{{ weight_unit }}){% endif %}
-{% endfor %}
-----------------------------------------------------------------------------------
-    {% trans 'TOTAL' %}                     {{ order.get_amount }} {{ order.get_currency.code }}
-----------------------------------------------------------------------------------
+If you have any questions at all, please get in touch by replying to this email.
 
-Your order will be going in the post immediately - if you have any questions, just reply to this email and we'll usually respond within a few hours.
+All the best,
 
-{% include 'emailer/email_signature.txt' %}
+
+Angelique,
+{{ site_url }}

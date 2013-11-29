@@ -19,6 +19,7 @@ from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 
+import uuid
 
 
 # APP
@@ -399,7 +400,10 @@ def order_step_one(request, basket=None):
                 try:
                     order.preferred_delivery_date = request.session['DELIVERY_DATE']
                 except:
-                    pass    
+                    pass
+            
+            if form.cleaned_data['will_collect'] == True:
+                order.will_collect = True    
             
             # UPDATE ORDER WITH THE BASKET ITEMS
             basket_items = BasketItem.objects.filter(basket=basket)
@@ -465,24 +469,25 @@ def order_confirm(request):
         item.total_price = item.get_price()
         total_price += float(item.total_price)
 
-    postage_discount = False
-    if shopsettings.flat_fee_postage_price:
-        if total_price > shopsettings.postage_discount_threshold:
-            postage_discount = True
-        else:
-            total_price += float(shopsettings.flat_fee_postage_price)
-    
-    else:
-        for item in items:
-        
-            if item.price.special_postage_price:
-                total_price += float(item.quantity * item.price.special_postage_price)
-                item.total_price = item.get_price() + (item.quantity * item.price.special_postage_price)
-            
+    if not order.will_collect:
+        postage_discount = False
+        if shopsettings.flat_fee_postage_price:
+            if total_price > shopsettings.postage_discount_threshold:
+                postage_discount = True
             else:
-                total_price += float(item.quantity * shopsettings.standard_postage_price)
-                item.total_price = item.get_price() + (item.quantity * shopsettings.standard_postage_price)
+                total_price += float(shopsettings.flat_fee_postage_price)
+        
+        else:
+            for item in items:
+            
+                if item.price.special_postage_price:
+                    total_price += float(item.quantity * item.price.special_postage_price)
+                    item.total_price = item.get_price() + (item.quantity * item.price.special_postage_price)
                 
+                else:
+                    total_price += float(item.quantity * shopsettings.standard_postage_price)
+                    item.total_price = item.get_price() + (item.quantity * shopsettings.standard_postage_price)
+                    
             
         
     # DISCOUNT
@@ -493,13 +498,13 @@ def order_confirm(request):
     
     
     # FOR STRIPE, WE'LL CREATE A TOTAL VALUE IN PENNIES NOT POUNDS
-    stripe_total_price = float(total_price) * 100
-    
+    stripe_total_price = int(total_price * 100)
     if request.method == 'POST':
         
         import stripe
-        # Set your secret key: remember to change this to your live secret key in production # See your keys here https://manage.stripe.com/account 
-        stripe.api_key = settings.STRIPE_API_KEY 
+        # Set your secret key: remember to change this to your live secret key in production 
+        # See your keys here https://manage.stripe.com/account 
+        stripe.api_key = settings.STRIPE_API_SECRET_KEY 
         
         # Get the credit card details submitted by the form 
         token = request.POST['stripeToken'] 
@@ -513,12 +518,16 @@ def order_confirm(request):
                 description="payinguser@example.com" 
             ) 
             
-            return HttpResponseRedirect(reverse('order_complete'))
+            return HttpResponseRedirect(reverse('order_complete', args=[order.hashkey]))
              
         except stripe.CardError, e: 
-           # The card has been declined 
-           print "there was a big error"
-           pass
+            # The card has been declined 
+            print "there was a big error"
+            pass
+        
+        except stripe.APIConnectionError:
+            # operation timed out
+            print "please try again"
                
         
     form = PayPalPaymentsForm()
@@ -526,7 +535,11 @@ def order_confirm(request):
     return _render(request, 'forms/order_confirm.html', locals())
 
 
-def order_complete(request):
+def order_complete(request, hashkey=None):
+    
+    
+    # THIS IS WHERE STRIPE RETURNS US
+    order = get_object_or_404(Order, haskey=hashkey)
     
     
     return _render(request, 'order_complete.html', locals())  

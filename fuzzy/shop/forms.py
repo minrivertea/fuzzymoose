@@ -29,6 +29,19 @@ class OrderStepOneForm(forms.Form):
     county = forms.ChoiceField(required=False, choices=US_STATES)
     postcode = forms.CharField(max_length=200, required=True)
     country = forms.ChoiceField(required=True, choices=COUNTRY_CHOICES)
+    will_collect = forms.BooleanField()
+    
+    def clean(self):
+        data = self.cleaned_data
+        if data['will_collect'] == True:
+            data['line_1'] = ' '
+            data['line_2'] = ' '
+            data['line_3'] = ' '
+            data['town_city'] = ' '
+            data['town_city'] = ' '
+            data['country'] = ' '
+            
+        return data
     
 
 class DiscountForm(forms.Form):
@@ -44,13 +57,6 @@ class DiscountForm(forms.Form):
         return data
 
 
-class MonthlyBoxForm(forms.Form):
-    tea = forms.ModelChoiceField(required=False, queryset=Price.objects.filter(is_active=True,  
-        currency__code='GBP'), empty_label=None)
-    
-    # perhaps if it's a custom package, these fields should be required=True??
-    
-    
 
 # handles the contact us form
 class ContactForm(forms.Form):

@@ -27,6 +27,8 @@
 #products li .image {
   margin: 0px 0 10px;
   width: 95%;
+  height: 200px;
+  overflow: hidden;
 }
 
 #products li .text {
@@ -47,7 +49,7 @@
         <a href="{{ x.get_absolute_url }}"><span class="link"></span></a>
         
         <div class="image">
-            {% thumbnail x.get_main_photo.image product_photo_medium as im %}
+            {% thumbnail x.get_main_photo.image product_photo_medium crop="center" as im %}
                 <img src="{{ im.url }}" />
             {% endthumbnail %}
         </div>

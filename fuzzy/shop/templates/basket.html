@@ -68,10 +68,17 @@ $(document).ready( function() {
    display: none; 
 }
 
+#collect {
+   padding: 15px 0; 
+   font-size: 13px; 
+}
+
 #checkout-button {
   float: right;
   margin: 20px 0 0 0;   
 }
+
+
 #delivery_date form, #discount form {
   display: none;   
 }
@@ -291,8 +298,12 @@ $(document).ready( function() {
 
 	<br clear="all"/>
 	
+	<div class="pure-u-1-12">&nbsp;</div>
+	<div id="collect" class="pure-u-1-2">
+	   <p>Did you know you can collect your order yourself? We produce our truffles in West London (nr. XXX) so if it's convenient, you can come by and collect and save on postage costs. At the next step, make sure you tick the button saying <strong>I'll collect</strong>!</p>
+	</div>
 	
- 	<div id="checkout-button" class="pure-u-1-4">		
+ 	<div id="checkout-button" class="pure-u-1-4">
     	<a class="button large" href="{% url 'order_step_one' %}">Start checkout now &raquo;</a>
 	</div>
 	

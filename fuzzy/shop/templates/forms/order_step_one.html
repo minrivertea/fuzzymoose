@@ -1,13 +1,41 @@
 {% extends base_template %}
 {% load i18n %}
 
-{% block pagetitle %}{% trans 'Order (Step 2 of 4) - Your details' %}{% endblock %}
+{% block pagetitle %}{% trans 'Order (Step 2) - Your details' %}{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+$(document).ready( function() {
+    
+    $('#collect input').click( function() {
+       $('#address').toggle(); 
+    });
+    
+});
+</script>
+{% endblock %}
 
 {% block extracss %}
 <style type="text/css">
 
-</style>
+#collect {
+    float: left;
+    width: 470px;
+    margin: 0 0 30px 0;
+}
 
+#collect input {
+  float: left;
+  margin: 0 15px 0 0;
+}
+
+#collect .help {
+  font-size: 11px;   
+  float: left;
+  width: 470px;
+}
+
+</style>
 {% endblock %}
 
 {% block content %}
@@ -35,38 +63,12 @@
       <form method="post" action="." class="pure-u-1"> 	 
         {% csrf_token %}
     
-		{% if shopper %}
-	  		<h2>{% trans 'Are these your details? Please check carefully!' %}</h2>
-			{{ shopper.first_name }} {{ shopper.last_name }} ({{ shopper.email }}) - <a href="{% url not_you %}">{% trans 'not you?' %}</a>
-		
-			{% for address in shopper.get_addresses %}
-				{% if forloop.first %}
-					<br/>
-					{% include "snippets/address.html" %}
- 				{% else %}
- 					<div class="address other">
- 					{% include "snippets/address.html" %}
- 					</div>
- 				{% endif %}
-			{% endfor %}
-				<div style="display:none;">
-					<input type="text" name="first_name" id="id_first_name" value="{{ order.owner.first_name }}"/>
-	    			<input type="text" name="last_name" id="id_last_name" value="{{ order.owner.last_name }}"/>
-	    			<input type="text" name="email" id="id_email" value="{{ order.owner.email }}"/>
-	    			<input type="text" name="line_1" id="id_line_1" value="{{ order.address.line_1 }}"/>
-	    			<input type="text" name="line_2" id="id_line_2" value="{{ order.address.line_2 }}"/>
-	    			<input type="text" name="line_3" id="id_line_3" value="{{ order.address.line_3 }}"/>
-	    			<input type="text" name="town_city" id="id_town_city" value="{{ order.address.town_city }}"/>
-	    			<input type="text" name="postcode" id="id_postcode" value="{{ order.address.postcode }}"/>
-	    			<input type="text" name="country" id="id_country" value="{{ order.address.country }}"/>
-	 			</div>
-		{% else %}
 
     		{% if form.first_name.errors or form.last_name.errors or form.email.errors %}
     		<ul class="errorlist"><li>* {% trans 'Please enter all the information in the mandatory fields (highlighted red) below' %}:</li></ul>
     		{% endif %}
         <fieldset>
-            <legend>{% trans 'This just takes 1 minute - your name and email please!' %}</legend>
+            <legend>{% trans 'This just takes a minute - your name, email and address please!' %}</legend>
     		<p>
     			<label for="id_first_name">{% trans 'First name' %}</label>
     			<input  class="clearMeFocus {% if form.first_name.errors %}error{% endif %}" type="text" title="{% trans 'First name' %}" name="first_name" id="id_first_name" value="{{ first_name }}"/>
@@ -83,8 +85,13 @@
 
     	
     	<fieldset>
-    	   <legend>{% trans 'Where should we send your tea? Please provide the address we should send your tea to' %}</legend>	
-
+            <p id="collect">
+                <input type="checkbox" name="will_collect" id="id_will_collect"/>
+                <label>I'll collect the order myself</label>
+                <span class="help">If you check this box, we'll prepare your order and email you with our address and let you know when it's ready. We're based in XXXX.</span>
+            </p>
+            
+           <div id="address"> 
           <p>
           	<label for="id_house_name_number">{% trans 'House name number' %}:</label>
           	<input class="clearMeFocus {% if form.line_1.errors %}error{% endif %}" title="{% trans 'Your address...' %}" id="id_line_1" type="text" name="line_1" value="{{ line_1 }}"/>
@@ -105,15 +112,9 @@
           	<input class="clearMeFocus {% if form.town_city.errors %}error{% endif %}" title="{% trans 'Town or city' %}" id="id_town_city" type="text" name="town_city" value="{{ town_city }}"/> 
           </p>
           
-          {% if region == 'US' %}
-            <p class="styled-select">
-               <label for="id_county">{% trans 'State' %}:</label>
-            	{{ form.county }}
-            </p>
-          {% endif %}
           <p>
-          	<label for="id_postcode">{% trans 'Post / ZIP code' %}:</label>
-          	<input class="clearMeFocus {% if form.postcode.errors %}error{% endif %}" title="{% trans 'Post / ZIP code' %}" id="id_postcode" type="text" name="postcode" value="{{ postcode }}" /> 
+          	<label for="id_postcode">{% trans 'Postcode' %}:</label>
+          	<input class="clearMeFocus {% if form.postcode.errors %}error{% endif %}" title="{% trans 'Postcode' %}" id="id_postcode" type="text" name="postcode" value="{{ postcode }}" /> 
           	</p>
       	
     	  <p class="styled-select">
@@ -122,9 +123,10 @@
     	    {{ form.country }}
     	    </span>
     	  </p>
+    	  
+    	  </div>
         </fieldset> 	  
 
-	{% endif %}
 
 	<div id="checkout-button">
 		<input type="submit" value="{% trans 'Next step - confirm and pay' %} &raquo;" next="" class="button large"/>

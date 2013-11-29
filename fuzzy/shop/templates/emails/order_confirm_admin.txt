@@ -14,6 +14,9 @@ PRINT PACKING SLIP: http://www.minrivertea.com{% url print_packing_slip order.id
 
 ADDRESS:
 
+{% if order.will_collect %}
+** The customer selected to collect the order. Remember to get in touch and tell them your address etc.
+{% else %}
 {{ order.owner.first_name }} {{ order.owner.last_name }}
 {% with order.address as address %}
 {% if address.house_name_number %}{{ address.house_name_number|capfirst }}{% endif %}
@@ -23,3 +26,4 @@ ADDRESS:
 {% if address.postcode %}{{ address.postcode|upper }}{% endif %}
 {% if address.country %}{{ address.get_country_display|capfirst }}{% endif %}
 {% endwith %}
+{% endif %}

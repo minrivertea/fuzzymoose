@@ -160,11 +160,20 @@ fieldset {
 legend {
   margin: 0 0 20px 0;  
   font-style: italic; 
+  float: right;
+  width: auto;
+  max-width: 240px;
+  text-align: left;
+  background: #fff;
+  padding: 10px 15px;
+  font-size: 13px;
+  position: relative;
+  top: 40px;
 }
 
 fieldset p {
   float: left;
-  width: 100%;   
+  width: 560px;   
 }
 
 fieldset span.mandatory {
