@@ -20,6 +20,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 
 import uuid
+from datetime import datetime, timedelta
 
 
 # APP
@@ -308,6 +309,7 @@ def order_step_one(request, basket=None):
             del post_values[x]
                 
         form = OrderStepOneForm(post_values)
+        
         if form.is_valid(): 
             
             # FIRST, GET THE USER
@@ -350,22 +352,24 @@ def order_step_one(request, basket=None):
             
                     
 
-            # CREATE AN ADDRESS OBJECT        
-            address = Address.objects.create(
-                shopper = shopper,
-                line_1 = form.cleaned_data['line_1'],
-                line_2 = form.cleaned_data['line_2'],
-                line_3 = form.cleaned_data['line_3'],
-                town_city = form.cleaned_data['town_city'],
-                postcode = form.cleaned_data['postcode'],
-                country = form.cleaned_data['country'],
-            )
-            
-            try:
-                address.county = form.cleaned_data['county']
-                address.save()
-            except:
-                pass
+            if form.cleaned_data['will_collect'] == False:# CREATE AN ADDRESS OBJECT        
+                address = Address.objects.create(
+                    shopper = shopper,
+                    line_1 = form.cleaned_data['line_1'],
+                    line_2 = form.cleaned_data['line_2'],
+                    line_3 = form.cleaned_data['line_3'],
+                    town_city = form.cleaned_data['town_city'],
+                    postcode = form.cleaned_data['postcode'],
+                    country = form.cleaned_data['country'],
+                )
+                
+                try:
+                    address.county = form.cleaned_data['county']
+                    address.save()
+                except:
+                    pass
+            else:
+                address = None
             
             try:
                 # TRY TO FIND AN EXISTING ORDER
@@ -412,15 +416,16 @@ def order_step_one(request, basket=None):
             
             # SAVE THE ORDER, NOW ALL THE DATA IS THERE AND CORRECT    
             order.save()
-              
  
             # FINALLY! WE'RE DONE
             return HttpResponseRedirect(reverse('order_confirm')) 
         
         # IF THE FORM HAS ERRORS:
         else:
-                         
+                                                  
              # LOAD EXISTING DATA
+             first_name = request.POST['first_name']
+             last_name = request.POST['last_name']
              email = request.POST['email']
              line_1 = request.POST['line_1']
              line_2 = request.POST['line_2']
@@ -428,14 +433,8 @@ def order_step_one(request, basket=None):
              town_city = request.POST['town_city']
              postcode = request.POST['postcode']
              country = request.POST['country']
-             first_name = request.POST['first_name']
-             last_name = request.POST['last_name']
-             
-             try:
-                 county = request.POST['county']
-             except:
-                 pass
-             
+             will_collect = request.POST['will_collect']
+                          
              form = OrderStepOneForm(post_values)
 
         
@@ -535,12 +534,40 @@ def order_confirm(request):
     return _render(request, 'forms/order_confirm.html', locals())
 
 
-def order_complete(request, hashkey=None):
-    
+def order_complete(request, hashkey=None):    
     
     # THIS IS WHERE STRIPE RETURNS US
     order = get_object_or_404(Order, haskey=hashkey)
     
+    # FIRST, MARK THE ORDER AS 'PAID'
+    order.date_paid = datetime.now()
+    order.save()
+    
+    
+    context = {
+        'order': order,
+        'SITE_NAME': settings.SITE_NAME,
+        'site_name': settings.SITE_NAME,
+        'SITE_URL': settings.SITE_URL,
+        'site_url': settings.SITE_URL,
+    }
+    
+    # SEND THE CUSTOMER AN EMAIL
+    subject_line = 'Thanks for your order at %s' % settings.SITE_NAME
+    recipient = order.shopper.user.email
+    sender = settings.SITE_EMAIL
+    content = render_to_string('emails/order_confirm_customer.txt', context)
+    msg = EmailMultiAlternatives(subject_line, text_content, sender, recipient)
+    msg.send()
+    
+    
+    # SEND THE ADMINS AN EMAIL
+    subject_line = 'NEW ORDER ON %s' % settings.SITE_NAME
+    recipient = settings.SITE_EMAIL
+    sender = settings.SITE_EMAIL
+    content = render_to_string('emails/order_confirm_admin.txt', context)
+    msg = EmailMultiAlternatives(subject_line, text_content, sender, recipient)
+    msg.send()
     
     return _render(request, 'order_complete.html', locals())  
 

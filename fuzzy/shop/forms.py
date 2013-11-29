@@ -22,24 +22,27 @@ class OrderStepOneForm(forms.Form):
         error_messages={'required': '* Please give an email address', 'invalid': '* Please enter a valid e-mail address.'})
     first_name = forms.CharField(max_length=200, required=True, error_messages={'required': '* Please give your first name'})
     last_name = forms.CharField(max_length=200, required=True, error_messages={'required': '* Please give your last name'})
-    line_1 = forms.CharField(max_length=200, required=True)
+    line_1 = forms.CharField(max_length=200, required=False)
     line_2 = forms.CharField(max_length=200, required=False)
     line_3 = forms.CharField(max_length=200, required=False)
-    town_city = forms.CharField(max_length=200, required=True, error_messages={'required': '* Please provide a town or city name'})
-    county = forms.ChoiceField(required=False, choices=US_STATES)
-    postcode = forms.CharField(max_length=200, required=True)
+    town_city = forms.CharField(max_length=200, required=False, error_messages={'required': '* Please provide a town or city name'})
+    postcode = forms.CharField(max_length=200, required=False)
     country = forms.ChoiceField(required=True, choices=COUNTRY_CHOICES)
     will_collect = forms.BooleanField()
     
     def clean(self):
         data = self.cleaned_data
-        if data['will_collect'] == True:
-            data['line_1'] = ' '
-            data['line_2'] = ' '
-            data['line_3'] = ' '
-            data['town_city'] = ' '
-            data['town_city'] = ' '
-            data['country'] = ' '
+        if data.get('will_collect') == True:
+            data['line_1'] = 'a'
+            data['line_2'] = 'a'
+            data['line_3'] = 'a'
+            data['town_city'] = 'a'
+            data['postcode'] = 'a'
+            data['country'] = 'UK'
+        
+        else:
+            if not data['postcode'] or not data['country'] or not data['line_1']:
+                raise forms.ValidationError("You must provide at least the first line of your address, your postcode and country.")
             
         return data
     
