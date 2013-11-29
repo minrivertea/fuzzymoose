@@ -510,12 +510,20 @@ def order_confirm(request):
         
         # Create the charge on Stripe's servers - this will charge the user's card 
         try: 
+            if settings.DEBUG:
+                currency = 'usd'
+            else:
+                currency = _get_currency(request).code
+            
             charge = stripe.Charge.create( 
                 amount=stripe_total_price, # amount in cents, again 
-                currency="gbp", 
+                currency=currency, 
                 card=token, 
                 description="payinguser@example.com" 
             ) 
+            
+            order.final_amount_paid = total_price
+            order.save()
             
             return HttpResponseRedirect(reverse('order_complete', args=[order.hashkey]))
              
@@ -537,7 +545,7 @@ def order_confirm(request):
 def order_complete(request, hashkey=None):    
     
     # THIS IS WHERE STRIPE RETURNS US
-    order = get_object_or_404(Order, haskey=hashkey)
+    order = get_object_or_404(Order, hashkey=hashkey)
     
     # FIRST, MARK THE ORDER AS 'PAID'
     order.date_paid = datetime.now()
@@ -554,19 +562,19 @@ def order_complete(request, hashkey=None):
     
     # SEND THE CUSTOMER AN EMAIL
     subject_line = 'Thanks for your order at %s' % settings.SITE_NAME
-    recipient = order.shopper.user.email
+    recipient = [order.shopper.user.email]
     sender = settings.SITE_EMAIL
     content = render_to_string('emails/order_confirm_customer.txt', context)
-    msg = EmailMultiAlternatives(subject_line, text_content, sender, recipient)
+    msg = EmailMultiAlternatives(subject_line, content, sender, recipient)
     msg.send()
     
     
     # SEND THE ADMINS AN EMAIL
     subject_line = 'NEW ORDER ON %s' % settings.SITE_NAME
-    recipient = settings.SITE_EMAIL
+    recipient = [settings.SITE_EMAIL]
     sender = settings.SITE_EMAIL
     content = render_to_string('emails/order_confirm_admin.txt', context)
-    msg = EmailMultiAlternatives(subject_line, text_content, sender, recipient)
+    msg = EmailMultiAlternatives(subject_line, content, sender, recipient)
     msg.send()
     
     return _render(request, 'order_complete.html', locals())  

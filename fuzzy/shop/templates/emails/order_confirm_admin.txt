@@ -7,10 +7,9 @@
 NOTE: The customer has requested delivery on {{ order.preferred_delivery_date|date:"M. d Y" }}
 {% endif %}
 
-INVOICE ID: {{ order.invoice_id }}
-ORDER STATUS: {{ order.status }}
-ORDER VALUE: {{ order.get_amount|floatformat:"-2" }} {{ order.get_currency.code }}
-PRINT PACKING SLIP: http://www.minrivertea.com{% url print_packing_slip order.id %}
+INVOICE ID: {{ order.order_id }}
+ORDER STATUS: {% if order.date_paid %}Paid{% else %}Please double-check if payment has been received BEFORE sending{% endif %}
+ORDER VALUE: {{ order.final_amount_paid|floatformat:"-2" }} {{ order.get_currency.code }}
 
 ADDRESS:
 

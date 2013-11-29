@@ -22,6 +22,7 @@ def common(request):
     context['analytics_id'] = settings.ANALYTICS_ID        
     context['site_name'] = settings.SITE_NAME # just the loose non-techy name of the site
     context['site_domain'] = settings.SITE_DOMAIN # the url without http://
+    context['contact_email'] = settings.CONTACT_EMAIL
     context['currency'] = _get_currency(request, currency_code='GBP')
     context['base_template'] = settings.BASE_TEMPLATE
     context['stripe_api_public_key'] = settings.STRIPE_API_PUBLIC_KEY

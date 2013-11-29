@@ -5,7 +5,10 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
+from django.shortcuts import get_object_or_404
 
+
+import uuid
 
 from ckeditor.fields import RichTextField
 from sorl.thumbnail import get_thumbnail
@@ -309,6 +312,7 @@ class BasketItem(models.Model):
         return (self.quantity * self.price.price)
 
 class Order(models.Model):
+    hashkey = models.CharField(max_length=100, blank=True, null=True)
     shopper = models.ForeignKey(Shopper)
     address = models.ForeignKey(Address, blank=True, null=True)
     items = models.ManyToManyField(BasketItem, blank=True, null=True)
@@ -321,9 +325,21 @@ class Order(models.Model):
     
     preferred_delivery_date = models.DateTimeField(blank=True, null=True)
     will_collect = models.BooleanField(default=False)
+    
+    final_amount_paid = models.CharField(max_length=200, blank=True, null=True)
         
     def __unicode__(self):
         return self.order_id
+        
+    def save(self, *args, **kwargs):
+        if not self.hashkey:
+            self.hashkey = uuid.uuid1().hex
+        super(Order, self).save(*args, **kwargs)
     
+    
+    def get_currency(self):
+        # LAZY, BECAUSE SITE ONLY HAS GBP FOR NOW AND NEAR FUTURE
+        return get_object_or_404(Currency, code='GBP')
+
     
     
