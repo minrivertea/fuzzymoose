@@ -553,7 +553,7 @@ def order_confirm(request):
         # Create the charge on Stripe's servers - this will charge the user's card 
         try: 
             if settings.DEBUG:
-                currency = 'usd'
+                currency = 'gbp'
             else:
                 currency = _get_currency(request).code
             
