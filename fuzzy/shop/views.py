@@ -477,38 +477,37 @@ def order_confirm(request):
     currency = _get_currency(request)
     
     # PRICES AND POSTAGE
-    shopsettings = RequestContext(request)['shopsettings']
     items = order.items.all()
+    shopsettings = RequestContext(request)['shopsettings']
     total_price = float(0)
     for item in items:                    
         item.total_price = item.get_price()
         total_price += float(item.total_price)
 
-    if not order.will_collect:
-        postage_discount = False
-        if shopsettings.flat_fee_postage_price:
-            if total_price > shopsettings.postage_discount_threshold:
-                postage_discount = True
-            else:
-                total_price += float(shopsettings.flat_fee_postage_price)
-        
+    postage_discount = False
+    if shopsettings.flat_fee_postage_price:
+        if total_price > shopsettings.postage_discount_threshold:
+            postage_discount = True
         else:
-            for item in items:
-            
-                if item.price.special_postage_price:
-                    total_price += float(item.quantity * item.price.special_postage_price)
-                    item.total_price = item.get_price() + (item.quantity * item.price.special_postage_price)
-                
-                else:
-                    total_price += float(item.quantity * shopsettings.standard_postage_price)
-                    item.total_price = item.get_price() + (item.quantity * shopsettings.standard_postage_price)
-                    
-            
+            total_price += float(shopsettings.flat_fee_postage_price)
+    
+    else:
+        for item in items:
         
-    # DISCOUNT
+            if item.price.special_postage_price:
+                total_price += float(item.quantity * item.price.special_postage_price)
+                item.total_price = item.get_price() + (item.quantity * item.price.special_postage_price)
+            
+            else:
+                total_price += float(item.quantity * shopsettings.standard_postage_price)
+                item.total_price = item.get_price() + (item.quantity * shopsettings.standard_postage_price)
+                
+
+        
+    # DISCOUNT  
     if order.discount:
-        discount_amount = float(total_price) * float(order.discount.value)
-        percent = order.discount.value * 100
+        discount_amount = float(total_price) * float(discount.value)
+        percent = discount.value * 100
         total_price -= discount_amount
     
     
