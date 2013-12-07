@@ -336,6 +336,7 @@ $(document).ready( function() {
 
     {% if product.mixed_box %}
     
+        <p class="small"><strong>Choose any 2 for your box. You'll get equal quantities of each:</strong></p>
         <form method="post" action="." id="choices">
             {% csrf_token %}
             {{ form.choices }}
