@@ -72,12 +72,39 @@ def category_by_id(request, id):
     return HttpResponseRedirect(reverse('category', args=[category.slug]))
 
 def product(request, slug, product_slug):    
-    product = get_object_or_404(Product, slug=product_slug)
+    product = get_object_or_404(Product, slug=product_slug)    
     product.prices = Price.objects.filter(
         is_active=True,
         product=product,
         currency=RequestContext(request)['currency'],
     )
+    
+    if product.mixed_box:
+        form = MixedBoxForm()
+        
+    
+    # HANDLES THE MIXED BOX THING
+    if request.method == 'POST':
+        form = MixedBoxForm(request.POST)
+        if form.is_valid():
+            
+            price = get_object_or_404(Price, pk=form.cleaned_data['price_id'])
+            basket = _get_basket(request)
+            
+            # for mixed boxes, we'll always create a new basket item, so
+            # this way it's easier to see later on in the order process 
+            item = BasketItem.objects.create(price=price, quantity=1, basket=basket)
+
+            for x in form.cleaned_data['choices']:
+                item.mixed_box_choices.add(x)
+            
+            item.save()
+                      
+            message = '1 x %s added to your basket' % product
+            messages.add_message(request, messages.INFO, message)
+            
+            return HttpResponseRedirect(reverse('product', args=[slug, product_slug]))
+    
     return _render(request, 'product.html', locals())
 
 def product_by_id(request, id):

@@ -47,6 +47,15 @@ class OrderStepOneForm(forms.Form):
         return data
     
 
+class MixedBoxForm(forms.Form):
+    choices = forms.ModelMultipleChoiceField(
+                required=True, 
+                queryset=Product.objects.filter(is_active=True, category__isnull=False).exclude(mixed_box=True), 
+                widget=forms.CheckboxSelectMultiple
+                )
+    price_id = forms.CharField(required=True)
+
+
 class DiscountForm(forms.Form):
     discount_code = forms.CharField(required=True)
     

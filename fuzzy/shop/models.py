@@ -116,6 +116,8 @@ class Product(models.Model):
     is_active = models.BooleanField(default=False)
     category = models.ManyToManyField(Category, blank=True, null=True)
     is_featured = models.BooleanField(default=False)
+    mixed_box = models.BooleanField(default=False, 
+        help_text="Tick this and the product will allow customers to choose 2 flavours to go in this box")
 
     # SEO STUFF
     meta_description = models.TextField(blank=True, null=True)
@@ -315,6 +317,9 @@ class BasketItem(models.Model):
     basket = models.ForeignKey(Basket)
     price = models.ForeignKey(Price)
     quantity = models.IntegerField()
+    
+    # specific for mixed boxes
+    mixed_box_choices = models.ManyToManyField(Product, blank=True, null=True)
 
     def __unicode__(self):
         return "%s x %s" % (self.price, self.quantity)

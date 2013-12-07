@@ -106,6 +106,43 @@ $(document).ready( function() {
     $('.postage').tooltip({
        offset: [-15, 0],     
     });
+    
+    {% if product.mixed_box %}
+    
+        if ($( "#choices input:checked" ).length == 2) {
+              $('#choices input[type="submit"]').removeAttr('disabled'); 
+               $('#choices input[type="checkbox"]').not(':checked').attr('disabled', 'disabled');
+               $('#choices input[type="checkbox"]').not(':checked').parent('label').addClass('disabled')
+            } else {
+               $('#choices input[type="submit"]').attr('disabled', 'disabled'); 
+               $('#choices input[type="checkbox"]').not(':checked').removeAttr('disabled');
+               $('#choices input[type="checkbox"]').not(':checked').parent('label').removeClass('disabled')
+            }
+    
+        $( "#choices input[type=checkbox]" ).click( function() {
+            
+            if ($( "#choices input:checked" ).length == 2) {
+               $('#choices input[type="submit"]').removeAttr('disabled'); 
+               $('#choices input[type="checkbox"]').not(':checked').attr('disabled', 'disabled');
+               $('#choices input[type="checkbox"]').not(':checked').parent('label').addClass('disabled')
+            } else {
+               $('#choices input[type="submit"]').attr('disabled', 'disabled'); 
+               $('#choices input[type="checkbox"]').not(':checked').removeAttr('disabled');
+               $('#choices input[type="checkbox"]').not(':checked').parent('label').removeClass('disabled')
+            } 
+        
+        });
+        
+        
+        $('#choices input[type="submit"]').click( function(e) {
+            $('#choices input#id_price_id').val($(this).attr('id'));
+            $('#choices').submit();
+            e.preventDefault();
+        });
+    
+    
+    {% endif %}
+    
 
 });
 
@@ -195,8 +232,18 @@ $(document).ready( function() {
   cursor: pointer;
 }
 
-#prices li a.button {
-  float: right;   
+#prices li a.button, #prices li input.button {
+  float: right; 
+  font-weight: bold;  
+}
+
+#prices li input.button:disabled {
+  opacity: 0.6;
+}
+
+#prices li input.button:disabled:hover {
+  background: none repeat scroll 0 0 #F88400;
+  color: #fff;
 }
 
 #prices span.amount {
@@ -221,6 +268,20 @@ $(document).ready( function() {
   height: 331px;
   width: 500px;   
 }
+
+#choices ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 15px 0;
+  float: left;
+  width: 100%;   
+}
+
+#choices label.disabled {
+  opacity: 0.6; 
+  color: #999;  
+}
+
 
 </style>
 {% endblock %}
@@ -269,28 +330,53 @@ $(document).ready( function() {
 <div id="description" class="pure-u-2-5">
     {{ product.long_description|convert_links|safe }}
 
-    <ul id="prices">
-        {% for x in product.prices %}
+    {% if product.mixed_box %}
+    
+        <form method="post" action="." id="choices">
+            {% csrf_token %}
+            {{ form.choices }}
+            <input type="hidden" id="id_price_id" name="price_id" value="" />
+        
+            <ul id="prices">
+            {% for x in product.prices %}
             <li class="pure-u-1{% if x.out_of_stock %} inactive{% endif %}">
+            <span class="price">
+                <span class="amount">{{ currency.symbol }}{{ x.price }}</span> / {{ x.description }}
                 
-                {% if x.out_of_stock %}
-                <span class="cover"><span class="text">Out of stock</span></span>
+                {% if x.special_postage_price %}
+                <span class="postage button small" title="This item carries an extra postage cost of {{ currency.symbol }}{{ x.special_postage_price }} because it's heavier than most items">+ extra postage!</span>
                 {% endif %}
-                
-                <span class="price">
-                    <span class="amount">{{ currency.symbol }}{{ x.price }}</span> / {{ x.description }}
-                    
-                    {% if x.special_postage_price %}
-                    <span class="postage button small" title="This item carries an extra postage cost of {{ currency.symbol }}{{ x.special_postage_price }} because it's heavier than most items">+ extra postage!</span>
-                    {% endif %}
-                </span>
-                
-                {% if not x.out_of_stock %}
-                <a href="{% url 'add_to_basket' x.id %}" class="button">Add to basket</a>
-                {% endif %}
+            </span>
+            <input type="submit" class="button" value="Add to basket" id="{{ x.id }}" />
             </li>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </form>
+       
+    {% else %}
+
+        <ul id="prices">
+            {% for x in product.prices %}
+                <li class="pure-u-1{% if x.out_of_stock %} inactive{% endif %}">
+                    
+                    {% if x.out_of_stock %}
+                    <span class="cover"><span class="text">Out of stock</span></span>
+                    {% endif %}
+                    
+                    <span class="price">
+                        <span class="amount">{{ currency.symbol }}{{ x.price }}</span> / {{ x.description }}
+                        
+                        {% if x.special_postage_price %}
+                        <span class="postage button small" title="This item carries an extra postage cost of {{ currency.symbol }}{{ x.special_postage_price }} because it's heavier than most items">+ extra postage!</span>
+                        {% endif %}
+                    </span>
+                    
+                    {% if not x.out_of_stock %}
+                    <a href="{% url 'add_to_basket' x.id %}" class="button">Add to basket</a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </div>
 
 <div class="hr"></div>

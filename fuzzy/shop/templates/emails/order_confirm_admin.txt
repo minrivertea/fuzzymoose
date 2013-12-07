@@ -1,6 +1,6 @@
 
 {% for item in order.items.all %}
-	{{ item }}
+	{{ item }} {% if item.price.product.mixed_box %}({% for x in item.mixed_box_choices.all %}{{ x }}{% if not forloop.last %} and {% endif %}{% endfor %}){% endif %}
 {% endfor %}
 
 {% if order.preferred_delivery_date %}

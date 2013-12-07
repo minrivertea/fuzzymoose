@@ -143,9 +143,8 @@ $(document).ready( function() {
 		   </a><br/>
 		   
 		   {{ currency.symbol }}{{ thing.price.price|floatformat:"2" }} 
-		      each 
-		      
-		   
+		      {{ thing.price.description }} 
+		 		   
 		   {% if not shopsettings.flat_fee_postage_price %}
 		   <span class="small">
 		   {% if thing.price.special_postage_price %}
@@ -154,6 +153,15 @@ $(document).ready( function() {
 		          + {{ currency.symbol }}{{ shopsettings.standard_postage_price|floatformat:"2" }}
 		   {% endif %}
 		   </span>
+		   {% endif %}
+		   
+		   <br/>
+		   
+		   {% if thing.price.product.mixed_box %}
+		      <span class="small">Equal amounts of </span>
+		      {% for x in thing.mixed_box_choices.all %}
+		          <span class="small">{{ x }} {% if not forloop.last %}and {% endif %}</span>
+		      {% endfor %}
 		   {% endif %}
 		   
 		   

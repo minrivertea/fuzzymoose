@@ -2,7 +2,7 @@ Hi {{ order.shopper.user.first_name }},
 
 We've received your order at {{ site_name }} and as soon as we've confirmed payment and delivery options, we'll get your order {% if order.will_collect %}ready for you to collect.{% else %}in the post.{% endif %} Your order ID is {{ order.order_id }}. You've ordered:
 {% for x in order.items.all %}
- * {{ x }}
+ * {{ x }} {% if item.price.product.mixed_box %}({% for y in x.mixed_box_choices.all %}{{ y }}{% if not forloop.last %} and {% endif %}{% endfor %}){% endif %}
 {% endfor %}
 
 If you have any questions at all, please get in touch by replying to this email.

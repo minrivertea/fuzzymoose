@@ -24,8 +24,12 @@
   margin: 0;   
 }
 
+#items tr td {
+  padding: 10px 0;   
+}
+
 #items tr td:first-child {
-  width: 450px;  
+  width: 550px;  
   padding-right: 30px; 
 }
 
@@ -82,11 +86,11 @@
    
 <div class="pure-g-r">
 				
-	<div id="items" class="pure-u-2-3">
+	<div id="items" class="pure-u-4-5">
 		<table>
 			{% for thing in items %}
 				  <tr>				
-			    	<td class="pure-1-2" valign="top">
+			    	<td class="pure-u-1" valign="top">
 			    		<strong>{{ thing.price.product.name }} x {{ thing.quantity }}</strong> 
 			    		<span class="small">{{ thing.price.description }}</span>
 			    		{% if not shopsettings.flat_fee_postage_price %}
@@ -98,6 +102,17 @@
 			    		   {% endif %}
 			    		   </span>
 			    		{% endif %}
+			    		
+			    		
+			    		{% if thing.price.product.mixed_box %}
+			    		<br/>
+            		      <span class="small">Equal amounts of </span>
+            		      {% for x in thing.mixed_box_choices.all %}
+            		          <span class="small">{{ x }} {% if not forloop.last %}and {% endif %}</span>
+            		      {% endfor %}
+            		   {% endif %}
+			    		
+			    		
 			    		{% if thing.price.out_of_stock %}
 			    		<br/>
 			    		<span class="red small">This item is out of stock! Please don't continue with the order unless you've contacted us first to confirm.</span>
@@ -137,7 +152,7 @@
 		   </table>
 	</div>
 
-	<div id="address" class="pure-u-2-3">
+	<div id="address" class="pure-u-4-5">
         <p class="address">
             {% with order.address as address %}
               <strong>{{ order.shopper.user.first_name }} {{ order.shopper.user.last_name }}</strong><br/>
@@ -154,7 +169,7 @@
 
     
 
-<form action="" method="POST" class="pure-u-2-3" id="payment">
+<form action="" method="POST" class="pure-u-4-5" id="payment">
   {% csrf_token %}
   
   <script
