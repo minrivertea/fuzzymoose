@@ -67,7 +67,9 @@ $('.info.tea a.button').click( function() {
                     <img id="mugshot" src="{{ im.url }}" />  
                 {% endthumbnail %}
             {% endif %}      
+            {% if shopsettings.homepage_top_text %}
             {{ shopsettings.homepage_top_text|safe }}
+            {% endif %}
             <ul>
                 <li>1. <span>Order your truffles</span></li>
                 <li>2. <span>We make fresh to order and deliver</span></li>
@@ -84,7 +86,7 @@ $('.info.tea a.button').click( function() {
             <div class="pure-u-1-3 product">
                 <a href="{{ x.get_absolute_url }}"><span class="link"></span></a>
                 <div class="inner">
-                    {% thumbnail x.get_main_photo.image "300x240" crop="" as im %}
+                    {% thumbnail x.get_main_photo.image "300x240" crop="center" as im %}
                     <img src="{{ im.url }}" />
                     {% endthumbnail %}
                     <h3>{{ x.name }}</h3>
