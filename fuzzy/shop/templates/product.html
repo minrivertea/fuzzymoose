@@ -109,7 +109,7 @@ $(document).ready( function() {
     
     {% if product.mixed_box %}
     
-        if ($( "#choices input:checked" ).length == 2) {
+        if ($( "#choices input:checked" ).length == {{ product.mixed_box_number }}) {
               $('#choices input[type="submit"]').removeAttr('disabled'); 
                $('#choices input[type="checkbox"]').not(':checked').attr('disabled', 'disabled');
                $('#choices input[type="checkbox"]').not(':checked').parent('label').addClass('disabled')
@@ -121,7 +121,7 @@ $(document).ready( function() {
     
         $( "#choices input[type=checkbox]" ).click( function() {
             
-            if ($( "#choices input:checked" ).length == 2) {
+            if ($( "#choices input:checked" ).length == {{ product.mixed_box_number }}) {
                $('#choices input[type="submit"]').removeAttr('disabled'); 
                $('#choices input[type="checkbox"]').not(':checked').attr('disabled', 'disabled');
                $('#choices input[type="checkbox"]').not(':checked').parent('label').addClass('disabled')
@@ -133,7 +133,7 @@ $(document).ready( function() {
         
         });
         
-        
+
         $('#choices input[type="submit"]').click( function(e) {
             $('#choices input#id_price_id').val($(this).attr('id'));
             $('#choices').submit();
@@ -336,7 +336,7 @@ $(document).ready( function() {
 
     {% if product.mixed_box %}
     
-        <p class="small"><strong>Choose any 2 for your box. You'll get equal quantities of each:</strong></p>
+        <p class="small"><strong>Choose any {{ product.mixed_box_number }} for your box. You'll get equal quantities of each:</strong></p>
         <form method="post" action="." id="choices">
             {% csrf_token %}
             {{ form.choices }}

@@ -117,7 +117,9 @@ class Product(models.Model):
     category = models.ManyToManyField(Category, blank=True, null=True)
     is_featured = models.BooleanField(default=False)
     mixed_box = models.BooleanField(default=False, 
-        help_text="Tick this and the product will allow customers to choose 2 flavours to go in this box")
+        help_text="Tick this and the product will allow customers to choose multiple flavours to go in this box")
+    mixed_box_number = models.IntegerField(blank=True, null=True,
+        help_text="How many choices does the customer get? 2 or more.")
 
     # SEO STUFF
     meta_description = models.TextField(blank=True, null=True)
