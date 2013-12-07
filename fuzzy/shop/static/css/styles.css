@@ -20,7 +20,8 @@ body {
 #main {
   float: left; 
   width: 100%;
-  position: relative;  
+  position: relative; 
+  min-height: 400px; 
 }
 
 .message {

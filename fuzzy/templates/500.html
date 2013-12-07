@@ -1,112 +1,63 @@
-
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-
+<html>
 <head>
 
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-	<meta content="en-gb" http-equiv="Content-Language" />
-	<meta content="Min River Tea Farm - 500 Error Page" name="description" />
-	<meta content="" name="keywords"/>
+	<meta content="en" http-equiv="Content-Language" />
+	<meta content="{% block metadescription %}{% endblock %}" name="description" />
+	
+	
+	<meta name="msvalidate.01" content="" />
+  	<meta name="google-site-verification" content="" />
+	<meta name="y_key" content="" />
+    <meta name="p:domain_verify" content="" /> 
+	
 	
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta name="generator" content="Django - http://www.djangoproject.com" />
 	<meta name="DC.format" content="text/html" />
 	<meta name="DC.type" content="Django Site" />
 	<meta name="robots" content="ALL" />
-	<title>Site unavailable - minrivertea.com</title>
-	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+	
+	<title>FuzzyMoose</title>
+
+    <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Libre+Baskerville:400,700,400italic">
 
 	<style type="text/css">
-	 	body {font-family: "Times New Roman", serif; }
-	 	.sp {
-    		margin: 0 auto;
-    		position: relative;
-    		width: 960px;
-		}
-		
-		a:link, a:visited {
-		  color: #237A2A;
-		  text-decoration: none;	
-		}
-		
-		a:hover {
-		  color: #F37679;	
-		}
-	 	
-	 	#header { width: 100%; margin: 0 auto; height: 180px; }
-	 	
-	 	#logo { width: 420px; float: left; margin: 40px 0 0 0px;}
-		#logo h1 {
-			height: 80px; 
-			margin: 0px 0 0 20px;
-		}
-
-		div#logo h1 span {
-  			display: none;	
-		}
 	
-	    
-	    div#mtw {width: 100%;}
-	    
-		img.monkey {
-		  float: left;
-		  margin: 0 80px 20px 0;	
-		}
-		
-		.top {
-		  float: left;
-		  width: 400px;
-		  margin-top: 50px;	
-		}
-		
-		.top h1 {
-		  font-family: Helvetica, Arial, sans-serif;
-		  letter-spacing: -1px;
-		  color: #237A2A;	
-		}
-		
-		.top p {
-		  font-size: 17px;
-		  line-height: 1.5em;	
-		}
-		
+	   #error {
+	     position: absolute;
+	     width: 700px;
+	     height: 280px;
+	     top:0;
+	     right: 0;
+	     bottom: 0;
+	     left: 0;
+	     margin: auto;
+	     text-align: center;
+	     font-family: "Libre Baskerville", sans-serif;
+	     line-height: 2.4em;
+	   }
+	   
+	   #error h1 {
+	     color: #F88400;
+	     margin: 0;  
+	   }
+	   
+	   #error p {
+	      font-size: 1.2em;
+	   }
+	
 	</style>
-
+	
 </head>
 
-<body>
-
-    
-    <div id="container">    
-    
-	    <div id="header">
-	      <div class="sp">
-			<div id="logo">
-				<h1><span></span></h1>
-			</div>
-		  </div>
-        </div>
-        
-        <div id="mtw">
-		  <div class="sp">
-		  	<img class="monkey" src="/static/images/monkey2.jpg"/>
-			<div class="top">
-				<h1>There's been a technical problem!</h1>
-				<p>Sorry, looks like there's been some monkeys in the shop! The website has had a technical problem (it's not your fault!) and we'll try to fix it ASAP. In the meantime, if you'd like to order or get in touch, just drop us an email at <a href="mailto:mail@minrivertea.com">mail@minrivertea.com</a></p>
-			</div>
-		  </div>
 
 
+<body>	 
 
-
-
-	<br clear="all"/>
-    
-    
+    <div id="error">
+        <h1>Whoops! There's been a technical error</h1>
+        <p>We've been notified of the problem and we'll work on getting it fixed right away. If you were in the middle of an order, get in touch with your details and we'll help process your order offline. If you just want some information, you can get in touch too, or just wait a few minutes and try again.</p>
     </div>
 
 </body>

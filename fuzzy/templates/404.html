@@ -6,40 +6,39 @@
 
 {% block extracss %}
 <style type="text/css">
-body {
- background: none #fff;	
-}
-
-#header {
-  border-bottom: none;	
-}
-
-#footer {
-  display: none;	
-}
-
-.image {
-  position: relative;
-  left: -450px;
-  margin: 20px 0 0 50%;
-  width: 900px;
-  float: left;	
-}
-
-p a:link {
-  text-decoration: underline;	
-}
-</style>
+	
+	   #error {
+	     position: absolute;
+	     width: 700px;
+	     height: 280px;
+	     top:0;
+	     right: 0;
+	     bottom: 0;
+	     left: 0;
+	     margin: auto;
+	     text-align: center;
+	     font-family: "Libre Baskerville", sans-serif;
+	     line-height: 2.4em;
+	   }
+	   
+	   #error h1 {
+	     color: #F88400;
+	   }
+	   
+	   #error p {
+	      font-size: 1.2em;
+	   }
+	
+	</style>
 {% endblock %}
 
 
 {% block content %}
-<div id="mtw">
-	<div class="sp">
-		<img class="image" src="{{ static_url }}images/404.jpg"/>
-		<p class="introduction">{% blocktrans %}We can't find the page you're looking for! Perhaps it was mistyped, has moved, or doesn't exist anymore. <a href="{{ site_url }}">Go back to the homepage</a> or perhaps <a href="/contact-us/">contact us</a> if you need some information.{% endblocktrans %}</p>
+<div id="error">
+<h1>Page not found</h1>
+<p class="introduction">{% blocktrans %}We can't find the page you're looking for! Perhaps it was mistyped, has moved, or doesn't exist anymore. <a href="{{ site_url }}">Go back to the homepage</a> or perhaps <a href="/contact-us/">contact us</a> if you need some information.{% endblocktrans %}</p>
 	</div>
-</div>
+
 
 
 

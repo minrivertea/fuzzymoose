@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic import TemplateView
 
 from shop.utils import _internal_pages_list
 
@@ -17,6 +18,9 @@ urlpatterns = patterns('',
     url(r'^blog/', include('fuzzy.blog.urls')),
     url(r'^captcha/', include('captcha.urls')),
     url(r'^ckeditor/', include('ckeditor.urls')),
+
+    (r'^500/', TemplateView.as_view(template_name="500.html")),
+    (r'^404/', TemplateView.as_view(template_name="404.html")),
 
     # important for the CKEDITOR page linking
     url(r'^view_internal_pages/$', _internal_pages_list, name="internal_pages_list"),
