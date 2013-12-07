@@ -433,7 +433,10 @@ def order_step_one(request, basket=None):
              town_city = request.POST['town_city']
              postcode = request.POST['postcode']
              country = request.POST['country']
-             will_collect = request.POST['will_collect']
+             try:
+                 will_collect = request.POST['will_collect']
+             except:
+                 pass
                           
              form = OrderStepOneForm(post_values)
 

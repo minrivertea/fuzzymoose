@@ -63,9 +63,17 @@ $(document).ready( function() {
       <form method="post" action="." class="pure-u-1"> 	 
         {% csrf_token %}
     
+            {% for x in form.errors %}
+                {{ x }}
+            {% endfor %}
+    
 
     		{% if form.first_name.errors or form.last_name.errors or form.email.errors %}
-    		<ul class="errorlist"><li>* {% trans 'Please enter all the information in the mandatory fields (highlighted red) below' %}:</li></ul>
+    		<ul class="errorlist">
+    		  <li>
+    		      * {% trans 'Please enter all the information in the mandatory fields (highlighted red) below' %}:
+    		  </li>
+    		  </ul>
     		{% endif %}
         <fieldset>
             <legend>{% trans 'This just takes a minute - your name, email and address please!' %}</legend>

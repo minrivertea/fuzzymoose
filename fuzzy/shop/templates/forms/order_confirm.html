@@ -149,6 +149,8 @@
     data-amount="{{ stripe_total_price|floatformat:'0' }}"
     data-name="{{ site_name }}"
     data-description="{{ currency.symbol }}{{ total_price|floatformat:'-2' }}"
+    data-currency="{{ currency.code }}"
+    data-label="Checkout Now!"
     {% thumbnail shopsettings.logo "128x128" crop="left" format="PNG" as im %}
     data-image="{{ im.url }}"
     {% endthumbnail %}>

@@ -28,7 +28,7 @@ class OrderStepOneForm(forms.Form):
     town_city = forms.CharField(max_length=200, required=False, error_messages={'required': '* Please provide a town or city name'})
     postcode = forms.CharField(max_length=200, required=False)
     country = forms.ChoiceField(required=True, choices=COUNTRY_CHOICES)
-    will_collect = forms.BooleanField()
+    will_collect = forms.BooleanField(required=False)
     
     def clean(self):
         data = self.cleaned_data
