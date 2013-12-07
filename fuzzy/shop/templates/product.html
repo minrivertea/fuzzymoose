@@ -414,10 +414,38 @@ $(document).ready( function() {
         {% endfor %}
         
     </div>
-    
-    
-    
 </div>
+
+{% if ga_is_on %}
+    <ul class="rss">
+		<li id="google">
+			<div class="g-plusone" data-size="medium"></div>
+			<!-- Place this tag after the last +1 button tag. -->
+            <div style="display: none; width: 0;">
+            <script type="text/javascript">
+              (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+              })();
+            </script>
+            </div>
+		</li>
+		<li id="twitter">
+		      <a href="https://twitter.com/share" class="twitter-share-button" data-url="{{ site_url }}{{ product.get_absolute_url }}" data-text="I love this {{ product.name }} from {{ site_name }}" data-size="small">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+		
+		</li>
+    	<li id="facebook">
+		    <div id="fb-root"></div>
+		    <script src="http://connect.facebook.net/en_US/all.js#appId=234100573279411&amp;xfbml=1"></script>
+		    <fb:like href="{{ site_url }}{{ product.get_absolute_url }}" send="false" layout="button_count" width="80" show_faces="true" font="">
+		    </fb:like>
+		</li>
+	</ul>
+{% else %}
+	<ul class="rss"><img src="{% static 'images/debug_social.jpg' %}" /></ul>
+{% endif %}
 
 </div>
 

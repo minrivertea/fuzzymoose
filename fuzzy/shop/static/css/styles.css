@@ -19,7 +19,8 @@ body {
 
 #main {
   float: left; 
-  width: 100%;  
+  width: 100%;
+  position: relative;  
 }
 
 .message {
@@ -528,6 +529,38 @@ p.intro, #left p.intro {
 
 #right div h3 {
   margin: 0;   
+}
+
+ul.rss {
+   position: absolute;
+   top: 0px;
+   right: 0px;	
+   float: right;
+   list-style-type: none;
+   width: 290px;
+   overflow: hidden;
+   margin: 15px 0 0 0;
+   padding: 0;
+}
+
+ul.rss li {
+  float: left;
+  width: 80px;
+  margin: 0 5px 0 0;
+  position: relative;   
+}
+
+ul.rss #google {
+  width: 60px;
+}
+
+iframe[id^="oauth2relay"] { 
+    left: auto !important; 
+    right: 0px !important; 
+}
+
+ul.rss #facebook {
+  width: 75px;
 }
 
 
