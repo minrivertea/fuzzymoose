@@ -506,7 +506,12 @@ p.intro, #left p.intro {
 }
 
 #right .box .price {
-  margin: 10px 0 0;   
+  margin: 10px 0 0;
+  color: #F88400;   
+}
+
+#right .box:hover .price {
+  color: #D75B00;   
 }
 
 #right .box p:last-child {
