@@ -544,38 +544,51 @@ def order_confirm(request):
 
 def order_complete(request, hashkey=None):    
     
+    # FIRST, CLEAR THEIR BASKET
+    try:
+        request.session['BASKET_ID'] = None
+        # do I want to delete those old basket items too?? not yet
+    except:
+        pass
+    
+    
     # THIS IS WHERE STRIPE RETURNS US
     order = get_object_or_404(Order, hashkey=hashkey)
     
-    # FIRST, MARK THE ORDER AS 'PAID'
-    order.date_paid = datetime.now()
-    order.save()
+    # IF THE ORDER HASN'T ALREADY BEEN MARKED AS PAID, LET'S DO ALL THAT.
     
-    
-    context = {
-        'order': order,
-        'SITE_NAME': settings.SITE_NAME,
-        'site_name': settings.SITE_NAME,
-        'SITE_URL': settings.SITE_URL,
-        'site_url': settings.SITE_URL,
-    }
-    
-    # SEND THE CUSTOMER AN EMAIL
-    subject_line = 'Thanks for your order at %s' % settings.SITE_NAME
-    recipient = [order.shopper.user.email]
-    sender = settings.SITE_EMAIL
-    content = render_to_string('emails/order_confirm_customer.txt', context)
-    msg = EmailMultiAlternatives(subject_line, content, sender, recipient)
-    msg.send()
-    
-    
-    # SEND THE ADMINS AN EMAIL
-    subject_line = 'NEW ORDER ON %s' % settings.SITE_NAME
-    recipient = [settings.SITE_EMAIL]
-    sender = settings.SITE_EMAIL
-    content = render_to_string('emails/order_confirm_admin.txt', context)
-    msg = EmailMultiAlternatives(subject_line, content, sender, recipient)
-    msg.send()
+    if not order.date_paid:
+        # GIVE THE ORDER A DATE_PAID DATE
+        order.date_paid = datetime.now()
+        
+        context = {
+            'order': order,
+            'SITE_NAME': settings.SITE_NAME,
+            'site_name': settings.SITE_NAME,
+            'SITE_URL': settings.SITE_URL,
+            'site_url': settings.SITE_URL,
+        }
+        
+        # SEND THE CUSTOMER AN EMAIL
+        subject_line = 'Thanks for your order at %s' % settings.SITE_NAME
+        recipient = [order.shopper.user.email]
+        sender = settings.SITE_EMAIL
+        content = render_to_string('emails/order_confirm_customer.txt', context)
+        msg = EmailMultiAlternatives(subject_line, content, sender, recipient)
+        msg.send()
+        
+        
+        # SEND THE ADMINS AN EMAIL
+        subject_line = 'NEW ORDER ON %s' % settings.SITE_NAME
+        recipient = [settings.SITE_EMAIL]
+        sender = settings.SITE_EMAIL
+        content = render_to_string('emails/order_confirm_admin.txt', context)
+        msg = EmailMultiAlternatives(subject_line, content, sender, recipient)
+        msg.send()
+        
+        # FINALLY, SAVE THE ORDER
+        
+        order.save()
     
     return _render(request, 'order_complete.html', locals())  
 

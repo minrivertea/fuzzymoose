@@ -8,32 +8,18 @@
 <script type="text/javascript">
 $(document).ready( function() {
 
-    
-    $("#delivery_date .toggle").click( function() {
-    	$("#delivery_date form").toggle();
-    	$(this).toggle();
-    	return false;
+
+    $('.toggle').click( function(e) {
+        $(this).hide();
+        $('#' + $(this).attr('rel')).show();
+        e.preventDefault();
     });
     
-    $("#delivery_date .cancel").click( function() {
-    	$("#delivery_date form").toggle();
-    	$("#delivery_date .toggle").toggle();
-    	return false;
+    $('.cancel').click( function(e) {
+        $(this).parent('form').hide();
+        $(this).parent('form').siblings('.toggle').show()        
+        e.preventDefault();
     });
-    
-    $("#discount .toggle").click( function() {
-    	$("#discount form").toggle();
-    	$(this).toggle();
-    	return false;
-    });
-    
-    $("#discount .cancel").click( function() {
-    	$("#discount form").toggle();
-    	$("#discount .toggle").toggle();
-    	return false;
-    });
-    
-    
     
     
     $('#id_preferred_delivery_date').datepicker();
@@ -236,13 +222,13 @@ $(document).ready( function() {
 		      </span>
 		  {% else %}
 		  
-		  <span class="toggle">Click to choose a delivery date</span>
+		  <a href="" class="toggle" rel="delivery_date_form">Click to choose a delivery date</a>
 		  
 		  {% endif %}
 		  
-		  <form action="{% url 'update_delivery_date' %}" method="post">
+		  <form action="{% url 'update_delivery_date' %}" method="post" id="delivery_date_form">
 		      {% csrf_token %}
-		      <input type="text" id="id_preferred_delivery_date" value="{% if delivery_date %}{{ delivery_date }}{% endif %}" name="preferred_delivery_date"/>
+		      <input type="text" id="id_preferred_delivery_date" value="{% if delivery_date %}{{ delivery_date }}{% endif %}" name="preferred_delivery_date" title="Click to choose your preferred delivery date" class="clearMeFocus"/>
 		      <input type="submit" value="Save" class="button small"/>
 		      <a href="#" class="cancel button red small">Cancel</a>
 		  </form>
@@ -257,8 +243,8 @@ $(document).ready( function() {
 		{% if not discount %}
 		<div class="pure-u-1-12">&nbsp;</div>
 		<div class="pure-u-2-3">
-		  <a href="" class="toggle">Got a discount code?</a>
-		  <form action="." method="post">
+		  <a href="" class="toggle" rel="discount_form">Got a discount code?</a>
+		  <form action="." method="post" id="discount_form">
 		      {% csrf_token %}
             <input type="text" name="discount_code" id="id_discount_code" class="clearMeFocus pure-u-1-3" title="Enter discount code here"/>
             <input type="submit" class="button small" value="Apply" id="submit"/>
@@ -300,7 +286,7 @@ $(document).ready( function() {
 	
 	<div class="pure-u-1-12">&nbsp;</div>
 	<div id="collect" class="pure-u-1-2">
-	   <p>Did you know you can collect your order yourself? We produce our truffles in West London (nr. XXX) so if it's convenient, you can come by and collect and save on postage costs. At the next step, make sure you tick the button saying <strong>I'll collect</strong>!</p>
+	   <p>Did you know you can collect your order yourself and save on postage costs? We produce our truffles in South London and we are happy to arrange a collection from any major London railway station.  At the next step just make sure you tick the button saying <strong>I'll collect!</strong></p>
 	</div>
 	
  	<div id="checkout-button" class="pure-u-1-4">
