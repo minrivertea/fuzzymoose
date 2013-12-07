@@ -31,7 +31,6 @@ class ShopSettings(models.Model):
     postage_discount_threshold = models.DecimalField(
         max_digits=8, decimal_places=2, null=True, blank=True, 
         help_text="Is postage free if the customer orders more than &pound;XX? Put in that value here.")
-    homepage_browser_title = models.CharField(max_length=255, blank=True, null=True)
     google_analytics_script = models.TextField(blank=True, null=True,
         help_text="Google gives you a script to place on the page that tracks visits - paste the whole thing here in its entirety (including the &lt;script&gt; tags!)")
     
@@ -47,8 +46,20 @@ class ShopSettings(models.Model):
     # ALLOWS CHANGING OF VARIOUS COLOURS
     extra_css = models.TextField(blank=True, null=True, 
         help_text="Add in any extra css rules here and they will override the standard CSS on every page.")
-    
     link_color = ColorPickerField(blank=True, null=True)
+    
+    # HOMEPAGE RELATED STUFF
+    homepage_browser_title = models.CharField(max_length=255, blank=True, null=True)
+    homepage_top_text = models.TextField(blank=True, null=True,
+        help_text="The intro text at the top of the homepage.")
+    homepage_mugshot = models.ImageField(upload_to="homepage", blank=True, null=True, 
+        help_text="A little mugshot that appears next to the introduction text on the homepage. 90x120px")
+    homepage_big_text = models.TextField(blank=True, null=True,
+        help_text="The large text in the middle of the homepage")
+    homepage_image = models.ImageField(upload_to="homepage", blank=True, null=True,
+        help_text="The full-width image at the bottom of the homepage. Make sure it's at least 1000px wide")
+    homepage_image_text = RichTextField(blank=True, null=True,
+        help_text="The intro text at the top of the homepage.")
     
     def __unicode__(self):
         return "Shop Settings: %s" % self.id
@@ -104,7 +115,7 @@ class Product(models.Model):
     content = RichTextField(blank=True, null=True)
     is_active = models.BooleanField(default=False)
     category = models.ManyToManyField(Category, blank=True, null=True)
-    
+    is_featured = models.BooleanField(default=False)
 
     # SEO STUFF
     meta_description = models.TextField(blank=True, null=True)

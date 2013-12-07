@@ -333,12 +333,42 @@ input[type="text"], input[type="email"], textarea {
   margin: 0 0 0px 0;  
 }
 
+#intro ul {
+  list-style-type: none;
+  margin: 20px 0 0 ;
+  padding: 0px 0 0 0;
+  color: #333;
+  font-weight: bold ;
+}
+
+#intro ul li {
+    background: none repeat scroll 0 0 #F6F3EB;
+    display: inline;
+    font-size: 1.1em;
+    margin: 0 5px 0 0;
+    padding: 7px 15px 5px;
+    position: relative;
+}
+
+#intro ul li:first-child {
+  padding-left: 10px;   
+}
+
+#intro ul li span {
+  font-weight: normal;
+  color: #E26800;
+}
+
 #products {
   margin: 0 0 20px 0;   
 }
 
 #products li:hover > .image, #products li:hover > .text {
   opacity: 0.8;   
+}
+
+#products .product {
+  position: relative;   
 }
 
 .product .inner {
@@ -417,11 +447,13 @@ input[type="text"], input[type="email"], textarea {
 }
 
 #photo-banner .text {
-  position: absolute;
-  right: 40px;
-  bottom: 40px;
-  width: 35%; 
-  font-size: 1.2em;  
+    background: none repeat scroll 0 0 #FFFFFF;
+    bottom: 40px;
+    font-size: 1.2em;
+    padding: 15px 20px;
+    position: absolute;
+    right: 40px;
+    width: 35%;
 }
 
 #photo-banner .text p {
@@ -467,6 +499,10 @@ p.intro, #left p.intro {
 
 #right .box img {
   width: 100%;   
+}
+
+#right .box img.cards {
+  width: auto;   
 }
 
 #right .box .price {

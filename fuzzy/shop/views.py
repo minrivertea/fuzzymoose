@@ -47,6 +47,19 @@ def staff_required(function=None, redirect_field_name=auth.REDIRECT_FIELD_NAME):
 
 
 def home(request):    
+    
+    featured_products = Product.objects.filter(
+                is_active=True, 
+                category__isnull=False,
+                is_featured=True,
+                )[:3]
+    for x in featured_products:
+        try:
+            x.price = x.get_prices(request)[0]
+        except:
+            x.price = None
+    
+    
     return _render(request, 'home.html', locals())
     
     
