@@ -26,6 +26,7 @@ SITE_URL =                          'http://www.fuzzymoose.co.uk'
 SITE_DOMAIN =                       'www.fuzzymoose.co.uk'
 SITE_EMAIL =                        'Angelique <info@fuzzymoose.co.uk>'
 CONTACT_EMAIL =                     'info@fuzzymoose.co.uk'
+SERVER_EMAIL =                      CONTACT_EMAIL
 
 DATABASES = {
     'default': {
