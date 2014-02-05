@@ -203,6 +203,7 @@
     
     <div class="info pure-u-1-3">
         <h3>{% trans 'Problems or questions?' %}</h3>
+        {% url 'page' 'contact-us' as contact_url %}
         <p>{% blocktrans %}We aim to offer first class customer service - if you have ANY problems or questions, <a href="{{ contact_url }}">contact us</a> immediately. We'll respond as quickly as possible, usually within a few hours.{% endblocktrans %}</p>
     </div>
 

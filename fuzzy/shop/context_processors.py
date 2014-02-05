@@ -70,13 +70,12 @@ def common(request):
             basket_quantity += item.quantity
             basket_amount += float(item.get_price())
         
-        # POSTAGE    
-        if basket_amount > context['shopsettings'].postage_discount_threshold:
-            postage_cost = 0
-        else:
-            postage_cost = _get_postage_cost(request, basket_items)
-        
-        basket_amount += float(postage_cost)
+        # POSTAGE (EXCLUDED TEMPORARILY)  
+        #if basket_amount > context['shopsettings'].postage_discount_threshold:
+        #    postage_cost = 0
+        #else:
+        #    postage_cost = _get_postage_cost(request, basket_items)
+        #basket_amount += float(postage_cost)
         
         
    

@@ -145,8 +145,13 @@ class Product(models.Model):
     def get_reviews(self):
         return Review.objects.filter(is_published=True, product=self)[:2]
     
-    def get_prices(self, request):
-        return Price.objects.filter(product=self, is_active=True)
+    def get_prices(self, request, in_stock_only=False):
+        if in_stock_only:
+            prices =  Price.objects.filter(product=self, is_active=True)
+        else:
+            prices = Price.objects.filter(product=self, out_of_stock=False, is_active=True)
+        
+        return prices
     
     def get_photos(self):
         return Photo.objects.filter(related_product=self, is_published=True)

@@ -7,6 +7,10 @@
 <script type="text/javascript">
 $(document).ready( function() {
     
+    {% if will_collect %}
+    $('#address').toggle();
+    {% endif %}
+    
     $('#collect input').click( function() {
        $('#address').toggle(); 
     });
@@ -62,13 +66,8 @@ $(document).ready( function() {
 
       <form method="post" action="." class="pure-u-1"> 	 
         {% csrf_token %}
-    
-            {% for x in form.errors %}
-                {{ x }}
-            {% endfor %}
-    
 
-    		{% if form.first_name.errors or form.last_name.errors or form.email.errors %}
+    		{% if form.first_name.errors or form.last_name.errors or form.email.errors or form.line_1.errors or form.postcode.errors or form.town_city.errors %}
     		<ul class="errorlist">
     		  <li>
     		      * {% trans 'Please enter all the information in the mandatory fields (highlighted red) below' %}:
@@ -94,7 +93,7 @@ $(document).ready( function() {
     	
     	<fieldset>
             <p id="collect">
-                <input type="checkbox" name="will_collect" id="id_will_collect"/>
+                <input type="checkbox" name="will_collect" id="id_will_collect" {% if will_collect %}checked="checked"{% endif %}/>
                 <label>I'll collect the order myself</label>
                 <span class="help">If you check this box we'll prepare your order and e-mail you to arrange a time and place for collection when it's ready. We're based in South London.</span>
             </p>
@@ -124,13 +123,7 @@ $(document).ready( function() {
           	<label for="id_postcode">{% trans 'Postcode' %}:</label>
           	<input class="clearMeFocus {% if form.postcode.errors %}error{% endif %}" title="{% trans 'Postcode' %}" id="id_postcode" type="text" name="postcode" value="{{ postcode }}" /> 
           	</p>
-      	
-    	  <p class="styled-select">
-    	    <label for="id_country">{% trans 'Country' %}:</label>
-    	    <span class="country">
-    	    {{ form.country }}
-    	    </span>
-    	  </p>
+      
     	  
     	  </div>
         </fieldset> 	  

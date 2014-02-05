@@ -2,6 +2,7 @@ from django import forms
 from django.conf import settings
 from django.forms import ModelForm
 from django.contrib.auth.models import User
+from django.forms.util import ErrorList
 
 from captcha.fields import CaptchaField
 
@@ -26,24 +27,31 @@ class OrderStepOneForm(forms.Form):
     line_2 = forms.CharField(max_length=200, required=False)
     line_3 = forms.CharField(max_length=200, required=False)
     town_city = forms.CharField(max_length=200, required=False, error_messages={'required': '* Please provide a town or city name'})
-    postcode = forms.CharField(max_length=200, required=False)
-    country = forms.ChoiceField(required=True, choices=COUNTRY_CHOICES)
+    postcode = forms.CharField(max_length=200, required=False, error_messages={'required': '* Please provide a postcode'})
     will_collect = forms.BooleanField(required=False)
+
     
     def clean(self):
         data = self.cleaned_data
-        if data.get('will_collect') == True:
+        if data.get('will_collect') == True:            
             data['line_1'] = 'a'
-            data['line_2'] = 'a'
-            data['line_3'] = 'a'
             data['town_city'] = 'a'
             data['postcode'] = 'a'
-            data['country'] = 'UK'
         
         else:
-            if not data['postcode'] or not data['country'] or not data['line_1']:
-                raise forms.ValidationError("You must provide at least the first line of your address, your postcode and country.")
-            
+            if not data['postcode']:
+                self._errors['postcode'] = 'error'
+                
+            if not data['line_1']:
+                self._errors['line_1'] = 'error'
+                
+            if not data['town_city']:
+                self._errors['town_city'] = 'error'
+                
+            if not data['postcode'] or not data['town_city'] or not data['line_1']:
+                raise forms.ValidationError(' ')
+                    
+              
         return data
     
 

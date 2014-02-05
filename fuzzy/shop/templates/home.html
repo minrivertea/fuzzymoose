@@ -64,7 +64,7 @@ $('.info.tea a.button').click( function() {
         <div id="intro">
             {% if shopsettings.homepage_mugshot %}
                 {% thumbnail shopsettings.homepage_mugshot "90x120" crop="center" as im %}
-                    <img id="mugshot" src="{{ im.url }}" />  
+                    <img id="mugshot" src="{{ im.url }}" alt="Home"/>  
                 {% endthumbnail %}
             {% endif %}      
             {% if shopsettings.homepage_top_text %}
@@ -73,7 +73,7 @@ $('.info.tea a.button').click( function() {
             <ul>
                 <li>1. <span>Order your truffles</span></li>
                 <li>2. <span>We make fresh to order and deliver</span></li>
-                <li>3. <span>Eat your delicious truffles</span></li>
+                <li>3. <span>Eat</span></li>
             </ul>
             
         </div>

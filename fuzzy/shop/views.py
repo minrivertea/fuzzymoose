@@ -48,17 +48,20 @@ def staff_required(function=None, redirect_field_name=auth.REDIRECT_FIELD_NAME):
 
 def home(request):    
     
-    featured_products = Product.objects.filter(
+    products = Product.objects.filter(
                 is_active=True, 
                 category__isnull=False,
                 is_featured=True,
-                )[:3]
-    for x in featured_products:
+                )
+                
+    featured_products = []
+    for x in products:
         try:
-            x.price = x.get_prices(request)[0]
+            x.price = x.get_prices(request, in_stock_only=True)[0]
+            featured_products.append(x)
         except:
             x.price = None
-    
+    featured_products = featured_products[:3]
     
     return _render(request, 'home.html', locals())
     
@@ -314,15 +317,20 @@ def order_step_one(request, basket=None):
     try:
         order = get_object_or_404(Order, id=request.session['ORDER_ID'])
         email = order.shopper.user.email
-        line_1 = order.address.line_1
-        line_2 = order.address.line_2
-        line_3 = order.address.line_3
-        town_city = order.address.town_city
-        postcode = order.address.postcode
-        county = order.address.county
-        country = order.address.country
         first_name = order.shopper.user.first_name
         last_name = order.shopper.user.last_name
+        will_collect = order.will_collect
+        
+        try:
+            line_1 = order.address.line_1
+            line_2 = order.address.line_2
+            line_3 = order.address.line_3
+            town_city = order.address.town_city
+            postcode = order.address.postcode
+            county = order.address.county
+        except:
+            pass
+        
     except:
         order = None
     
@@ -336,7 +344,7 @@ def order_step_one(request, basket=None):
         initial_values = (
             _('First name'), _('Last name'), _('Email address'),
             _('Your address...'), _(' ...address continued (optional)'),
-            _('Town or city'), _('State'), _('Post / ZIP code'), _('--'),
+            _('Town or city'), _('State'), _('Postcode'), _('--'),
             )
                         
         to_delete = []
@@ -348,50 +356,46 @@ def order_step_one(request, basket=None):
         for x in to_delete:
             del post_values[x]
                 
-        form = OrderStepOneForm(post_values)
+        form = OrderStepOneForm(post_values)        
         
         if form.is_valid(): 
             
-            # FIRST, GET THE USER
-            if request.user.is_authenticated():
-                user = request.user
-            else:
-                try:
-                    user = User.objects.get(email=form.cleaned_data['email'])
-                    
-                except:
-                    creation_args = {
+            
+            # START OFF WITH THE USER OBJECT
+            try:
+                user = User.objects.get(email=form.cleaned_data['email'])
+            except:
+                creation_args = {
                             'username': form.cleaned_data['email'],
                             'email': form.cleaned_data['email'],
                             'password': uuid.uuid1().hex,
-                    }
-                    user = User.objects.create(**creation_args)
-                    user.first_name = form.cleaned_data['first_name']
-                    user.last_name = form.cleaned_data['last_name']
-                    user.save()
-                
-                # SECRETLY LOG THE USER IN
-                from django.contrib.auth import load_backend, login
-                for backend in settings.AUTHENTICATION_BACKENDS:
-                    if user == load_backend(backend).get_user(user.pk):
-                        user.backend = backend
-                if hasattr(user, 'backend'):
-                    login(request, user)
+                            }
+                user = User.objects.create(**creation_args)
+                user.first_name = form.cleaned_data['first_name']
+                user.last_name = form.cleaned_data['last_name']
+                user.save()
             
             
+            # NOW LET'S SEE ABOUT OUR SHOPPER OBJECT
             try:
                 shopper = get_object_or_404(Shopper, user=user)
             except MultipleObjectsReturned:
                 shopper = Shopper.objects.filter(user=user)[0]
-            
             except:
                 creation_args = {
-                    'user': user,
+                        'user': user,
                 }
                 shopper = Shopper.objects.create(**creation_args)
             
+            
+            # FINALLY LET'S UPDATE OUR ORDER OBJECT IF WE HAVE IT
+            # WE SHOULD ALWAYS RESPECT WHATEVER THE FORM SUBMISSION CONTAINS            
+            if order:
+                order.shopper = shopper
+                order.save()
+            
                     
-
+            # DELIVERY OR COLLECTION?
             if form.cleaned_data['will_collect'] == False:# CREATE AN ADDRESS OBJECT        
                 address = Address.objects.create(
                     shopper = shopper,
@@ -400,7 +404,6 @@ def order_step_one(request, basket=None):
                     line_3 = form.cleaned_data['line_3'],
                     town_city = form.cleaned_data['town_city'],
                     postcode = form.cleaned_data['postcode'],
-                    country = form.cleaned_data['country'],
                 )
                 
                 try:
@@ -411,16 +414,15 @@ def order_step_one(request, basket=None):
             else:
                 address = None
             
-            try:
-                # TRY TO FIND AN EXISTING ORDER
-                order = get_object_or_404(Order, id=request.session['ORDER_ID'])
+            
+            
+            # CREATE OR UPDATE THE ORDER OBJECT
+            if order:
                 if not order.hashkey:
                     order.hashkey = uuid.uuid1().hex
                     order.save()
                                 
-                
-            except:                
-                # IF THERE'S NO ORDER, CREATE ONE NOW
+            else:                
                 creation_args = {
                     'date_confirmed': datetime.now(),
                     'address': address,
@@ -432,12 +434,15 @@ def order_step_one(request, basket=None):
                 order.order_id = "ORDER-00%s" % (order.id)
                 request.session['ORDER_ID'] = order.id
             
+            
             # DO THEY HAVE A VALID DISCOUNT CODE?
             try: 
                 discount = get_object_or_404(Discount, pk=request.session['DISCOUNT_ID'])
                 order.discount = discount
             except:
                 pass
+            
+            
             
             # DID THEY SPECIFY A DELIVERY DATE EARLIER?
             if not order.preferred_delivery_date:
@@ -446,16 +451,25 @@ def order_step_one(request, basket=None):
                 except:
                     pass
             
+            
+            
+            # DID THEY WANT TO COLLECT THE ORDER THEMSELVES?
             if form.cleaned_data['will_collect'] == True:
                 order.will_collect = True    
+            
+            
             
             # UPDATE ORDER WITH THE BASKET ITEMS
             basket_items = BasketItem.objects.filter(basket=basket)
             for item in basket_items:
                 order.items.add(item)
             
+            
+            
             # SAVE THE ORDER, NOW ALL THE DATA IS THERE AND CORRECT    
             order.save()
+ 
+ 
  
             # FINALLY! WE'RE DONE
             return HttpResponseRedirect(reverse('order_confirm')) 
@@ -472,7 +486,6 @@ def order_step_one(request, basket=None):
              line_3 = request.POST['line_3']
              town_city = request.POST['town_city']
              postcode = request.POST['postcode']
-             country = request.POST['country']
              try:
                  will_collect = request.POST['will_collect']
              except:
