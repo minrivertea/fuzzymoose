@@ -45,7 +45,6 @@ def staff_required(function=None, redirect_field_name=auth.REDIRECT_FIELD_NAME):
 
 
 
-
 def home(request):    
     
     products = Product.objects.filter(
@@ -525,22 +524,23 @@ def order_confirm(request):
         total_price += float(item.total_price)
 
     postage_discount = False
-    if shopsettings.flat_fee_postage_price:
-        if total_price > shopsettings.postage_discount_threshold:
-            postage_discount = True
-        else:
-            total_price += float(shopsettings.flat_fee_postage_price)
-    
-    else:
-        for item in items:
-        
-            if item.price.special_postage_price:
-                total_price += float(item.quantity * item.price.special_postage_price)
-                item.total_price = item.get_price() + (item.quantity * item.price.special_postage_price)
-            
+    if not order.will_collect:
+        if shopsettings.flat_fee_postage_price:
+            if total_price > shopsettings.postage_discount_threshold:
+                postage_discount = True
             else:
-                total_price += float(item.quantity * shopsettings.standard_postage_price)
-                item.total_price = item.get_price() + (item.quantity * shopsettings.standard_postage_price)
+                total_price += float(shopsettings.flat_fee_postage_price)
+        
+        else:
+            for item in items:
+            
+                if item.price.special_postage_price:
+                    total_price += float(item.quantity * item.price.special_postage_price)
+                    item.total_price = item.get_price() + (item.quantity * item.price.special_postage_price)
+                
+                else:
+                    total_price += float(item.quantity * shopsettings.standard_postage_price)
+                    item.total_price = item.get_price() + (item.quantity * shopsettings.standard_postage_price)
                 
 
         

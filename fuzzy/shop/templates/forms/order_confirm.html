@@ -13,6 +13,10 @@
 {% block extracss %}
 <style type="text/css">
 
+#basket {
+  display: none;   
+}
+
 #address {
   margin: 20px 0 0;
   border-top: 1px dashed #fff;
@@ -123,20 +127,29 @@
 	        {% endfor %}
 	        
 	        
-	    	{% if shopsettings.flat_fee_postage_price %}
-	    	
-	    	  {% if postage_discount %}
-	    	      <tr>
-    	    	    <td colspan="2"><span class="small"><em>{% blocktrans with currency.symbol as symbol and shopsettings.postage_discount_threshold as ptd %}There is no postage charge, because your order is over {{ symbol }}{{ ptd }}{% endblocktrans %}</em></span></td>
-	    	      </tr>
-	    	  {% else %}
-	    	      <tr>
-	    	          <td>{% trans 'Postage' %}</td>
-	    	          <td>{{ currency.symbol }}{{ shopsettings.flat_fee_postage_price|floatformat:"2" }}</td>
-	    	      </tr>
-	    	  {% endif %}
-	    	
-	    	{% endif %}
+	        {% if order.will_collect %}
+	               <tr>
+        	    	    <td><span class="small"><em>You've nominated to collect your order instead of having it posted to you. There's no shipping charge, and we'll contact you once your order is paid to confirm collection arrangements.</em></span></td>
+        	    	    <td class="strikethrough">{{ currency.symbol }}{{ shopsettings.flat_fee_postage_price|floatformat:"2" }} </td>
+    	    	   </tr>   
+	        {% else %}
+	        
+    	    	{% if shopsettings.flat_fee_postage_price %}
+    	    	
+    	    	  {% if postage_discount %}
+    	    	      <tr class="{% if order.will_collect %}strikethrough{% endif %}">
+        	    	    <td colspan="2"><span class="small"><em>{% blocktrans with currency.symbol as symbol and shopsettings.postage_discount_threshold as ptd %}There is no postage charge, because your order is over {{ symbol }}{{ ptd }}{% endblocktrans %}</em></span></td>
+    	    	      </tr>
+    	    	  {% else %}
+    	    	      <tr>
+    	    	          <td>{% trans 'Postage' %}</td>
+    	    	          <td>{{ currency.symbol }}{{ shopsettings.flat_fee_postage_price|floatformat:"2" }}</td>
+    	    	      </tr>
+    	    	  {% endif %}
+    	    	
+    	    	{% endif %}
+    	    	
+    	    {% endif %}
 	    		        
 	        
 	        {% if order.discount %}
@@ -159,7 +172,7 @@
                 {{ order.shopper.user.email }}<br/>
                 
                 {% if order.will_collect %}
-                <p>You've asked to collect the order yourself. There's no postage charge, and we'll let you know by email when your order is ready to collect.</p>
+                <p>ANGELIQUE - what text should go here? I suggest a nice reminder to the customer about your location, and how they can collect, and to double confirm that they are willing to collect.</p>
                 {% else %}
                 {% include "snippets/address.html" %}
                 {% endif %}

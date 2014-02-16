@@ -146,10 +146,11 @@ class Product(models.Model):
         return Review.objects.filter(is_published=True, product=self)[:2]
     
     def get_prices(self, request, in_stock_only=False):
+        
         if in_stock_only:
-            prices =  Price.objects.filter(product=self, is_active=True)
+            prices =  Price.objects.filter(product=self, is_active=True, out_of_stock=False)
         else:
-            prices = Price.objects.filter(product=self, out_of_stock=False, is_active=True)
+            prices = Price.objects.filter(product=self, is_active=True)
         
         return prices
     
@@ -315,8 +316,12 @@ class Page(models.Model):
 
 class Basket(models.Model):
     date_created = models.DateTimeField(default=datetime.now())
+    
     def __unicode__(self):
         return self.id
+    
+    def get_items(self):
+        return BasketItem.objects.filter(basket=self)
     
 
 

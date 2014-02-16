@@ -64,6 +64,7 @@
 	   {% endif %}
 	   
 	</style>
+	{# END CUSTOM SHOPSETTINGS #}
 	
 
 	<!--[if lte IE 8]>
@@ -104,10 +105,7 @@
     		<span class="basket"></span>
             <div id="quantity">
     	       <span class="q">{{ basket_quantity }}</span> item{{ basket_quantity|pluralize }} / {{ currency.symbol }}<span class="p">{{ basket_amount|floatformat:"2" }}</span>
-    	       {% if basket_quantity > 0 %}{% endif %}
-    	       {% if basket_quantity %}
-    	       <a href="{% url 'basket' %}" title="View your basket" alt="View your basket">Checkout now &raquo;</a>
-    	       {% endif %}
+    	       <a href="{% url 'basket' %}" title="View your basket" alt="View your basket">View your basket &raquo;</a>
             </div>
         </div>
 

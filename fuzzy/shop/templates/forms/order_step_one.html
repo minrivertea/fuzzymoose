@@ -5,15 +5,54 @@
 
 {% block extrajs %}
 <script type="text/javascript">
+
+
+function calculateSubTotal() {
+  
+  var subTotal = 0;
+  
+  $('#summary tr.item').each( function(i,v) {    
+    if ( $(this).attr('data-amount') ) {
+      subTotal += parseFloat( $(this).attr('data-amount') );
+    }
+  });
+  
+  /// WRITE IN THE POSTAGE AMOUNT
+  $('#postage .amount').text( $('#postage').attr('data-amount') );
+  
+  
+  /// NOW CALCULATE POSTAGE
+  if ( $('#collect input').is(':checked') ) {
+    $('#postage').addClass('strikethrough');   
+  } else {
+    subTotal += parseFloat( $('#postage').attr('data-amount') ); 
+  }
+  
+  
+  $('#total .amount').text(subTotal.toFixed(2));   
+}
+
 $(document).ready( function() {
     
+    $('form label').not('#will_collect_label').hide();
+    
     {% if will_collect %}
-    $('#address').toggle();
+        $('#address').hide();
+        $('#postage').addClass('strikethrough');
     {% endif %}
     
+    if ( $('#collect input').is(':checked') ) {
+      $('#address').hide(); 
+      $('#postage').addClass('strikethrough');  
+    }
+    
     $('#collect input').click( function() {
-       $('#address').toggle(); 
+       $('#address').toggle();
+       $('#postage').removeClass('strikethrough');
+       calculateSubTotal();
     });
+    
+    calculateSubTotal();
     
 });
 </script>
@@ -21,6 +60,10 @@ $(document).ready( function() {
 
 {% block extracss %}
 <style type="text/css">
+
+#basket {
+  display: none;  
+} 
 
 #collect {
     float: left;
@@ -39,6 +82,28 @@ $(document).ready( function() {
   width: 470px;
 }
 
+#summary {
+ background: #fff;
+}
+
+#summary .inner {
+ width: 94%;
+ padding: 10px 3%; 
+ float: left;   
+}
+
+#summary .inner h3 {
+  margin: 0 ;   
+}
+
+#summary #checkout-button {
+  float: left;  
+  margin: 10px 0 0; 
+}
+
+
+
+
 </style>
 {% endblock %}
 
@@ -56,16 +121,19 @@ $(document).ready( function() {
 			<a class="selected" href="{% url 'order_step_one' %}">2. Your details</a>
 		</li>
 		<li>
-			<a href="">3. Confirm and pay</a>
+			3. Confirm and pay
 		</li>
 	</ul>
 	
 	</div>
       
    <div class="pure-g-r">
+        
 
-      <form method="post" action="." class="pure-u-1"> 	 
+      <form method="post" action="." > 	 
         {% csrf_token %}
+            
+            <div class="pure-u-3-5">
 
     		{% if form.first_name.errors or form.last_name.errors or form.email.errors or form.line_1.errors or form.postcode.errors or form.town_city.errors %}
     		<ul class="errorlist">
@@ -75,7 +143,6 @@ $(document).ready( function() {
     		  </ul>
     		{% endif %}
         <fieldset>
-            <legend>{% trans 'This just takes a minute - your name, email and address please!' %}</legend>
     		<p>
     			<label for="id_first_name">{% trans 'First name' %}</label>
     			<input  class="clearMeFocus {% if form.first_name.errors %}error{% endif %}" type="text" title="{% trans 'First name' %}" name="first_name" id="id_first_name" value="{{ first_name }}"/>
@@ -88,13 +155,10 @@ $(document).ready( function() {
     			<label for="id_email">{% trans 'Email address' %}</label>
     			<input class="clearMeFocus {% if form.email.errors %}error{% endif %}" title="{% trans 'Email address' %}" type="email" name="email" id="id_email" value="{{ email }}"/>
     		</p>	
-        </fieldset>
 
-    	
-    	<fieldset>
             <p id="collect">
                 <input type="checkbox" name="will_collect" id="id_will_collect" {% if will_collect %}checked="checked"{% endif %}/>
-                <label>I'll collect the order myself</label>
+                <label id="will_collect_label">I'll collect the order myself</label>
                 <span class="help">If you check this box we'll prepare your order and e-mail you to arrange a time and place for collection when it's ready. We're based in South London.</span>
             </p>
             
@@ -126,14 +190,38 @@ $(document).ready( function() {
       
     	  
     	  </div>
-        </fieldset> 	  
+        </fieldset> 
+    </div>	  
 
 
-	<div id="checkout-button">
-		<input type="submit" value="{% trans 'Next step - confirm and pay' %} &raquo;" next="" class="button large"/>
-	</div>
-		
-	</form>
+
+	<div id="summary" class="pure-u-2-5 padding">
+        <div class="inner">
+            <h3>Your order summary</h3>
+            <table>
+                {% for i in basket.get_items %}
+                <tr class="item" data-amount="{{ i.price.price|floatformat:'2' }}">
+                    <td>{{ i.price.product }} x {{ i.quantity }}</td>
+                    <td>{{ currency.symbol }}{{ i.price.price|floatformat:"2" }}</td>
+                </tr>
+                {% endfor %}
+                <tr id="postage" data-amount="{{ shopsettings.flat_fee_postage_price|floatformat:"2" }}">
+                    <td>Postage</td>
+                    <td>{{ currency.symbol }}<span class="amount"></span></td>
+                </tr>
+                <tr id="total">
+                    <td>Subtotal</td>
+                    <td>{{ currency.symbol }}<span class="amount"></span></td>
+                </tr/>
+            </table>
+            
+            <div id="checkout-button">
+		          <input type="submit" value="{% trans 'Next step - confirm and pay' %} &raquo;" next="" class="button large"/>
+            </div>
+        </div>
+    </div>
+    
+    </form>
 
 
 	</div>

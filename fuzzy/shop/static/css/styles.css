@@ -152,11 +152,16 @@ p {
   margin: 0 0 15px 0;   
 }
 
+.strikethrough {
+  text-decoration: line-through;   
+}
+
 /* END TYPOGRAPHY */
 
 /* FORMS */
 fieldset {
-  border: none; 
+  border: none;
+  width: 90%; 
 }
 
 legend {
@@ -175,7 +180,7 @@ legend {
 
 fieldset p {
   float: left;
-  width: 560px;   
+  width: 100%;
 }
 
 fieldset span.mandatory {
@@ -196,7 +201,7 @@ input[type="text"], input[type="email"], textarea {
     font-size: 15px;
     line-height: 1em;
     padding: 10px 15px;
-    width: 350px;
+    width: 100%;
     color: #999;
 }
 
@@ -455,8 +460,10 @@ ul.errorlist {
 }
 
 #photo-banner {
-  position: relative; 
-  float: left;  
+    float: left;
+    min-height: 150px;
+    position: relative;
+    width: 100%;
 }
 
 #photo-banner img {
