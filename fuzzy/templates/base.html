@@ -51,16 +51,30 @@
 	   }
 	   {% endif %}
 	   
-	   {% if shopsettings.main_background_image or shopsettings.main_background_color %}
+	   {% if shopsettings.main_background_image %}
+	       body {
+	           background-image: url('{% thumbnail shopsettings.main_background_image "" crop="" as im %}{{ im.url }}{% endthumbnail %}') repeat top left;  
+	       }
+	   {% endif %}
+	   
+	   
+	   {% if shopsettings.main_background_color %}
 	   body {
-	     background: url('{% thumbnail shopsettings.main_background_image "" crop="" as im %}{{ im.url }}{% endthumbnail %}') repeat top left {{ shopsettings.main_background_color }};   
+	     background-color: {{ shopsettings.main_background_color }};   
 	   }
 	   {% endif %}
 	   
 	   
-	   {% if shopsettings.footer_background_image or shopsettings.footer_background_color %}
-	   #footer {
-	     background: url('{% thumbnail shopsettings.footer_background_image "" crop="" as im %}{{ im.url }}{% endthumbnail %}') repeat top left {{ shopsettings.footer_background_color }}; 
+	   {% if shopsettings.footer_background_image %}
+	       #footer {
+	           background-image: url('{% thumbnail shopsettings.footer_background_image "" crop="" as im %}{{ im.url }}{% endthumbnail %}') repeat top left; 
+	   }
+	   
+	   {% endif %}
+	   
+	   {% if shopsettings.footer_background_color %}
+	       #footer {
+	           background-color: {{ shopsettings.footer_background_color }}; 
 	   }
 	   {% endif %}
 	   
