@@ -148,10 +148,8 @@ class Product(models.Model):
     def get_reviews(self):
         return Review.objects.filter(is_published=True, product=self)[:2]
     
-    def get_prices(self, request):
-        
+    def get_prices(self):
         prices = Price.objects.filter(product=self, is_active=True)
-        
         return prices
     
     def get_photos(self):

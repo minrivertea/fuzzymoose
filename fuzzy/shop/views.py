@@ -56,7 +56,7 @@ def home(request):
                 
     for x in products:
         try:
-            x.price = x.get_prices(request)[0]
+            x.price = x.get_prices()[0]
         except IndexError:
             pass
     
