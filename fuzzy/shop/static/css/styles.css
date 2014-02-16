@@ -15,7 +15,6 @@ body {
   border-bottom: 2px dashed #fff;
   margin: 20px 0;
   height: 1px;
-  float: left;   
 }
 
 #main {
@@ -253,7 +252,7 @@ ul.errorlist {
   float: right;
   position: absolute;
   right: 0px;
-  bottom: -30px;
+  bottom: -28px;
   background: none repeat scroll 0 0 #F6F3EB;
   padding: 7px 20px 5px;
   border-radius: 0 0 15px 15px;
@@ -446,7 +445,6 @@ ul.errorlist {
 }
 
 #banner {
-  float: left;
   width: 100%;   
 }
 
@@ -592,7 +590,8 @@ ul.rss #facebook {
 
 /* FOOTER STYLES */
 #footer {
-    background: url("../images/footer_back.png") repeat scroll left top rgba(0, 0, 0, 0);
+    background: url("../images/footer_back.png") repeat left top #f1f1f1 !important;
+    background-image: url("../images/footer_back.png"); /* STOOPID CHROME */
     border-top: 1px solid #D1D1D1;
     float: left;
     height: 200px;
