@@ -72,25 +72,28 @@
         	   
         {% endif %}
     }
-        
+    
+    
+    #footer {
 
-	   
-	   {% if shopsettings.footer_background_image %}
-	       #footer {
-	           background-image: url('{% thumbnail shopsettings.footer_background_image "" crop="" as im %}{{ im.url }}{% endthumbnail %}') repeat top left; 
-	   }
-	   {% else %}
-	       #footer {
-    	       background: url("../images/footer_back.png") repeat left top #f1f1f1 !important;
+        {% if shopsettings.footer_background_image %}
+            background-image: url('{% thumbnail shopsettings.footer_background_image "" crop="" as im %}{{ im.url }}{% endthumbnail %}') repeat top left; 
+        
+        {% else %}  
+            
+            {% if shopsettings.footer_background_color %}
+                background-color: #{{ shopsettings.footer_background_color }}; 
+            
+            {% else %}
+                background: url("../images/footer_back.png") repeat left top #f1f1f1 !important;
                 background-image: url("../images/footer_back.png"); /* STOOPID CHROME */
-	       }
-	   {% endif %}
-	   
-	   {% if shopsettings.footer_background_color %}
-	       #footer {
-	           background-color: #{{ shopsettings.footer_background_color }}; 
-	   }
-	   {% endif %}
+            {% endif %}
+        
+        {% endif %} 
+        
+        
+    }
+
 	   
 	</style>
 	{# END CUSTOM SHOPSETTINGS #}
