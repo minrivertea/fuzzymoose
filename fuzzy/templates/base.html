@@ -67,9 +67,10 @@
 	{# END CUSTOM SHOPSETTINGS #}
 	
 
-	<!--[if lte IE 8]>
-		<link rel="stylesheet" media="screen" type="text/css" href="{% static 'css/ie.css' %}" />
-	<![endif]-->
+	
+	<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
 
 	
     {% block ga %}  
