@@ -4,8 +4,6 @@
 body {
   color: #333;
   text-shadow: 0 1px 1px #fff;
-  background: url('../images/cardboard_flat.jpg') repeat top left #e7e4d9!important;  
-  background-image: url('../images/cardboard_flat.jpg'); /* FOR STUPID IE9 */
   margin: 0;
   padding: 0; 
 }
@@ -587,8 +585,6 @@ ul.rss #facebook {
 
 /* FOOTER STYLES */
 #footer {
-    background: url("../images/footer_back.png") repeat left top #f1f1f1 !important;
-    background-image: url("../images/footer_back.png"); /* STOOPID CHROME */
     border-top: 1px solid #D1D1D1;
     float: left;
     height: 200px;
