@@ -55,7 +55,7 @@ def home(request):
                 )[:3]
                 
     for x in products:
-        x.price = x.get_prices(request)
+        x.price = x.get_prices(request)[0]
     
     return _render(request, 'home.html', locals())
     
