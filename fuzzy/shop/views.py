@@ -55,7 +55,10 @@ def home(request):
                 )[:3]
                 
     for x in products:
-        x.price = x.get_prices(request)[0]
+        try:
+            x.price = x.get_prices(request)[0]
+        except IndexError:
+            pass
     
     return _render(request, 'home.html', locals())
     
