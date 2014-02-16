@@ -226,6 +226,7 @@ ul.errorlist {
   margin-left: -450px;
   left: 50%;
   position: relative;
+  display: block;
 }
 
 /* HEADER SPECIFIC */
