@@ -5,6 +5,7 @@ body {
   color: #333;
   text-shadow: 0 1px 1px #fff;
   background: url('../images/cardboard_flat.png') repeat top left;  
+  background-image: url('../images/cardboard_flat.png') repeat top left;
   margin: 0;
   padding: 0; 
 }
@@ -591,14 +592,13 @@ ul.rss #facebook {
 
 /* FOOTER STYLES */
 #footer {
-  background: url('../images/footer_back.png') repeat top left; 
-  float: left;
-  height: 200px;
-  padding: 30px 0 100px 0;
-  margin: 50px 0 0 0;
-  width: 100%;  
-  box-shadow: 0 1px 5px #ccc inset;
-  border-top: 2px solid #bbb;
+    background: url("../images/footer_back.png") repeat scroll left top rgba(0, 0, 0, 0);
+    border-top: 1px solid #D1D1D1;
+    float: left;
+    height: 200px;
+    margin: 50px 0 0;
+    padding: 30px 0 100px;
+    width: 100%;
 }
 
 #footer h4 {
