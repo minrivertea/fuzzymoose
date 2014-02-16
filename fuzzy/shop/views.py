@@ -620,7 +620,10 @@ def order_complete(request, hashkey=None):
         sender = settings.SITE_EMAIL
         content = render_to_string('emails/order_confirm_customer.txt', context)
         msg = EmailMultiAlternatives(subject_line, content, sender, recipient)
-        msg.send()
+        try:
+            msg.send()
+        except:
+            pass
         
         
         # SEND THE ADMINS AN EMAIL
@@ -629,8 +632,12 @@ def order_complete(request, hashkey=None):
         sender = settings.SITE_EMAIL
         content = render_to_string('emails/order_confirm_admin.txt', context)
         msg = EmailMultiAlternatives(subject_line, content, sender, recipient)
-        msg.send()
-        
+        try:
+            msg.send()
+        except:
+            pass
+            
+                
         # FINALLY, SAVE THE ORDER
         order.save()
 
