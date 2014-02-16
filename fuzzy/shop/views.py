@@ -74,7 +74,7 @@ def category_by_id(request, id):
 def product(request, slug, product_slug):    
     product = get_object_or_404(Product, slug=product_slug)    
         
-    product.prices = product.get_prices(request)
+    product.prices = product.get_prices()
    
     if product.mixed_box:
         form = MixedBoxForm()
