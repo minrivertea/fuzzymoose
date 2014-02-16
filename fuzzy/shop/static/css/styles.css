@@ -245,11 +245,11 @@ ul.errorlist {
 #basket {
   border-top: 5px solid #F6F3EB;
   width: 100%;
+  float: left;
 }
 
 #basket .tab {
-  position: absolute;
-  right: 0px;
+  float:right;
   bottom: -25px;
   background: none repeat scroll 0 0 #F6F3EB;
   padding: 7px 20px 5px;
