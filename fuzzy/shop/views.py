@@ -49,18 +49,13 @@ def home(request):
     
     products = Product.objects.filter(
                 is_active=True, 
+                in_stock=True, 
                 category__isnull=False,
                 is_featured=True,
-                )
+                )[:3]
                 
-    featured_products = []
     for x in products:
-        try:
-            x.price = x.get_prices(request, in_stock_only=True)[0]
-            featured_products.append(x)
-        except:
-            x.price = None
-    featured_products = featured_products[:3]
+        x.price = x.get_prices(request)
     
     return _render(request, 'home.html', locals())
     
@@ -75,12 +70,9 @@ def category_by_id(request, id):
 
 def product(request, slug, product_slug):    
     product = get_object_or_404(Product, slug=product_slug)    
-    product.prices = Price.objects.filter(
-        is_active=True,
-        product=product,
-        currency=RequestContext(request)['currency'],
-    )
-    
+        
+    product.prices = product.get_prices(request)
+   
     if product.mixed_box:
         form = MixedBoxForm()
         
@@ -184,23 +176,24 @@ def basket(request, order=None, discount=None):
         item.total_price = item.get_price()
         total_price += float(item.total_price)
 
-    postage_discount = False
-    if shopsettings.flat_fee_postage_price:
-        if total_price > shopsettings.postage_discount_threshold:
-            postage_discount = True
-        else:
-            total_price += float(shopsettings.flat_fee_postage_price)
-    
-    else:
-        for item in basket_items:
-        
-            if item.price.special_postage_price:
-                total_price += float(item.quantity * item.price.special_postage_price)
-                item.total_price = item.get_price() + (item.quantity * item.price.special_postage_price)
+    # COMMENTING THIS OUT FOR NOW
+    #postage_discount = False
+    #if shopsettings.flat_fee_postage_price:
+    #    if total_price > shopsettings.postage_discount_threshold:
+    #        postage_discount = True
+    #    else:
+    #        total_price += float(shopsettings.flat_fee_postage_price)
+   # 
+    #else:
+    #    for item in basket_items:
+    #    
+    #        if item.price.special_postage_price:
+    #            total_price += float(item.quantity * item.price.special_postage_price)
+    #            item.total_price = item.get_price() + (item.quantity * item.price.special_postage_price)
             
-            else:
-                total_price += float(item.quantity * shopsettings.standard_postage_price)
-                item.total_price = item.get_price() + (item.quantity * shopsettings.standard_postage_price)
+    #        else:
+    #            total_price += float(item.quantity * shopsettings.standard_postage_price)
+    #            item.total_price = item.get_price() + (item.quantity * shopsettings.standard_postage_price)
                 
 
         
@@ -396,6 +389,7 @@ def order_step_one(request, basket=None):
                     
             # DELIVERY OR COLLECTION?
             if form.cleaned_data['will_collect'] == False:# CREATE AN ADDRESS OBJECT        
+                
                 address = Address.objects.create(
                     shopper = shopper,
                     line_1 = form.cleaned_data['line_1'],
@@ -410,6 +404,7 @@ def order_step_one(request, basket=None):
                     address.save()
                 except:
                     pass
+                order.address = address
             else:
                 address = None
             
@@ -453,9 +448,7 @@ def order_step_one(request, basket=None):
             
             
             # DID THEY WANT TO COLLECT THE ORDER THEMSELVES?
-            if form.cleaned_data['will_collect'] == True:
-                order.will_collect = True    
-            
+            order.will_collect = form.cleaned_data['will_collect']    
             
             
             # UPDATE ORDER WITH THE BASKET ITEMS
@@ -485,10 +478,14 @@ def order_step_one(request, basket=None):
              line_3 = request.POST['line_3']
              town_city = request.POST['town_city']
              postcode = request.POST['postcode']
+             
              try:
                  will_collect = request.POST['will_collect']
              except:
-                 pass
+                 try:
+                    will_collect = order.will_collect
+                 except:
+                     pass
                           
              form = OrderStepOneForm(post_values)
 
@@ -555,12 +552,8 @@ def order_confirm(request):
     stripe_total_price = int(total_price * 100)
     if request.method == 'POST':
         
-        import stripe
-        # Set your secret key: remember to change this to your live secret key in production 
-        # See your keys here https://manage.stripe.com/account 
-        stripe.api_key = settings.STRIPE_API_SECRET_KEY 
-        
-        # Get the credit card details submitted by the form 
+        import stripe 
+        stripe.api_key = settings.STRIPE_API_SECRET_KEY         
         token = request.POST['stripeToken'] 
         
         # Create the charge on Stripe's servers - this will charge the user's card 
@@ -568,13 +561,13 @@ def order_confirm(request):
             if settings.DEBUG:
                 currency = 'gbp'
             else:
-                currency = _get_currency(request).code
+                currency = _get_currency(request).code.lower()
             
             charge = stripe.Charge.create( 
                 amount=stripe_total_price, # amount in cents, again 
                 currency=currency, 
                 card=token, 
-                description="payinguser@example.com" 
+                description=order.shopper.user.email 
             ) 
             
             order.final_amount_paid = total_price
@@ -590,10 +583,7 @@ def order_confirm(request):
         except stripe.APIConnectionError:
             # operation timed out
             print "please try again"
-               
-        
-    form = PayPalPaymentsForm()
-
+                       
     return _render(request, 'forms/order_confirm.html', locals())
 
 

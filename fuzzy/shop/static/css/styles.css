@@ -240,6 +240,7 @@ ul.errorlist {
   width: 100%;
   border-bottom: 2px dashed #fff;
   position: relative;
+  top: -20px;
 }
 
 #basket {
@@ -265,7 +266,6 @@ ul.errorlist {
 
 #basket .tab.selected {
   font-size: 1em;
-  padding-top: 10px;
 }
 
 #basket .tab#currency {

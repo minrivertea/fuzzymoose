@@ -121,6 +121,9 @@ class Product(models.Model):
     mixed_box_number = models.IntegerField(blank=True, null=True,
         help_text="How many choices does the customer get? 2 or more.")
 
+    in_stock = models.BooleanField(default=True, 
+        help_text="Deselect this and the product will be marked as 'Out of Stock' on the website.")
+
     # SEO STUFF
     meta_description = models.TextField(blank=True, null=True)
     meta_title = models.CharField(max_length=255, blank=True, null=True)
@@ -145,12 +148,9 @@ class Product(models.Model):
     def get_reviews(self):
         return Review.objects.filter(is_published=True, product=self)[:2]
     
-    def get_prices(self, request, in_stock_only=False):
+    def get_prices(self, request):
         
-        if in_stock_only:
-            prices =  Price.objects.filter(product=self, is_active=True, out_of_stock=False)
-        else:
-            prices = Price.objects.filter(product=self, is_active=True)
+        prices = Price.objects.filter(product=self, is_active=True)
         
         return prices
     
@@ -242,7 +242,7 @@ class Price(models.Model):
     description = models.CharField(max_length=255, blank=True, null=True)
     is_active = models.BooleanField(default=False)
     out_of_stock = models.BooleanField(default=False, 
-        help_text="Tick this to mark an item as 'Out of Stock' on the website")
+        help_text="Tick this to mark an item as 'Out of Stock' on the website") # deprecated
     special_postage_price = models.DecimalField(
         max_digits=8, decimal_places=2, null=True, blank=True,
         help_text="If this item has special pricing (above the normal rate) then add the full postage cost here (eg. if this will cost &pound;4 to post, type in 4.00 here)")
@@ -267,7 +267,7 @@ class Shopper(models.Model):
     user = models.ForeignKey(User)
     
     def __unicode__(self):
-        return self.user
+        return self.user.email
    
 class Address(models.Model):
     shopper = models.ForeignKey(Shopper)

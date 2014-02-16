@@ -172,7 +172,7 @@
                 {{ order.shopper.user.email }}<br/>
                 
                 {% if order.will_collect %}
-                <p>ANGELIQUE - what text should go here? I suggest a nice reminder to the customer about your location, and how they can collect, and to double confirm that they are willing to collect.</p>
+                <p>We are based in South London, and will be able to arrange collection from central London locations, such as mainline railway or London underground stations.  We'll e-mail you to confirm!</p>
                 {% else %}
                 {% include "snippets/address.html" %}
                 {% endif %}
@@ -191,6 +191,7 @@
     data-key="{{ stripe_api_public_key }}"
     data-amount="{{ stripe_total_price|floatformat:'0' }}"
     data-name="{{ site_name }}"
+    data-email="{{ order.shopper.user.email }}" 
     data-description="Pay {{ currency.symbol }}{{ total_price|floatformat:'2' }}"
     data-currency="{{ currency.code }}"
     data-label="Checkout Now!"

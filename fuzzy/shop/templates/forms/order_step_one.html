@@ -76,7 +76,7 @@ $(document).ready( function() {
   margin: 0 15px 0 0;
 }
 
-#collect .help {
+#collect .help, p.help {
   font-size: 11px;   
   float: left;
   width: 470px;
@@ -170,7 +170,7 @@ $(document).ready( function() {
     		</p>	
 
             <p id="collect">
-                <input type="checkbox" name="will_collect" id="id_will_collect" {% if will_collect %}checked="checked"{% endif %}/>
+                <input type="checkbox" name="will_collect" id="id_will_collect" {% if will_collect or order.will_collect %}checked="checked"{% endif %}/>
                 <label id="will_collect_label">I'll collect the order myself</label>
                 <span class="help">If you check this box we'll prepare your order and e-mail you to arrange a time and place for collection when it's ready. We're based in South London.</span>
             </p>
@@ -198,6 +198,7 @@ $(document).ready( function() {
           
           <p>
           	<label for="id_postcode">{% trans 'Postcode' %}:</label>
+          	{% if form.postcode.errors %}<p class="help red"><strong>Please make sure this is a valid UK postcode!</strong></p>{% endif %}
           	<input class="clearMeFocus {% if form.postcode.errors %}error{% endif %}" title="{% trans 'Postcode' %}" id="id_postcode" type="text" name="postcode" value="{{ postcode }}" /> 
           	</p>
       

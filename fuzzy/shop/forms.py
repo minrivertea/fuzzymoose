@@ -33,6 +33,13 @@ class OrderStepOneForm(forms.Form):
     
     def clean(self):
         data = self.cleaned_data
+        
+        import re
+        reobj = re.compile(r'(\b[A-Z]{1,2}[0-9][A-Z0-9]? [0-9][ABD-HJLNP-UW-Z]{2}\b)')
+        if not reobj.search(data['postcode']):
+            self._errors['postcode'] = 'error'
+            
+        
         if data.get('will_collect') == True:            
             data['line_1'] = 'a'
             data['town_city'] = 'a'
@@ -53,12 +60,18 @@ class OrderStepOneForm(forms.Form):
                     
               
         return data
+
+        
     
 
 class MixedBoxForm(forms.Form):
     choices = forms.ModelMultipleChoiceField(
                 required=True, 
-                queryset=Product.objects.filter(is_active=True, category__isnull=False).exclude(mixed_box=True), 
+                queryset=Product.objects.filter(
+                    is_active=True, 
+                    in_stock=True, 
+                    category__isnull=False
+                ).exclude(mixed_box=True), 
                 widget=forms.CheckboxSelectMultiple
                 )
     price_id = forms.CharField(required=True)
