@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block content %}
-{% blocktrans with order.owner.first_name|capfirst as fn and order.invoice_id as order_id %}
+{% blocktrans with order.owner.first_name|capfirst as fn and order.order_id as order_id %}
 <h1>Order confirmation</h1>
 <p><strong>Hi {{ fn }}</strong> - this is your order confirmation. Keep it for your records and just in case you need to contact us later about your order. Your order ID is: {{ order_id }}</p>{% endblocktrans %}
                                                                 

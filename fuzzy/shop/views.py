@@ -301,7 +301,6 @@ def increase_quantity(request, basket_item):
 
 
 
-
 def order_step_one(request, basket=None):
     
     basket = _get_basket(request)
@@ -520,6 +519,7 @@ def order_confirm(request):
         item.total_price = item.get_price()
         total_price += float(item.total_price)
 
+
     postage_discount = False
     if not order.will_collect:
         if shopsettings.flat_fee_postage_price:
@@ -573,6 +573,12 @@ def order_confirm(request):
             order.final_amount_paid = total_price
             order.save()
             
+            # CLEAR THE USER'S BASKET
+            try:
+                request.session['BASKET_ID'] = None
+            except:
+                pass
+            
             return HttpResponseRedirect(reverse('order_complete', args=[order.hashkey]))
              
         except stripe.CardError, e: 
@@ -589,12 +595,6 @@ def order_confirm(request):
 
 def order_complete(request, hashkey=None):    
     
-    # FIRST, CLEAR THEIR BASKET
-    try:
-        request.session['BASKET_ID'] = None
-        # do I want to delete those old basket items too?? not yet
-    except:
-        pass
     
     
     # THIS IS WHERE STRIPE RETURNS US
@@ -632,8 +632,8 @@ def order_complete(request, hashkey=None):
         msg.send()
         
         # FINALLY, SAVE THE ORDER
-        
         order.save()
+
     
     return _render(request, 'order_complete.html', locals())  
 
