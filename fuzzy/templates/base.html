@@ -51,24 +51,29 @@
 	   }
 	   {% endif %}
 	   
-	   {% if shopsettings.main_background_image %}
-	       body {
-	           background-image: url('{% thumbnail shopsettings.main_background_image "" crop="" as im %}{{ im.url }}{% endthumbnail %}') repeat top left;  
-	       }
-	   {% else %}
-	       body {
-	         background: url('../images/cardboard_flat.jpg') repeat top left #e7e4d9!important;  
-             background-image: url('../images/cardboard_flat.jpg'); /* FOR STUPID IE9 */   
-	       }
-	   {% endif %}
 	   
 	   
-	   {% if shopsettings.main_background_color %}
-	       body {
-	           background-color: #{{ shopsettings.main_background_color }};   
-	       }
-	   {% endif %}
+    body {
 	   
+        {% if shopsettings.main_background_image %}
+	           
+	           background-image: url('{% thumbnail shopsettings.main_background_image "" crop="" as im %}{{ im.url }}{% endthumbnail %}') repeat top left; 
+	            
+        {% else %}
+	           
+            {% if shopsettings.main_background_color %}
+                    background-color: #{{ shopsettings.main_background_color }};   
+            {% else %}
+            
+                background: url('../images/cardboard_flat.jpg') repeat top left #e7e4d9!important;  
+                background-image: url('../images/cardboard_flat.jpg'); /* FOR STUPID IE9 */ 
+                
+            {% endif %}
+        	   
+        {% endif %}
+    }
+        
+
 	   
 	   {% if shopsettings.footer_background_image %}
 	       #footer {
