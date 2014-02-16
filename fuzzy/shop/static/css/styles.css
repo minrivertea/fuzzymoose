@@ -1,15 +1,11 @@
 
 /* GLOBAL STYLES */
 
-html {
- background-image: url('../images/cardboard_flat.png');   
-}
-
 body {
   color: #333;
   text-shadow: 0 1px 1px #fff;
-  background: url('../images/cardboard_flat.png') repeat top left;  
-  background-image: url('../images/cardboard_flat.png');
+  background: url('../images/cardboard_flat.png') repeat top left !important;  
+  background: url('../images/cardboard_flat.png') repeat; /* FOR STUPID IE9 */
   margin: 0;
   padding: 0; 
 }
