@@ -4,8 +4,8 @@
 body {
   color: #333;
   text-shadow: 0 1px 1px #fff;
-  background: url('../images/cardboard_flat.png') repeat top left #fff!important;  
-  background-image: url('../images/cardboard_flat.png'); /* FOR STUPID IE9 */
+  background: url('../images/cardboard_flat.jpg') repeat top left #fff!important;  
+  background-image: url('../images/cardboard_flat.jpg'); /* FOR STUPID IE9 */
   margin: 0;
   padding: 0; 
 }
