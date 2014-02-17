@@ -657,13 +657,10 @@ def reorder_product_photos(request):
 
     if request.method == "POST":
         new_id_order = request.POST.getlist('ids')
-        print new_id_order
     else:
         new_id_order = request.GET.getlist('ids')
         
     new_id_order = [int(x) for x in new_id_order]
-
-    print new_id_order
 
     assert isinstance(new_id_order, list)
     assert new_id_order

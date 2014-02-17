@@ -65,8 +65,8 @@
                     background-color: #{{ shopsettings.main_background_color }};   
             {% else %}
             
-                background: url('../images/cardboard_flat.jpg') repeat top left #e7e4d9!important;  
-                background-image: url('../images/cardboard_flat.jpg'); /* FOR STUPID IE9 */ 
+                background: url('{% static "images/cardboard_flat.jpg" %}') repeat top left #e7e4d9!important;  
+                background-image: url('{% static "images/cardboard_flat.jpg" %}'); /* FOR STUPID IE9 */ 
                 
             {% endif %}
         	   
@@ -85,8 +85,8 @@
                 background-color: #{{ shopsettings.footer_background_color }}; 
             
             {% else %}
-                background: url("../images/footer_back.png") repeat left top #f1f1f1 !important;
-                background-image: url("../images/footer_back.png"); /* STOOPID CHROME */
+                background: url('{% static "images/footer_back.png" %}') repeat left top #f1f1f1 !important;
+                background-image: url('{% static "images/footer_back.png" %}'); /* STOOPID CHROME */
             {% endif %}
         
         {% endif %} 
