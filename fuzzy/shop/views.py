@@ -407,7 +407,8 @@ def order_step_one(request, basket=None):
                     address.save()
                 except:
                     pass
-                order.address = address
+                
+                    
             else:
                 address = None
             
@@ -425,6 +426,7 @@ def order_step_one(request, basket=None):
                     'address': address,
                     'shopper': shopper,
                     'order_id': "TEMP",
+                    'address': address,
                 }
                 order = Order.objects.create(**creation_args)
                 order.save() # need to save it first, then give it an ID
