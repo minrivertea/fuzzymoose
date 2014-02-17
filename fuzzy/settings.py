@@ -39,6 +39,12 @@ DATABASES = {
     }
 }
 
+# SSL IMPORTANT STUFF
+SESSION_COOKIE_SECURE =         False 
+CSRF_COOKIE_SECURE =            False 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SECURE_PROXY_SSL_HEADER =       ('HTTP_X_FORWARDED_PROTOCOL', 'https') 
+
 
 # MEDIA AND STATIC SETTINGS
 # -------------------------------------------------------
