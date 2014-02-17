@@ -24,7 +24,7 @@ from datetime import datetime, timedelta
 
 
 # APP
-from utils import _render, _get_basket, _get_currency, _get_postage_cost
+from utils import _render, _get_basket, _get_currency, _get_postage_cost, secure_required
 from models import *
 from forms import *
 
@@ -149,6 +149,7 @@ def contact(request):
         form = ContactForm()
     return _render(request, 'forms/contact.html', locals())
 
+@secure_required
 def basket(request, order=None, discount=None):
     
     try:
@@ -303,7 +304,7 @@ def increase_quantity(request, basket_item):
     return HttpResponseRedirect(reverse('basket'))
 
 
-
+@secure_required
 def order_step_one(request, basket=None):
     
     basket = _get_basket(request)
@@ -497,6 +498,7 @@ def order_step_one(request, basket=None):
     return _render(request, 'forms/order_step_one.html', locals())
 
 
+@secure_required
 def order_confirm(request):
     
     try:
@@ -596,6 +598,7 @@ def order_confirm(request):
     return _render(request, 'forms/order_confirm.html', locals())
 
 
+@secure_required
 def order_complete(request, hashkey=None):    
     
     
