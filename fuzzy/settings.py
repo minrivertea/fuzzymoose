@@ -49,17 +49,19 @@ SECURE_PROXY_SSL_HEADER =       ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 # MEDIA AND STATIC SETTINGS
 # -------------------------------------------------------
 
-MEDIA_ROOT =                        os.path.join(PROJECT_PATH, 'media')
-MEDIA_URL =                         '/media/'
-STATIC_ROOT =                       os.path.join(PROJECT_PATH, 'static')
-STATIC_URL =                        '/static/'
+MEDIA_ROOT =                    os.path.join(PROJECT_PATH, 'media')
+MEDIA_URL =                     'https://www.fuzzymoose.co.uk/media/'
+
+STATIC_URL =                    'https://www.fuzzymoose.co.uk/static/'
+STATIC_ROOT =                   os.path.join(PROJECT_PATH, 'static')
+
 STATICFILES_DIRS = (
 
 )
 STATICFILES_FINDERS = (
-                                    'django.contrib.staticfiles.finders.FileSystemFinder',
-                                    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#                                    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+                                'django.contrib.staticfiles.finders.FileSystemFinder',
+                                'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#                               'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 
