@@ -98,7 +98,7 @@ $('.info.tea a.button').click( function() {
                         from
                         <span class="number">{{ currency.symbol }}{{ x.price.price }}</span>
                     </span>
-                    <a href="" class="button">Order now</a>
+                    <a href="{{ x.get_absolute_url }}" class="button">Order now</a>
                     </div>
                     {% endif %}
                 </div>
