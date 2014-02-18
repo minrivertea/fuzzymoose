@@ -505,6 +505,7 @@ def order_confirm(request):
     
     try:
         basket = get_object_or_404(Basket, id=request.session['BASKET_ID'])
+        print basket.id
     except KeyError:
         problem = _("You don't have any items in your basket, so you can't process an order!")
         return _render(request, 'shop/order-problem.html', locals())
@@ -520,6 +521,9 @@ def order_confirm(request):
     
     # PRICES AND POSTAGE
     items = order.items.all()
+    
+    print items
+    
     shopsettings = RequestContext(request)['shopsettings']
     total_price = float(0)
     for item in items:                    
@@ -609,7 +613,6 @@ def order_complete(request, hashkey=None):
     order = get_object_or_404(Order, hashkey=hashkey)
     
     # IF THE ORDER HASN'T ALREADY BEEN MARKED AS PAID, LET'S DO ALL THAT.
-    
     if not order.date_paid:
         # GIVE THE ORDER A DATE_PAID DATE
         order.date_paid = datetime.now()

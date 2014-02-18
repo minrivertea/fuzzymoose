@@ -26,7 +26,7 @@ SITE_URL =                          'http://www.fuzzymoose.co.uk'
 SITE_DOMAIN =                       'www.fuzzymoose.co.uk'
 SITE_EMAIL =                        'Angelique <info@fuzzymoose.co.uk>'
 CONTACT_EMAIL =                     'info@fuzzymoose.co.uk' # used in templates and public site
-SERVER_EMAIL =                      'chris@minrivertea.com' # need this for getting error reports
+SERVER_EMAIL =                      'info@fuzzymoose.co.uk' # need this for getting error reports
 
 DATABASES = {
     'default': {
