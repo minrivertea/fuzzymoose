@@ -150,11 +150,6 @@ def _get_currency(request, currency_code=None):
         except:
             currency_code = 'GBP'
             region = _get_region(request)
-                
-            if region == 'US':
-                currency_code = 'USD'
-            if region == 'DE':
-                currency_code = 'EUR'
         
     return get_object_or_404(Currency, code=currency_code)
     
