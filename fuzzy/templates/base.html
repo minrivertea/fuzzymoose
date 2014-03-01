@@ -1,6 +1,6 @@
 {% load nav_selected i18n staticfiles thumbnail  %}
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
 <head>
 
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
@@ -8,7 +8,6 @@
 	<meta content="{{ LANGUAGE_CODE }}" http-equiv="Content-Language" />
 	<meta content="{% block metadescription %}{% endblock %}" name="description" />
 	
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="msvalidate.01" content="" />
   	<meta name="google-site-verification" content="" />
@@ -111,11 +110,20 @@
     <![endif]-->
 
 	
+	<!-- HERE'S THE GOOGLE CODE BLOCK -->
     {% block ga %}  
         {% if ga_is_on %}
             {{ shopsettings.google_analytics_script|safe }}
         {% endif %}
     {% endblock %}
+    
+    
+    
+    <!-- FOR STUPID IE8-9 WE HAVE THIS RULE TO FORCE STANDARD COMPLIANCY -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    
+    
 </head>
 
 

@@ -193,7 +193,7 @@ LOGGING = {
         }
     },
     'loggers': {
-        'fuzzymoose': {
+        'fuzzy.shop.views': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,

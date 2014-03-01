@@ -21,7 +21,7 @@ from django.contrib import messages
 
 
 import logging
-logger = logging.getLogger('fuzzymoose')
+logger = logging.getLogger('fuzzy.shop.views')
 
 import uuid
 from datetime import datetime, timedelta
@@ -599,13 +599,13 @@ def order_confirm(request):
             return HttpResponseRedirect(reverse('order_complete', args=[order.hashkey]))
              
         except stripe.CardError, e: 
-             
+            print "error"
             # The card has been declined 
             logger.exception(e)
             pass
         
         except stripe.APIConnectionError:
-            logger.exception("Stripe API Timed Out")
+            logger.exception('Stripe API Timed Out')
             pass
                        
     return _render(request, 'forms/order_confirm.html', locals())
