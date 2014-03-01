@@ -22,7 +22,7 @@ ROOT_URLCONF =                      'fuzzy.urls'
 WSGI_APPLICATION =                  'fuzzy.wsgi.application'
 ANALYTICS_ID =                      ''
 SITE_NAME =                         'FuzzyMoose'
-SITE_URL =                          'http://www.fuzzymoose.co.uk'
+SITE_URL =                          'https://www.fuzzymoose.co.uk'
 SITE_DOMAIN =                       'www.fuzzymoose.co.uk'
 SITE_EMAIL =                        'Angelique <info@fuzzymoose.co.uk>'
 CONTACT_EMAIL =                     'info@fuzzymoose.co.uk' # used in templates and public site
@@ -177,25 +177,27 @@ except:
     pass
 
 
-
-
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
+    #'filters': {
+    #    'require_debug_false': {
+    #        '()': 'django.utils.log.RequireDebugFalse'
+    #    }
+    #},
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
-            'filters': ['require_debug_false'],
+            #'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         }
     },
     'loggers': {
+        'fuzzymoose': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',

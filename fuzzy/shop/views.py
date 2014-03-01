@@ -19,6 +19,10 @@ from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 
+
+import logging
+logger = logging.getLogger('fuzzymoose')
+
 import uuid
 from datetime import datetime, timedelta
 
@@ -503,6 +507,8 @@ def order_step_one(request, basket=None):
 @secure_required
 def order_confirm(request):
     
+    
+    
     try:
         basket = get_object_or_404(Basket, id=request.session['BASKET_ID'])
         print basket.id
@@ -593,13 +599,14 @@ def order_confirm(request):
             return HttpResponseRedirect(reverse('order_complete', args=[order.hashkey]))
              
         except stripe.CardError, e: 
+             
             # The card has been declined 
-            print "there was a big error"
+            logger.exception(e)
             pass
         
         except stripe.APIConnectionError:
-            # operation timed out
-            print "please try again"
+            logger.exception("Stripe API Timed Out")
+            pass
                        
     return _render(request, 'forms/order_confirm.html', locals())
 

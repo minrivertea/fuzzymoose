@@ -42,7 +42,14 @@
 }
 
 #payment {
-  margin: 20px 0 0;   
+  margin: 20px 0 0;
+}
+
+#warning {
+  margin: 25px 0 0 ;
+  font-size: 11px;
+  color: red;
+  text-align: right;   
 }
 
 .stripe-button-el {
@@ -179,8 +186,13 @@
             {% endwith %}
         </p>
   	</div>
+  	
 
-    
+<!--[if IE9]>
+<div class="pure-u-4-5" id="warning">
+    <p>PLEASE NOTE: Some customers using Internet Explorer 9 have reported problems paying - we're working on the problem, but if you experience issues, please try again in a new browser (eg. <a href="http://www.firefox.com">Mozilla Firefox</a> or <a href="https://www.google.com/intl/en/chrome/browser/">Google Chrome</a>).</p>
+</div>
+<![endif]-->
 
 <form action="" method="POST" class="pure-u-4-5" id="payment">
   {% csrf_token %}
@@ -202,8 +214,11 @@
   
 </form>
 
-    
+
+
 </div>
+
+
 
 <div id="bottom" class="pure-g-r">
 
