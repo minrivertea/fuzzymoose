@@ -286,7 +286,10 @@ ul.errorlist {
   position: relative;
   left: 0%;
   float: left;
-  margin-left: px;
+}
+
+#header #logo img {
+  height: 130px;
 }
 
 #header ul {
