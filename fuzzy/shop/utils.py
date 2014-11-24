@@ -277,7 +277,6 @@ def _internal_pages_list(request):
 # REQUIRED FOR PDF CREATION
 def my_link_callback(uri, relative):
     path = os.path.join(settings.PROJECT_PATH, uri)
-    print path
     if not os.path.isfile(path):
         print "ARR! not a file", repr(path)
     else:

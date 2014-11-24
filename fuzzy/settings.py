@@ -22,7 +22,7 @@ ROOT_URLCONF =                      'fuzzy.urls'
 WSGI_APPLICATION =                  'fuzzy.wsgi.application'
 ANALYTICS_ID =                      ''
 SITE_NAME =                         'FuzzyMoose'
-SITE_URL =                          'https://www.fuzzymoose.co.uk'
+SITE_URL =                          'http://www.fuzzymoose.co.uk'
 SITE_DOMAIN =                       'www.fuzzymoose.co.uk'
 SITE_EMAIL =                        'Angelique <info@fuzzymoose.co.uk>'
 CONTACT_EMAIL =                     'info@fuzzymoose.co.uk' # used in templates and public site
@@ -50,9 +50,9 @@ SECURE_PROXY_SSL_HEADER =       ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 # -------------------------------------------------------
 
 MEDIA_ROOT =                    os.path.join(PROJECT_PATH, 'media')
-MEDIA_URL =                     'https://www.fuzzymoose.co.uk/media/'
+MEDIA_URL =                     'http://www.fuzzymoose.co.uk/media/'
 
-STATIC_URL =                    'https://www.fuzzymoose.co.uk/static/'
+STATIC_URL =                    'http://www.fuzzymoose.co.uk/static/'
 STATIC_ROOT =                   os.path.join(PROJECT_PATH, 'static')
 
 STATICFILES_DIRS = (

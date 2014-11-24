@@ -506,12 +506,9 @@ def order_step_one(request, basket=None):
 
 @secure_required
 def order_confirm(request):
-    
-    
-    
+        
     try:
         basket = get_object_or_404(Basket, id=request.session['BASKET_ID'])
-        print basket.id
     except KeyError:
         problem = _("You don't have any items in your basket, so you can't process an order!")
         return _render(request, 'shop/order-problem.html', locals())
@@ -527,9 +524,7 @@ def order_confirm(request):
     
     # PRICES AND POSTAGE
     items = order.items.all()
-    
-    print items
-    
+        
     shopsettings = RequestContext(request)['shopsettings']
     total_price = float(0)
     for item in items:                    
